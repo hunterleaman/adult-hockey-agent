@@ -251,15 +251,26 @@ PLAYER_SPOTS_ALERT=10
 PLAYER_SPOTS_URGENT=4
 ```
 
-### First Task: API Discovery
-Before building the full scraper, investigate whether DASH makes XHR/fetch calls that return registration data as JSON. If yes, we can skip Playwright for polling and use direct HTTP requests (faster, cheaper, more reliable). Playwright would still be needed for Phase 2 auto-registration.
+### API Discovery: ✅ COMPLETED (2026-02-12)
 
-Investigation steps:
-1. Open DASH event page in Chrome
-2. Open DevTools Network tab, filter XHR/Fetch
-3. Navigate between dates
-4. Look for API endpoints returning event/registration data
-5. Document any endpoints found, including auth requirements
+**Finding**: DASH exposes a full JSON:API at `/dash/jsonapi/api/v1/`. Playwright NOT needed for polling. Use direct HTTP requests (faster, cheaper, more reliable). Playwright retained only for Phase 2 auto-registration.
+
+**Key Endpoints**:
+1. **GET** `/dash/jsonapi/api/v1/date-availabilities?filter[date__gte]={date}&company=extremeice`
+   - Returns event IDs grouped by date
+   - Response: `{ data: [{ id: "2026-02-13", attributes: { events: [213376, 214134, ...] } }] }`
+
+2. **GET** `/dash/jsonapi/api/v1/events?filter[id__in]={ids}&include=summary,homeTeam&company=extremeice`
+   - Returns full event details with relationships
+   - Content-Type: `application/vnd.api+json`
+   - Relationships in `included[]` array (JSON:API spec)
+
+**Data Structure**:
+- Event names: `event → homeTeam → included[] where type="teams" → attributes.name`
+- Registration counts: `event → summary → included[] where type="event-summaries" → attributes.{registered_count, composite_capacity, registration_status}`
+- Must resolve JSON:API relationships via `{type, id}` pairs
+
+**Authentication**: None required for read-only event queries. Auth needed only for Phase 2 checkout.
 
 ## Success Criteria
 - Accurately parses registration counts matching what the DASH UI shows

@@ -92,9 +92,10 @@ async function discoverAPI(): Promise<void> {
           // Create descriptive filename from URL
           const urlObj = new URL(response.url())
           const pathParts = urlObj.pathname.split('/').filter(Boolean)
-          const filename = pathParts.length > 0
-            ? `${pathParts.join('_')}_${Date.now()}.json`
-            : `response_${Date.now()}.json`
+          const filename =
+            pathParts.length > 0
+              ? `${pathParts.join('_')}_${Date.now()}.json`
+              : `response_${Date.now()}.json`
 
           const filepath = join('fixtures', 'api-discovery', filename)
           await writeFile(filepath, JSON.stringify(body, null, 2))

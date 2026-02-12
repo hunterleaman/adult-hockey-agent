@@ -13,8 +13,7 @@ async function fetchAvailabilities(): Promise<void> {
     const response = await fetch(url, {
       headers: {
         Accept: 'application/vnd.api+json',
-        'User-Agent':
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
       },
     })
 
@@ -39,9 +38,7 @@ async function fetchAvailabilities(): Promise<void> {
       const targetDates = ['2026-02-13', '2026-02-16']
 
       targetDates.forEach((date) => {
-        const dateEntry = data.data.find(
-          (d: any) => d.attributes?.date === date || d.id === date
-        )
+        const dateEntry = data.data.find((d: any) => d.attributes?.date === date || d.id === date)
 
         if (dateEntry) {
           console.log(`\n📅 ${date}:`)

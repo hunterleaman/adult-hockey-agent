@@ -13,12 +13,12 @@ async function fetchEvents(): Promise<void> {
   const params = new URLSearchParams({
     'cache[save]': 'false',
     'page[size]': '50',
-    'sort': 'end,start',
+    sort: 'end,start',
     'filter[id__in]': eventIds.join(','),
     'filter[start_date__gte]': targetDate,
     'filter[start_date__lte]': '2026-02-14',
     'filter[unconstrained]': '1',
-    'company': 'extremeice',
+    company: 'extremeice',
   })
 
   // Add include parameter (complex nested relationships)
@@ -48,7 +48,7 @@ async function fetchEvents(): Promise<void> {
   try {
     const response = await fetch(url, {
       headers: {
-        'Accept': 'application/vnd.api+json',
+        Accept: 'application/vnd.api+json',
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
       },
     })
@@ -91,11 +91,10 @@ async function fetchEvents(): Promise<void> {
       // Log all event types for reference
       const allTypes = [...new Set(data.data.map((e: any) => e.attributes?.desc).filter(Boolean))]
       console.log(`\n📋 All event types found: ${allTypes.length}`)
-      allTypes.forEach(type => console.log(`   - ${type}`))
+      allTypes.forEach((type) => console.log(`   - ${type}`))
     } else {
       console.log(`\n⚠️  Unexpected response format`)
     }
-
   } catch (error) {
     console.error(`\n❌ Error fetching events:`, error)
     process.exit(1)
