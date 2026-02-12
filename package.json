@@ -8,6 +8,7 @@
     "build": "tsc",
     "dev": "tsc && node dist/index.js",
     "start": "node dist/index.js",
+    "discover": "tsc && node dist/api-discovery.js",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
