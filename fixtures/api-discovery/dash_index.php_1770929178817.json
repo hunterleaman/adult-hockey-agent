@@ -1,0 +1,356 @@
+{
+  "data": {
+    "USE_CUSTOM_COLORS": {
+      "option_type": "boolean",
+      "value": "true"
+    },
+    "ENABLE_DASH_VERSION_2020": {
+      "option_type": "boolean",
+      "value": "true"
+    },
+    "COLOR_PRIMARY": {
+      "option_type": "string",
+      "value": "#d4af37"
+    },
+    "COLOR_PRIMARY_LIGHT": {
+      "option_type": "string",
+      "value": "#e8c34b"
+    },
+    "COLOR_PRIMARY_DARK": {
+      "option_type": "string",
+      "value": "#c09b23"
+    },
+    "COLOR_SECONDARY": {
+      "option_type": "string",
+      "value": "#000000"
+    },
+    "COLOR_SECONDARY_LIGHT": {
+      "option_type": "string",
+      "value": "#141414"
+    },
+    "COLOR_SECONDARY_DARK": {
+      "option_type": "string",
+      "value": "#000000"
+    },
+    "WAIVER_AT_CHECKOUT": {
+      "option_type": "boolean",
+      "value": "false"
+    },
+    "USA_HOCKEY_INTEGRATION": {
+      "option_type": "boolean",
+      "value": "true"
+    },
+    "ONLINE_RESERVATIONS": {
+      "option_type": "boolean",
+      "value": "false"
+    },
+    "REGISTRATION_REQUIRE_DOB": {
+      "option_type": "boolean",
+      "value": "true"
+    },
+    "NONBINARY_REGISTRATION": {
+      "option_type": "boolean",
+      "value": "false"
+    },
+    "ONLINE_INVOICES": {
+      "option_type": "boolean",
+      "value": "false"
+    },
+    "PROMPT_DASH_ONLINE_FOR_SAVED_CARD": {
+      "option_type": "boolean",
+      "value": "false"
+    },
+    "ALLOW_BIRTHDATE_OPT_OUT": {
+      "option_type": "boolean",
+      "value": "true"
+    },
+    "GTM_CONTAINER_ID": {
+      "option_type": "json",
+      "value": ""
+    },
+    "FACEBOOK_PIXEL_ID": {
+      "option_type": "json",
+      "value": "Test"
+    },
+    "ORACLE_ELOQUA_ID": {
+      "option_type": "json",
+      "value": "Test"
+    },
+    "TWILIO_ENABLED": {
+      "option_type": "boolean",
+      "value": 0
+    },
+    "SPORTNINJA_ENABLED": {
+      "option_type": "boolean",
+      "value": "false"
+    },
+    "RFAM_ENABLED": {
+      "option_type": "boolean",
+      "value": 0
+    },
+    "RFAM_INTEGRATION": {
+      "option_type": "json",
+      "value": null
+    },
+    "RFAM_INCIDENT_REPORTING_URL": {
+      "option_type": "string",
+      "value": null
+    },
+    "ADDON_TEAM_APPROVAL": {
+      "option_type": "boolean",
+      "value": "false"
+    },
+    "ADDON_FREE_TRIAL": {
+      "option_type": "boolean",
+      "value": "false"
+    },
+    "ADDON_MAKEUPS": {
+      "option_type": "boolean",
+      "value": "false"
+    },
+    "SHOW_LEAGUES_ON_DASH_ONLINE": {
+      "option_type": "boolean",
+      "value": "false"
+    },
+    "PRODUCT_TYPES_ENABLED": {
+      "option_type": "json",
+      "value": {
+        "p": true,
+        "m": true,
+        "gc": true
+      }
+    },
+    "DROP_IN_ENABLED": {
+      "option_type": "boolean",
+      "value": "true"
+    },
+    "ENABLE_ONLINE_ACCOUNT_CREDIT": {
+      "option_type": "boolean",
+      "value": "true"
+    },
+    "DISPLAY_DASH_MEMBER_CALENDAR": {
+      "option_type": "boolean",
+      "value": "true"
+    },
+    "DISPLAY_DASH_MEMBER_LEAGUES": {
+      "option_type": "boolean",
+      "value": "true"
+    },
+    "PROGRAM_FINDER_SETTING": {
+      "option_type": "json",
+      "value": {
+        "show_filter_program": 1,
+        "show_filter_dow": 1,
+        "show_filter_tod": 1,
+        "show_filter_season": 1,
+        "show_filter_sport": 1,
+        "show_filter_group_type": 0,
+        "show_filter_group_name": 1,
+        "show_filter_gender": 1,
+        "show_filter_birthdate": 1,
+        "default_to_customer_primary_location": 1
+      }
+    },
+    "websites": {
+      "value": [
+        "https://xicenter.com/"
+      ]
+    },
+    "currency": {
+      "option_type": "string",
+      "value": "USD"
+    }
+  },
+  "featureFlags": {
+    "activity-finder": false,
+    "ai-league-scheduler": false,
+    "allow-editing-scheduled-payments": true,
+    "allow-enhanced-email-verification": false,
+    "allow-flexible-cost-display": true,
+    "allow-team-addons": true,
+    "auto-upload-custom-field-file-uploads": false,
+    "calendar": true,
+    "dash-member-domain": "https://member.daysmartrecreation.com",
+    "dash-version": "https://apps.daysmartrecreation.com/dash",
+    "default-communication-settings-off": false,
+    "demo-dash-version": "https://apps.daysmartrecreation.com/dash",
+    "disable-all-locations-rentals": false,
+    "drop-event-from-activities-page": false,
+    "duplicating-booking-options": true,
+    "enforce-3rd-party-api-rate-limiting": false,
+    "export-availability-button": false,
+    "past-season-dashboard-visibility": false,
+    "per-session-drop-report": false,
+    "show-admin-app-enhanced-billing": false,
+    "show-fast-invoices": false,
+    "show-member-app-enhanced-billing": false,
+    "show-member-qr-code": false,
+    "show-new-online-booking-customization": false,
+    "show-pos-root-only-delete": true,
+    "show-season-filter-in-member-app": false,
+    "show-smaller-resource-map": true,
+    "stripe-transaction-fee": false,
+    "team": true,
+    "test-flag": "foo",
+    "use-booking-performance-improvements": false,
+    "use-booking-performance-v-2-endpoint": false,
+    "use-enhanced-request-to-book-task": false,
+    "use-modified-cart-flow": true,
+    "use-payment-deadlock-mitigation": false,
+    "use-recaptcha-enterprise": false,
+    "utilize-larger-member-app-logo": true,
+    "$flagsState": {
+      "activity-finder": {
+        "version": 10,
+        "variation": 1
+      },
+      "ai-league-scheduler": {
+        "version": 5,
+        "variation": 1
+      },
+      "allow-editing-scheduled-payments": {
+        "version": 14,
+        "variation": 0
+      },
+      "allow-enhanced-email-verification": {
+        "version": 15,
+        "variation": 1
+      },
+      "allow-flexible-cost-display": {
+        "version": 22,
+        "variation": 0
+      },
+      "allow-team-addons": {
+        "version": 9,
+        "variation": 0
+      },
+      "auto-upload-custom-field-file-uploads": {
+        "version": 4,
+        "variation": 1
+      },
+      "calendar": {
+        "version": 44,
+        "variation": 0
+      },
+      "dash-member-domain": {
+        "version": 57,
+        "variation": 4
+      },
+      "dash-version": {
+        "version": 330,
+        "variation": 3
+      },
+      "default-communication-settings-off": {
+        "version": 11,
+        "variation": 1
+      },
+      "demo-dash-version": {
+        "version": 27,
+        "variation": 3
+      },
+      "disable-all-locations-rentals": {
+        "version": 6,
+        "variation": 1
+      },
+      "drop-event-from-activities-page": {
+        "version": 3,
+        "variation": 1
+      },
+      "duplicating-booking-options": {
+        "version": 10,
+        "variation": 0
+      },
+      "enforce-3rd-party-api-rate-limiting": {
+        "version": 3,
+        "variation": 1
+      },
+      "export-availability-button": {
+        "version": 5,
+        "variation": 1
+      },
+      "past-season-dashboard-visibility": {
+        "version": 3,
+        "variation": 1
+      },
+      "per-session-drop-report": {
+        "version": 5,
+        "variation": 1
+      },
+      "show-admin-app-enhanced-billing": {
+        "version": 2,
+        "variation": 1
+      },
+      "show-fast-invoices": {
+        "version": 8,
+        "variation": 1
+      },
+      "show-member-app-enhanced-billing": {
+        "version": 3,
+        "variation": 1
+      },
+      "show-member-qr-code": {
+        "version": 5,
+        "variation": 1
+      },
+      "show-new-online-booking-customization": {
+        "version": 69,
+        "variation": 1
+      },
+      "show-pos-root-only-delete": {
+        "version": 5,
+        "variation": 0
+      },
+      "show-season-filter-in-member-app": {
+        "version": 9,
+        "variation": 1
+      },
+      "show-smaller-resource-map": {
+        "version": 7,
+        "variation": 0
+      },
+      "stripe-transaction-fee": {
+        "version": 7,
+        "variation": 1
+      },
+      "team": {
+        "version": 45,
+        "variation": 0
+      },
+      "test-flag": {
+        "version": 5,
+        "variation": 0
+      },
+      "use-booking-performance-improvements": {
+        "version": 16,
+        "variation": 1
+      },
+      "use-booking-performance-v-2-endpoint": {
+        "version": 15,
+        "variation": 1
+      },
+      "use-enhanced-request-to-book-task": {
+        "version": 5,
+        "variation": 1
+      },
+      "use-modified-cart-flow": {
+        "version": 25,
+        "variation": 0
+      },
+      "use-payment-deadlock-mitigation": {
+        "version": 3,
+        "variation": 1
+      },
+      "use-recaptcha-enterprise": {
+        "version": 13,
+        "variation": 1
+      },
+      "utilize-larger-member-app-logo": {
+        "version": 6,
+        "variation": 0
+      }
+    },
+    "$valid": true
+  },
+  "formErrors": [],
+  "formSuccess": []
+}

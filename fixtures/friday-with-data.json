@@ -1,0 +1,4078 @@
+{
+  "meta": {
+    "page": {
+      "current-page": 1,
+      "per-page": 50,
+      "from": 1,
+      "to": 8,
+      "total": 8,
+      "last-page": 1
+    }
+  },
+  "links": {
+    "first": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/events?filter%5Bid__in%5D=213376%2C214134%2C213364%2C213412%2C213853%2C213851%2C214136%2C213399&filter%5Bstart_date__gte%5D=2026-02-13&filter%5Bstart_date__lte%5D=2026-02-14&filter%5Bunconstrained%5D=1&sort=end%2Cstart&page%5Bnumber%5D=1&page%5Bsize%5D=50",
+    "last": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/events?filter%5Bid__in%5D=213376%2C214134%2C213364%2C213412%2C213853%2C213851%2C214136%2C213399&filter%5Bstart_date__gte%5D=2026-02-13&filter%5Bstart_date__lte%5D=2026-02-14&filter%5Bunconstrained%5D=1&sort=end%2Cstart&page%5Bnumber%5D=1&page%5Bsize%5D=50"
+  },
+  "data": [
+    {
+      "type": "events",
+      "id": "213364",
+      "attributes": {
+        "repeat_id": 213360,
+        "resource_id": 1,
+        "resource_area_id": 1,
+        "desc": "",
+        "event_type_id": "k",
+        "sub_type": "regular",
+        "start": "2026-02-13T06:00:00",
+        "start_gmt": "2026-02-13T11:00:00",
+        "end": "2026-02-13T07:10:00",
+        "end_gmt": "2026-02-13T12:10:00",
+        "customer_id": 0,
+        "hteam_id": 5421,
+        "vteam_id": null,
+        "league_id": 2169,
+        "home_score": null,
+        "visiting_score": null,
+        "publish": true,
+        "outcome": "",
+        "register_capacity": 24,
+        "create_u": "jgwyn",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-02-01T10:02:09",
+        "mod_u": "jgwyn",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-02-01T10:02:09",
+        "is_overtime": false,
+        "booking_id": null,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-02-13T00:00:00",
+        "event_start_time": "06:00:00",
+        "best_description": "<p>ADULT PICK UP</p>\n<p>Morning 6am Skate:</p>\n<ul>\n<li>Full gear required&nbsp; &nbsp;</li>\n<li>$12.00 per person</li>\n</ul>\n<p>ADULT PICK UP HOCKEY<br /><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>"
+      },
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": {
+            "type": "event-types",
+            "id": "k"
+          }
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": {
+            "type": "teams",
+            "id": "5421"
+          }
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": {
+            "type": "event-summaries",
+            "id": "213364"
+          }
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": {
+            "type": "resources",
+            "id": "1"
+          }
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": []
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/events/213364"
+      }
+    },
+    {
+      "type": "events",
+      "id": "213376",
+      "attributes": {
+        "repeat_id": 213372,
+        "resource_id": 1,
+        "resource_area_id": 2,
+        "desc": "",
+        "event_type_id": "k",
+        "sub_type": "regular",
+        "start": "2026-02-13T06:00:00",
+        "start_gmt": "2026-02-13T11:00:00",
+        "end": "2026-02-13T07:10:00",
+        "end_gmt": "2026-02-13T12:10:00",
+        "customer_id": 0,
+        "hteam_id": 5420,
+        "vteam_id": null,
+        "league_id": 2169,
+        "home_score": null,
+        "visiting_score": null,
+        "publish": true,
+        "outcome": "",
+        "register_capacity": 3,
+        "create_u": "jgwyn",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-02-01T10:03:22",
+        "mod_u": "jgwyn",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-02-09T10:16:12",
+        "is_overtime": false,
+        "booking_id": null,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-02-13T00:00:00",
+        "event_start_time": "06:00:00",
+        "best_description": "<p>ADULT PICK UP</p>\n<p>Morning 6am Skate:</p>\n<ul>\n<li>Full gear required</li>\n<li>$12.00 per person</li>\n</ul>\n<p>ADULT PICK UP HOCKEY<br /><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>"
+      },
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": {
+            "type": "event-types",
+            "id": "k"
+          }
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": {
+            "type": "teams",
+            "id": "5420"
+          }
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": {
+            "type": "event-summaries",
+            "id": "213376"
+          }
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": {
+            "type": "resources",
+            "id": "1"
+          }
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": []
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/events/213376"
+      }
+    },
+    {
+      "type": "events",
+      "id": "213399",
+      "attributes": {
+        "repeat_id": 213393,
+        "resource_id": 1,
+        "resource_area_id": 1,
+        "desc": "",
+        "event_type_id": "k",
+        "sub_type": "regular",
+        "start": "2026-02-13T12:10:00",
+        "start_gmt": "2026-02-13T17:10:00",
+        "end": "2026-02-13T13:20:00",
+        "end_gmt": "2026-02-13T18:20:00",
+        "customer_id": 0,
+        "hteam_id": 5423,
+        "vteam_id": null,
+        "league_id": 2170,
+        "home_score": null,
+        "visiting_score": null,
+        "publish": true,
+        "outcome": "",
+        "register_capacity": 24,
+        "create_u": "jgwyn",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-02-01T10:38:58",
+        "mod_u": "jgwyn",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-02-01T10:48:08",
+        "is_overtime": false,
+        "booking_id": null,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-02-13T00:00:00",
+        "event_start_time": "12:10:00",
+        "best_description": "<p>AFTERNOON/EVENING SESSIONS</p>\n<p>ADULT PICK UP</p>\n<ul>\n<li>Full gear required</li>\n<li>$20.00 per session</li>\n</ul>\n<p>ADULT PICK UP</p>\n<p><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>"
+      },
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": {
+            "type": "event-types",
+            "id": "k"
+          }
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": {
+            "type": "teams",
+            "id": "5423"
+          }
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": {
+            "type": "event-summaries",
+            "id": "213399"
+          }
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": {
+            "type": "resources",
+            "id": "1"
+          }
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": []
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/events/213399"
+      }
+    },
+    {
+      "type": "events",
+      "id": "213412",
+      "attributes": {
+        "repeat_id": 213409,
+        "resource_id": 1,
+        "resource_area_id": 2,
+        "desc": "",
+        "event_type_id": "k",
+        "sub_type": "regular",
+        "start": "2026-02-13T12:10:00",
+        "start_gmt": "2026-02-13T17:10:00",
+        "end": "2026-02-13T13:20:00",
+        "end_gmt": "2026-02-13T18:20:00",
+        "customer_id": 0,
+        "hteam_id": 5422,
+        "vteam_id": null,
+        "league_id": 2170,
+        "home_score": null,
+        "visiting_score": null,
+        "publish": true,
+        "outcome": "",
+        "register_capacity": 3,
+        "create_u": "jgwyn",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-02-01T10:41:56",
+        "mod_u": "jgwyn",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-02-01T10:41:56",
+        "is_overtime": false,
+        "booking_id": null,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-02-13T00:00:00",
+        "event_start_time": "12:10:00",
+        "best_description": "<p>AFTERNOON/EVENING SESSIONS</p>\n<p>ADULT PICK UP</p>\n<ul>\n<li>Full gear required</li>\n<li>$20.00 per session</li>\n</ul>\n<p>ADULT PICK UP</p>\n<p><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>"
+      },
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": {
+            "type": "event-types",
+            "id": "k"
+          }
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": {
+            "type": "teams",
+            "id": "5422"
+          }
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": {
+            "type": "event-summaries",
+            "id": "213412"
+          }
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": {
+            "type": "resources",
+            "id": "1"
+          }
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": []
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/events/213412"
+      }
+    },
+    {
+      "type": "events",
+      "id": "213851",
+      "attributes": {
+        "repeat_id": null,
+        "resource_id": 1,
+        "resource_area_id": 1,
+        "desc": "",
+        "event_type_id": "k",
+        "sub_type": "regular",
+        "start": "2026-02-13T21:45:00",
+        "start_gmt": "2026-02-14T02:45:00",
+        "end": "2026-02-13T23:00:00",
+        "end_gmt": "2026-02-14T04:00:00",
+        "customer_id": 0,
+        "hteam_id": 5265,
+        "vteam_id": null,
+        "league_id": 2152,
+        "home_score": null,
+        "visiting_score": null,
+        "publish": true,
+        "outcome": "",
+        "register_capacity": 24,
+        "create_u": "jgwyn",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-02-10T14:52:05",
+        "mod_u": "jgwyn",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-02-10T14:59:44",
+        "is_overtime": false,
+        "booking_id": null,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-02-13T00:00:00",
+        "event_start_time": "21:45:00",
+        "best_description": "BROOMBALL PICK UP<br />18yr &amp; older<br />$20.00 per player"
+      },
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": {
+            "type": "event-types",
+            "id": "k"
+          }
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": {
+            "type": "teams",
+            "id": "5265"
+          }
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": {
+            "type": "event-summaries",
+            "id": "213851"
+          }
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": {
+            "type": "resources",
+            "id": "1"
+          }
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": []
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/events/213851"
+      }
+    },
+    {
+      "type": "events",
+      "id": "213853",
+      "attributes": {
+        "repeat_id": null,
+        "resource_id": 1,
+        "resource_area_id": 2,
+        "desc": "",
+        "event_type_id": "k",
+        "sub_type": "regular",
+        "start": "2026-02-13T21:45:00",
+        "start_gmt": "2026-02-14T02:45:00",
+        "end": "2026-02-13T23:00:00",
+        "end_gmt": "2026-02-14T04:00:00",
+        "customer_id": 0,
+        "hteam_id": 5264,
+        "vteam_id": null,
+        "league_id": 2152,
+        "home_score": null,
+        "visiting_score": null,
+        "publish": true,
+        "outcome": "",
+        "register_capacity": 4,
+        "create_u": "jgwyn",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-02-10T14:52:55",
+        "mod_u": "jgwyn",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-02-10T14:53:18",
+        "is_overtime": false,
+        "booking_id": null,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-02-13T00:00:00",
+        "event_start_time": "21:45:00",
+        "best_description": "BROOMBALL PICK UP<br />18yr &amp; older<br />$20.00 per player"
+      },
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": {
+            "type": "event-types",
+            "id": "k"
+          }
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": {
+            "type": "teams",
+            "id": "5264"
+          }
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": {
+            "type": "event-summaries",
+            "id": "213853"
+          }
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": {
+            "type": "resources",
+            "id": "1"
+          }
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": []
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/events/213853"
+      }
+    },
+    {
+      "type": "events",
+      "id": "214134",
+      "attributes": {
+        "repeat_id": null,
+        "resource_id": 4,
+        "resource_area_id": 22,
+        "desc": "",
+        "event_type_id": "k",
+        "sub_type": "regular",
+        "start": "2026-02-13T21:50:00",
+        "start_gmt": "2026-02-14T02:50:00",
+        "end": "2026-02-13T23:00:00",
+        "end_gmt": "2026-02-14T04:00:00",
+        "customer_id": 0,
+        "hteam_id": 5423,
+        "vteam_id": null,
+        "league_id": 2170,
+        "home_score": null,
+        "visiting_score": null,
+        "publish": true,
+        "outcome": "",
+        "register_capacity": 24,
+        "create_u": "jgwyn",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-02-12T09:41:12",
+        "mod_u": "jgwyn",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-02-12T09:42:03",
+        "is_overtime": false,
+        "booking_id": null,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-02-13T00:00:00",
+        "event_start_time": "21:50:00",
+        "best_description": "<p>AFTERNOON/EVENING SESSIONS</p>\n<p>ADULT PICK UP</p>\n<ul>\n<li>Full gear required</li>\n<li>$20.00 per session</li>\n</ul>\n<p>ADULT PICK UP</p>\n<p><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>"
+      },
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": {
+            "type": "event-types",
+            "id": "k"
+          }
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": {
+            "type": "teams",
+            "id": "5423"
+          }
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": {
+            "type": "event-summaries",
+            "id": "214134"
+          }
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": {
+            "type": "resources",
+            "id": "4"
+          }
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": []
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/events/214134"
+      }
+    },
+    {
+      "type": "events",
+      "id": "214136",
+      "attributes": {
+        "repeat_id": null,
+        "resource_id": 4,
+        "resource_area_id": 23,
+        "desc": "",
+        "event_type_id": "k",
+        "sub_type": "regular",
+        "start": "2026-02-13T21:50:00",
+        "start_gmt": "2026-02-14T02:50:00",
+        "end": "2026-02-13T23:00:00",
+        "end_gmt": "2026-02-14T04:00:00",
+        "customer_id": 0,
+        "hteam_id": 5422,
+        "vteam_id": null,
+        "league_id": 2170,
+        "home_score": null,
+        "visiting_score": null,
+        "publish": true,
+        "outcome": "",
+        "register_capacity": 3,
+        "create_u": "jgwyn",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-02-12T09:42:12",
+        "mod_u": "jgwyn",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-02-12T09:42:12",
+        "is_overtime": false,
+        "booking_id": null,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-02-13T00:00:00",
+        "event_start_time": "21:50:00",
+        "best_description": "<p>AFTERNOON/EVENING SESSIONS</p>\n<p>ADULT PICK UP</p>\n<ul>\n<li>Full gear required</li>\n<li>$20.00 per session</li>\n</ul>\n<p>ADULT PICK UP</p>\n<p><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>"
+      },
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": {
+            "type": "event-types",
+            "id": "k"
+          }
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": {
+            "type": "teams",
+            "id": "5422"
+          }
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": {
+            "type": "event-summaries",
+            "id": "214136"
+          }
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": {
+            "type": "resources",
+            "id": "4"
+          }
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": []
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/events/214136"
+      }
+    }
+  ],
+  "included": [
+    {
+      "type": "event-types",
+      "id": "k",
+      "attributes": {
+        "code": "k",
+        "name": "Camp",
+        "color": "#6231c4",
+        "custom_form_id": null,
+        "product_id": null,
+        "description": null,
+        "has_customer": false,
+        "has_team_home": true,
+        "has_team_away": false,
+        "has_roster": true,
+        "length": "01:00:00",
+        "active": true,
+        "member_app_display_name": null
+      },
+      "relationships": {
+        "customForm": {
+          "data": null
+        },
+        "product": {
+          "data": null
+        },
+        "reminderEmailTemplate": {
+          "data": null
+        },
+        "program": {
+          "data": null
+        },
+        "events": {
+          "data": null
+        },
+        "facilities": {
+          "data": null
+        },
+        "assignedFacilities": {
+          "data": null
+        },
+        "termsAndConditions": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        },
+        "eventTypeFees": {
+          "data": null
+        },
+        "setupTaskAction": {
+          "data": null
+        },
+        "takedownTaskAction": {
+          "data": null
+        },
+        "resources": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/event-types/k"
+      }
+    },
+    {
+      "type": "teams",
+      "id": "5421",
+      "attributes": {
+        "name": "(PLAYERS) ADULT Pick Up MORNINGS",
+        "facility_id": 1,
+        "league_id": 2169,
+        "season_id": 622,
+        "product_id": 50,
+        "is_flat_fee": 0,
+        "sex": "c",
+        "num_games": 1,
+        "start_date": "2026-02-04T06:00:00",
+        "days_of_week": [
+          "w",
+          "f"
+        ],
+        "team_type": "k",
+        "description": "<p>ADULT PICK UP</p>\n<p>Morning 6am Skate:</p>\n<ul>\n<li>Full gear required&nbsp; &nbsp;</li>\n<li>$12.00 per person</li>\n</ul>\n<p>ADULT PICK UP HOCKEY<br /><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
+        "min_roster_size": null,
+        "max_roster_size": null,
+        "is_private": false,
+        "event_length": 70,
+        "color": null,
+        "status": "active",
+        "max_free_trials": null,
+        "free_trial_cutoff": null,
+        "image_url": "https://dash-general.s3.amazonaws.com/extremeice/2606ba18-631e-4772-8579-703174873247.png",
+        "free_trial_days_before": null,
+        "free_trial_opt_out": true,
+        "free_trial_hours_before": null,
+        "is_makeups_enabled": 0,
+        "makeups_max_per_event": null,
+        "makeups_above_roster_limit": null,
+        "makeups_signup_start_hours_before": null,
+        "makeups_signup_end_hours_before": null,
+        "best_description": "<p>ADULT PICK UP</p>\n<p>Morning 6am Skate:</p>\n<ul>\n<li>Full gear required&nbsp; &nbsp;</li>\n<li>$12.00 per person</li>\n</ul>\n<p>ADULT PICK UP HOCKEY<br /><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
+        "best_image_url": "https://dash-general.s3.amazonaws.com/extremeice/2606ba18-631e-4772-8579-703174873247.png",
+        "has_free_trials": false,
+        "best_free_trial_cutoff": null,
+        "best_free_trial_days_before": null,
+        "best_free_trial_hours_before": null,
+        "is_registration_open": true,
+        "best_makeups_max_per_event": null,
+        "best_makeups_above_roster_limit": null,
+        "best_makeups_signup_start_hours_before": null,
+        "best_makeups_signup_end_hours_before": null,
+        "best_free_trial_customer_limit": null,
+        "best_is_makeups_enabled": false,
+        "has_upcoming_events": true
+      },
+      "relationships": {
+        "facility": {
+          "data": {
+            "type": "facilities",
+            "id": "1"
+          }
+        },
+        "league": {
+          "data": {
+            "type": "leagues",
+            "id": "2169"
+          }
+        },
+        "season": {
+          "data": null
+        },
+        "product": {
+          "data": {
+            "type": "products",
+            "id": "50"
+          }
+        },
+        "skillLevel": {
+          "data": null
+        },
+        "sport": {
+          "data": {
+            "type": "sports",
+            "id": "20"
+          }
+        },
+        "ageRange": {
+          "data": null
+        },
+        "employee": {
+          "data": null
+        },
+        "customers": {
+          "data": null
+        },
+        "registeredCustomers": {
+          "data": null
+        },
+        "managers": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "waitlistRegistrations": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "homeEvents": {
+          "data": null
+        },
+        "visitingEvents": {
+          "data": null
+        },
+        "playoffEvents": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "customerInvoices": {
+          "data": null
+        },
+        "notes": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        },
+        "purchaseOrders": {
+          "data": null
+        },
+        "programType": {
+          "data": {
+            "type": "program-types",
+            "id": "7"
+          }
+        },
+        "customFieldAnswers": {
+          "data": null
+        },
+        "customForm": {
+          "data": null
+        },
+        "events": {
+          "data": null
+        },
+        "allEvents": {
+          "data": null
+        },
+        "registrableEvents": {
+          "data": null
+        },
+        "finances": {
+          "data": null
+        },
+        "teamMessages": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        },
+        "nextHomeEvent": {
+          "data": null
+        },
+        "nextVisitingEvent": {
+          "data": null
+        },
+        "teamRequests": {
+          "data": null
+        },
+        "registrationInfo": {
+          "data": null
+        },
+        "expenses": {
+          "data": null
+        },
+        "copiedFromTeams": {
+          "data": null
+        },
+        "copiedToTeams": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/teams/5421"
+      }
+    },
+    {
+      "type": "facilities",
+      "id": "1",
+      "attributes": {
+        "name": "Extreme Ice Center",
+        "phone": "7048821830",
+        "email": "Info@xicenter.com",
+        "facilityWww": "https://xicenter.com/",
+        "tz": "America/New_York",
+        "active": true,
+        "my_sam_support": true,
+        "lat": 35.0919261,
+        "lng": -80.6522873
+      },
+      "relationships": {
+        "customers": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "seasons": {
+          "data": null
+        },
+        "leagues": {
+          "data": null
+        },
+        "teams": {
+          "data": null
+        },
+        "resources": {
+          "data": null
+        },
+        "hotLists": {
+          "data": null
+        },
+        "lockerAreas": {
+          "data": null
+        },
+        "inventories": {
+          "data": null
+        },
+        "blackoutDates": {
+          "data": null
+        },
+        "address": {
+          "data": {
+            "type": "addresses",
+            "id": "1"
+          }
+        },
+        "objectLabel": {
+          "data": null
+        },
+        "eventTypes": {
+          "data": null
+        },
+        "file": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/facilities/1"
+      }
+    },
+    {
+      "type": "addresses",
+      "id": "1",
+      "attributes": {
+        "country": "US",
+        "administrative_area": "NC",
+        "locality": "Indian Trail",
+        "dependent_locality": null,
+        "postal_code": "28079",
+        "sorting_code": null,
+        "address_line1": "4705 Indian Trail Fairview Rd",
+        "address_line2": null,
+        "address": "<p Translate=\"no\">\n<span Class=\"address-line1\">4705 Indian Trail Fairview Rd</span><br>\n<span Class=\"locality\">Indian Trail</span>, <span Class=\"administrative-area\">NC</span> <span Class=\"postal-code\">28079</span><br>\n<span Class=\"country\"></span>\n</p>",
+        "single_line_address": "4705 Indian Trail Fairview Rd, Indian Trail, NC 28079"
+      },
+      "relationships": {
+        "customers": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/addresses/1"
+      }
+    },
+    {
+      "type": "leagues",
+      "id": "2169",
+      "attributes": {
+        "sex": "c",
+        "season_id": 622,
+        "skill_level_id": 14,
+        "facility_id": 1,
+        "age_range_id": 25,
+        "start_date": "2026-02-01T00:00:00",
+        "min_birthdate": "1926-12-02T00:00:00",
+        "max_birthdate": "2010-02-01T00:00:00",
+        "sport_id": 20,
+        "name": "ADULT PICK UP MORNINGS",
+        "description": "<p>ADULT PICK UP</p>\n<p>Morning 6am Skate:</p>\n<ul>\n<li>Full gear required</li>\n<li>$10.00 per person</li>\n</ul>\n<p>ADULT PICK UP HOCKEY<br /><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
+        "registration_prod_id": null,
+        "standings_type": 0,
+        "registration_closed": false,
+        "hide_private_teams": false,
+        "event_selection": true,
+        "event_selection_weekly": false,
+        "prorating": false,
+        "max_teams": 0,
+        "program_id": 7,
+        "rosters_lock_date": null,
+        "rosters_lock_date_gmt": null,
+        "display_standings": 1,
+        "is_flat_fee": 0,
+        "max_free_trials": null,
+        "free_trial_cutoff": null,
+        "image_url": null,
+        "days_of_week": null,
+        "free_trial_days_before": null,
+        "free_trial_opt_out": false,
+        "sportsninja_schedule_id": null,
+        "free_trial_customer_limit": null,
+        "free_trial_hours_before": null,
+        "default_registration_option": "Player",
+        "is_makeups_enabled": false,
+        "makeups_max_per_event": null,
+        "makeups_above_roster_limit": null,
+        "makeups_signup_start_hours_before": null,
+        "makeups_signup_end_hours_before": null,
+        "member_app_cost_display_mode": null,
+        "min_age": 16,
+        "min_age_months": 0,
+        "max_age": 99,
+        "max_age_months": 1,
+        "best_description": "<p>ADULT PICK UP</p>\n<p>Morning 6am Skate:</p>\n<ul>\n<li>Full gear required</li>\n<li>$10.00 per person</li>\n</ul>\n<p>ADULT PICK UP HOCKEY<br /><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
+        "best_image_url": "https://dash-general.s3.amazonaws.com/extremeice/2606ba18-631e-4772-8579-703174873247.png",
+        "best_max_free_trials": null,
+        "best_free_trial_cutoff": null,
+        "best_free_trial_days_before": null,
+        "best_free_trial_hours_before": null,
+        "best_free_trial_customer_limit": null,
+        "best_is_makeups_enabled": false,
+        "best_makeups_max_per_event": null,
+        "best_makeups_above_roster_limit": null,
+        "best_makeups_signup_start_hours_before": null,
+        "best_makeups_signup_end_hours_before": null
+      },
+      "relationships": {
+        "customForm": {
+          "data": null
+        },
+        "program": {
+          "data": null
+        },
+        "teamProduct": {
+          "data": null
+        },
+        "programType": {
+          "data": null
+        },
+        "season": {
+          "data": {
+            "type": "seasons",
+            "id": "622"
+          }
+        },
+        "facility": {
+          "data": null
+        },
+        "prereqLevel": {
+          "data": null
+        },
+        "priorLeague": {
+          "data": null
+        },
+        "priorYearLeague": {
+          "data": null
+        },
+        "skillLevel": {
+          "data": null
+        },
+        "ageRange": {
+          "data": null
+        },
+        "sport": {
+          "data": null
+        },
+        "individualProduct": {
+          "data": null
+        },
+        "houseProduct": {
+          "data": null
+        },
+        "registrationProduct": {
+          "data": null
+        },
+        "teams": {
+          "data": null
+        },
+        "playoffEvents": {
+          "data": null
+        },
+        "info": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        },
+        "registrationEmailTemplate": {
+          "data": null
+        },
+        "freeTrialEmailTemplate": {
+          "data": null
+        },
+        "makeupsEmailTemplate": {
+          "data": null
+        },
+        "emailTemplate": {
+          "data": null
+        },
+        "paymentPlan": {
+          "data": null
+        },
+        "leagueDetails": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/leagues/2169"
+      }
+    },
+    {
+      "type": "seasons",
+      "id": "622",
+      "attributes": {
+        "name": "Adult Pick Up Hockey - FEBRUARY 2026",
+        "start_date": "2026-02-01T00:00:00",
+        "end_date": "2026-02-28T00:00:00",
+        "signup_start": "2026-01-25T00:00:00",
+        "signup_start_gmt": "2026-01-25T05:00:00",
+        "signup_end": "2026-02-28T23:59:00",
+        "signup_end_gmt": "2026-03-01T04:59:00",
+        "is_team_registration": false,
+        "team_type": "k",
+        "description": "ADULT PICK UP HOCKEY<br /><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate.&nbsp; No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b>",
+        "deposit": null,
+        "high_privacy": false,
+        "online_registration_enabled": true,
+        "image_url": "https://dash-general.s3.amazonaws.com/extremeice/2606ba18-631e-4772-8579-703174873247.png",
+        "is_free_trial_enabled": false,
+        "max_free_trials": null,
+        "free_trial_cutoff": null,
+        "free_trial_customer_limit": null,
+        "free_trial_days_before": null,
+        "enable_team_export": true,
+        "free_trial_hours_before": null,
+        "is_makeups_enabled": false,
+        "makeups_max_per_event": null,
+        "makeups_above_roster_limit": null,
+        "makeups_signup_start_hours_before": null,
+        "makeups_signup_end_hours_before": null,
+        "makeups_limit_per_customer": null,
+        "makeups_email_template_id": null,
+        "best_is_makeups_enabled": false
+      },
+      "relationships": {
+        "facility": {
+          "data": null
+        },
+        "paymentPlan": {
+          "data": null
+        },
+        "program": {
+          "data": null
+        },
+        "programType": {
+          "data": null
+        },
+        "priorSeason": {
+          "data": null
+        },
+        "priorYearSeason": {
+          "data": null
+        },
+        "leagues": {
+          "data": null
+        },
+        "teams": {
+          "data": null
+        },
+        "priorities": {
+          "data": []
+        },
+        "activatesPriorities": {
+          "data": null
+        },
+        "responsibleEmployee": {
+          "data": null
+        },
+        "approvalPendingTemplate": {
+          "data": null
+        },
+        "approvalDeclinedTemplate": {
+          "data": null
+        },
+        "approvalAcceptedTemplate": {
+          "data": null
+        },
+        "emailTemplate": {
+          "data": null
+        },
+        "freeTrialTemplate": {
+          "data": null
+        },
+        "makeUpsTemplate": {
+          "data": null
+        },
+        "timeOfYear": {
+          "data": null
+        },
+        "customForm": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/seasons/622"
+      }
+    },
+    {
+      "type": "products",
+      "id": "50",
+      "attributes": {
+        "name": "6am Pick Up",
+        "price": 15,
+        "allow_end_user_cancel": false,
+        "hide_quantity": false,
+        "non_resident_price": 15,
+        "image_url": null,
+        "billing_cycle_length": null,
+        "billing_cycle_period": null,
+        "external_membership_type": null,
+        "hide_membership_online": 0,
+        "actual_price": 15,
+        "local_price": 15,
+        "has_location_pricing": false,
+        "icon_defaulted": "far fa-badge-dollar",
+        "image_url_default": "https://dash-platform-assets.s3.us-west-2.amazonaws.com/img/program-finder/default_ds_rec.png",
+        "billing_cycle_description": ""
+      },
+      "relationships": {
+        "teams": {
+          "data": null
+        },
+        "facilities": {
+          "data": null
+        },
+        "locations": {
+          "data": []
+        },
+        "program": {
+          "data": null
+        },
+        "availableAddons": {
+          "data": null
+        },
+        "defaultAddons": {
+          "data": null
+        },
+        "modifications": {
+          "data": null
+        },
+        "requiredMemberships": {
+          "data": null
+        },
+        "productAddons": {
+          "data": null
+        },
+        "taxes": {
+          "data": null
+        },
+        "taxedBy": {
+          "data": null
+        },
+        "generalLedgerAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null
+        },
+        "subCategory": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "size": {
+          "data": null
+        },
+        "color": {
+          "data": null
+        },
+        "sex": {
+          "data": null
+        },
+        "manufacturer": {
+          "data": null
+        },
+        "fulfillment": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/products/50"
+      }
+    },
+    {
+      "type": "sports",
+      "id": "20",
+      "attributes": {
+        "name": "Hockey, Ice",
+        "stat_table": 1,
+        "active": true
+      },
+      "relationships": {
+        "leagues": {
+          "data": null
+        },
+        "teams": {
+          "data": null
+        },
+        "stats": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/sports/20"
+      }
+    },
+    {
+      "type": "program-types",
+      "id": "7",
+      "attributes": {
+        "name": "Adult Pick Up",
+        "billing_type": "per-day",
+        "old_team_type_code": "k",
+        "is_active": true
+      },
+      "relationships": {
+        "teams": {
+          "data": null
+        },
+        "seasons": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/program-types/7"
+      }
+    },
+    {
+      "type": "event-summaries",
+      "id": "213364",
+      "attributes": {
+        "name": "(PLAYERS) ADULT Pick Up MORNINGS",
+        "start_date": "2026-02-13T06:00:00-05:00",
+        "end_date": "2026-02-13T07:10:00-05:00",
+        "code": "k",
+        "color": "#6231c4",
+        "event_type": "Camp",
+        "publish": true,
+        "balance": 0,
+        "event_not_invoiced": false,
+        "customer_balance": "0.00",
+        "customer_not_invoiced": true,
+        "booking_balance": "0.00",
+        "has_balance": true,
+        "registered_count": 24,
+        "free_trial_count": 0,
+        "team_registered_count": 53,
+        "attendance_count": 0,
+        "comment_count": 0,
+        "remaining_registration_slots": 0,
+        "remaining_roster_slots": -1,
+        "free_trial_days_before": "0",
+        "free_trial_hours_before": 0,
+        "open_slots": 0,
+        "remaining_free_trial_slots": 0,
+        "has_invoicing": false,
+        "has_roster": true,
+        "has_home_team": true,
+        "has_away_team": false,
+        "registration_status": "full",
+        "allows_drop_ins": true,
+        "allows_makeups": false,
+        "makeups_max_per_event": 0,
+        "makeups_above_roster_limit": 0,
+        "makeups_signup_start": null,
+        "makeups_signup_end": null,
+        "makeups_count": 0,
+        "makeups_remaining_slots": 0,
+        "composite_capacity": 24,
+        "free_trials_status": null,
+        "makeups_status": null
+      },
+      "relationships": {
+        "event": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/event-summaries/213364"
+      }
+    },
+    {
+      "type": "resources",
+      "id": "1",
+      "attributes": {
+        "name": "MAIN RINK",
+        "desc": "NHL regulation size",
+        "facility_id": 1,
+        "type_id": 2,
+        "lat": 35.0919261,
+        "lng": -80.6522873,
+        "booking_option_id": 1,
+        "terms_and_conditions_id": null,
+        "has_agreed_terms_and_conditions": null
+      },
+      "relationships": {
+        "facility": {
+          "data": {
+            "type": "facilities",
+            "id": "1"
+          }
+        },
+        "resourceAreas": {
+          "data": null
+        },
+        "resourceGroups": {
+          "data": null
+        },
+        "resourceType": {
+          "data": null
+        },
+        "eventTypes": {
+          "data": null
+        },
+        "address": {
+          "data": null
+        },
+        "employee": {
+          "data": null
+        },
+        "inventories": {
+          "data": null
+        },
+        "amenities": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        },
+        "bookingOption": {
+          "data": null
+        },
+        "termsAndConditions": {
+          "data": null
+        },
+        "termsAndConditionsResponses": {
+          "data": null
+        },
+        "blockedResources": {
+          "data": null
+        },
+        "blockedResourceAreas": {
+          "data": null
+        },
+        "blockingRules": {
+          "data": null
+        },
+        "flattenedBlockingRules": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/resources/1"
+      }
+    },
+    {
+      "type": "teams",
+      "id": "5420",
+      "attributes": {
+        "name": "(GOALIES) Adult Pick Up Hockey (Mornings)",
+        "facility_id": 1,
+        "league_id": 2169,
+        "season_id": 622,
+        "product_id": 50,
+        "is_flat_fee": 0,
+        "sex": "c",
+        "num_games": 1,
+        "start_date": "2026-02-04T06:00:00",
+        "days_of_week": [
+          "w",
+          "f"
+        ],
+        "team_type": "k",
+        "description": "<p>ADULT PICK UP</p>\n<p>Morning 6am Skate:</p>\n<ul>\n<li>Full gear required</li>\n<li>$12.00 per person</li>\n</ul>\n<p>ADULT PICK UP HOCKEY<br /><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
+        "min_roster_size": null,
+        "max_roster_size": null,
+        "is_private": false,
+        "event_length": 70,
+        "color": null,
+        "status": "active",
+        "max_free_trials": null,
+        "free_trial_cutoff": null,
+        "image_url": "https://dash-general.s3.amazonaws.com/extremeice/2606ba18-631e-4772-8579-703174873247.png",
+        "free_trial_days_before": null,
+        "free_trial_opt_out": true,
+        "free_trial_hours_before": null,
+        "is_makeups_enabled": 0,
+        "makeups_max_per_event": null,
+        "makeups_above_roster_limit": null,
+        "makeups_signup_start_hours_before": null,
+        "makeups_signup_end_hours_before": null,
+        "best_description": "<p>ADULT PICK UP</p>\n<p>Morning 6am Skate:</p>\n<ul>\n<li>Full gear required</li>\n<li>$12.00 per person</li>\n</ul>\n<p>ADULT PICK UP HOCKEY<br /><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
+        "best_image_url": "https://dash-general.s3.amazonaws.com/extremeice/2606ba18-631e-4772-8579-703174873247.png",
+        "has_free_trials": false,
+        "best_free_trial_cutoff": null,
+        "best_free_trial_days_before": null,
+        "best_free_trial_hours_before": null,
+        "is_registration_open": true,
+        "best_makeups_max_per_event": null,
+        "best_makeups_above_roster_limit": null,
+        "best_makeups_signup_start_hours_before": null,
+        "best_makeups_signup_end_hours_before": null,
+        "best_free_trial_customer_limit": null,
+        "best_is_makeups_enabled": false,
+        "has_upcoming_events": true
+      },
+      "relationships": {
+        "facility": {
+          "data": {
+            "type": "facilities",
+            "id": "1"
+          }
+        },
+        "league": {
+          "data": {
+            "type": "leagues",
+            "id": "2169"
+          }
+        },
+        "season": {
+          "data": null
+        },
+        "product": {
+          "data": {
+            "type": "products",
+            "id": "50"
+          }
+        },
+        "skillLevel": {
+          "data": null
+        },
+        "sport": {
+          "data": {
+            "type": "sports",
+            "id": "20"
+          }
+        },
+        "ageRange": {
+          "data": null
+        },
+        "employee": {
+          "data": null
+        },
+        "customers": {
+          "data": null
+        },
+        "registeredCustomers": {
+          "data": null
+        },
+        "managers": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "waitlistRegistrations": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "homeEvents": {
+          "data": null
+        },
+        "visitingEvents": {
+          "data": null
+        },
+        "playoffEvents": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "customerInvoices": {
+          "data": null
+        },
+        "notes": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        },
+        "purchaseOrders": {
+          "data": null
+        },
+        "programType": {
+          "data": {
+            "type": "program-types",
+            "id": "7"
+          }
+        },
+        "customFieldAnswers": {
+          "data": null
+        },
+        "customForm": {
+          "data": null
+        },
+        "events": {
+          "data": null
+        },
+        "allEvents": {
+          "data": null
+        },
+        "registrableEvents": {
+          "data": null
+        },
+        "finances": {
+          "data": null
+        },
+        "teamMessages": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        },
+        "nextHomeEvent": {
+          "data": null
+        },
+        "nextVisitingEvent": {
+          "data": null
+        },
+        "teamRequests": {
+          "data": null
+        },
+        "registrationInfo": {
+          "data": null
+        },
+        "expenses": {
+          "data": null
+        },
+        "copiedFromTeams": {
+          "data": null
+        },
+        "copiedToTeams": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/teams/5420"
+      }
+    },
+    {
+      "type": "event-summaries",
+      "id": "213376",
+      "attributes": {
+        "name": "(GOALIES) Adult Pick Up Hockey (Mornings)",
+        "start_date": "2026-02-13T06:00:00-05:00",
+        "end_date": "2026-02-13T07:10:00-05:00",
+        "code": "k",
+        "color": "#6231c4",
+        "event_type": "Camp",
+        "publish": true,
+        "balance": 0,
+        "event_not_invoiced": false,
+        "customer_balance": "0.00",
+        "customer_not_invoiced": false,
+        "booking_balance": "0.00",
+        "has_balance": false,
+        "registered_count": 3,
+        "free_trial_count": 0,
+        "team_registered_count": 5,
+        "attendance_count": 0,
+        "comment_count": 0,
+        "remaining_registration_slots": 0,
+        "remaining_roster_slots": -1,
+        "free_trial_days_before": "0",
+        "free_trial_hours_before": 0,
+        "open_slots": 0,
+        "remaining_free_trial_slots": 0,
+        "has_invoicing": false,
+        "has_roster": true,
+        "has_home_team": true,
+        "has_away_team": false,
+        "registration_status": "full",
+        "allows_drop_ins": true,
+        "allows_makeups": false,
+        "makeups_max_per_event": 0,
+        "makeups_above_roster_limit": 0,
+        "makeups_signup_start": null,
+        "makeups_signup_end": null,
+        "makeups_count": 0,
+        "makeups_remaining_slots": 0,
+        "composite_capacity": 3,
+        "free_trials_status": null,
+        "makeups_status": null
+      },
+      "relationships": {
+        "event": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/event-summaries/213376"
+      }
+    },
+    {
+      "type": "teams",
+      "id": "5423",
+      "attributes": {
+        "name": "(PLAYERS) ADULT Pick Up -AFTERNOON/EVENING",
+        "facility_id": 1,
+        "league_id": 2170,
+        "season_id": 622,
+        "product_id": 51,
+        "is_flat_fee": 0,
+        "sex": "c",
+        "num_games": 1,
+        "start_date": "2026-02-04T12:10:00",
+        "days_of_week": [
+          "m",
+          "w",
+          "f"
+        ],
+        "team_type": "k",
+        "description": "<p>AFTERNOON/EVENING SESSIONS</p>\n<p>ADULT PICK UP</p>\n<ul>\n<li>Full gear required</li>\n<li>$20.00 per session</li>\n</ul>\n<p>ADULT PICK UP</p>\n<p><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
+        "min_roster_size": null,
+        "max_roster_size": null,
+        "is_private": false,
+        "event_length": 70,
+        "color": null,
+        "status": "active",
+        "max_free_trials": null,
+        "free_trial_cutoff": null,
+        "image_url": "https://dash-general.s3.amazonaws.com/extremeice/164cd01b-a496-41dd-939b-0fa4846c42b9.png",
+        "free_trial_days_before": null,
+        "free_trial_opt_out": false,
+        "free_trial_hours_before": null,
+        "is_makeups_enabled": 0,
+        "makeups_max_per_event": null,
+        "makeups_above_roster_limit": null,
+        "makeups_signup_start_hours_before": null,
+        "makeups_signup_end_hours_before": null,
+        "best_description": "<p>AFTERNOON/EVENING SESSIONS</p>\n<p>ADULT PICK UP</p>\n<ul>\n<li>Full gear required</li>\n<li>$20.00 per session</li>\n</ul>\n<p>ADULT PICK UP</p>\n<p><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
+        "best_image_url": "https://dash-general.s3.amazonaws.com/extremeice/164cd01b-a496-41dd-939b-0fa4846c42b9.png",
+        "has_free_trials": false,
+        "best_free_trial_cutoff": null,
+        "best_free_trial_days_before": null,
+        "best_free_trial_hours_before": null,
+        "is_registration_open": true,
+        "best_makeups_max_per_event": null,
+        "best_makeups_above_roster_limit": null,
+        "best_makeups_signup_start_hours_before": null,
+        "best_makeups_signup_end_hours_before": null,
+        "best_free_trial_customer_limit": null,
+        "best_is_makeups_enabled": false,
+        "has_upcoming_events": true
+      },
+      "relationships": {
+        "facility": {
+          "data": {
+            "type": "facilities",
+            "id": "1"
+          }
+        },
+        "league": {
+          "data": {
+            "type": "leagues",
+            "id": "2170"
+          }
+        },
+        "season": {
+          "data": null
+        },
+        "product": {
+          "data": {
+            "type": "products",
+            "id": "51"
+          }
+        },
+        "skillLevel": {
+          "data": null
+        },
+        "sport": {
+          "data": {
+            "type": "sports",
+            "id": "20"
+          }
+        },
+        "ageRange": {
+          "data": null
+        },
+        "employee": {
+          "data": null
+        },
+        "customers": {
+          "data": null
+        },
+        "registeredCustomers": {
+          "data": null
+        },
+        "managers": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "waitlistRegistrations": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "homeEvents": {
+          "data": null
+        },
+        "visitingEvents": {
+          "data": null
+        },
+        "playoffEvents": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "customerInvoices": {
+          "data": null
+        },
+        "notes": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        },
+        "purchaseOrders": {
+          "data": null
+        },
+        "programType": {
+          "data": {
+            "type": "program-types",
+            "id": "7"
+          }
+        },
+        "customFieldAnswers": {
+          "data": null
+        },
+        "customForm": {
+          "data": null
+        },
+        "events": {
+          "data": null
+        },
+        "allEvents": {
+          "data": null
+        },
+        "registrableEvents": {
+          "data": null
+        },
+        "finances": {
+          "data": null
+        },
+        "teamMessages": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        },
+        "nextHomeEvent": {
+          "data": null
+        },
+        "nextVisitingEvent": {
+          "data": null
+        },
+        "teamRequests": {
+          "data": null
+        },
+        "registrationInfo": {
+          "data": null
+        },
+        "expenses": {
+          "data": null
+        },
+        "copiedFromTeams": {
+          "data": null
+        },
+        "copiedToTeams": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/teams/5423"
+      }
+    },
+    {
+      "type": "leagues",
+      "id": "2170",
+      "attributes": {
+        "sex": "c",
+        "season_id": 622,
+        "skill_level_id": 14,
+        "facility_id": 1,
+        "age_range_id": 25,
+        "start_date": "2026-02-01T00:00:00",
+        "min_birthdate": "1926-12-02T00:00:00",
+        "max_birthdate": "2010-02-01T00:00:00",
+        "sport_id": 20,
+        "name": "Adult Pick Up - AFTERNOON/EVENINGS",
+        "description": "Adult Pick Up-&nbsp;<br />\n<ul>\n<li>MORNING SESSION $10.00 per session</li>\n<li>AFTERNOON/EVENING SESSION $15.00 per session</li>\n</ul>\n<br />ADULT PICK UP HOCKEY<br /><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not work.</b>",
+        "registration_prod_id": null,
+        "standings_type": 0,
+        "registration_closed": false,
+        "hide_private_teams": false,
+        "event_selection": true,
+        "event_selection_weekly": false,
+        "prorating": false,
+        "max_teams": 0,
+        "program_id": 7,
+        "rosters_lock_date": null,
+        "rosters_lock_date_gmt": null,
+        "display_standings": 1,
+        "is_flat_fee": 0,
+        "max_free_trials": null,
+        "free_trial_cutoff": null,
+        "image_url": null,
+        "days_of_week": null,
+        "free_trial_days_before": null,
+        "free_trial_opt_out": false,
+        "sportsninja_schedule_id": null,
+        "free_trial_customer_limit": null,
+        "free_trial_hours_before": null,
+        "default_registration_option": "Player",
+        "is_makeups_enabled": false,
+        "makeups_max_per_event": null,
+        "makeups_above_roster_limit": null,
+        "makeups_signup_start_hours_before": null,
+        "makeups_signup_end_hours_before": null,
+        "member_app_cost_display_mode": null,
+        "min_age": 16,
+        "min_age_months": 0,
+        "max_age": 99,
+        "max_age_months": 1,
+        "best_description": "Adult Pick Up-&nbsp;<br />\n<ul>\n<li>MORNING SESSION $10.00 per session</li>\n<li>AFTERNOON/EVENING SESSION $15.00 per session</li>\n</ul>\n<br />ADULT PICK UP HOCKEY<br /><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not work.</b>",
+        "best_image_url": "https://dash-general.s3.amazonaws.com/extremeice/2606ba18-631e-4772-8579-703174873247.png",
+        "best_max_free_trials": null,
+        "best_free_trial_cutoff": null,
+        "best_free_trial_days_before": null,
+        "best_free_trial_hours_before": null,
+        "best_free_trial_customer_limit": null,
+        "best_is_makeups_enabled": false,
+        "best_makeups_max_per_event": null,
+        "best_makeups_above_roster_limit": null,
+        "best_makeups_signup_start_hours_before": null,
+        "best_makeups_signup_end_hours_before": null
+      },
+      "relationships": {
+        "customForm": {
+          "data": null
+        },
+        "program": {
+          "data": null
+        },
+        "teamProduct": {
+          "data": null
+        },
+        "programType": {
+          "data": null
+        },
+        "season": {
+          "data": {
+            "type": "seasons",
+            "id": "622"
+          }
+        },
+        "facility": {
+          "data": null
+        },
+        "prereqLevel": {
+          "data": null
+        },
+        "priorLeague": {
+          "data": null
+        },
+        "priorYearLeague": {
+          "data": null
+        },
+        "skillLevel": {
+          "data": null
+        },
+        "ageRange": {
+          "data": null
+        },
+        "sport": {
+          "data": null
+        },
+        "individualProduct": {
+          "data": null
+        },
+        "houseProduct": {
+          "data": null
+        },
+        "registrationProduct": {
+          "data": null
+        },
+        "teams": {
+          "data": null
+        },
+        "playoffEvents": {
+          "data": null
+        },
+        "info": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        },
+        "registrationEmailTemplate": {
+          "data": null
+        },
+        "freeTrialEmailTemplate": {
+          "data": null
+        },
+        "makeupsEmailTemplate": {
+          "data": null
+        },
+        "emailTemplate": {
+          "data": null
+        },
+        "paymentPlan": {
+          "data": null
+        },
+        "leagueDetails": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/leagues/2170"
+      }
+    },
+    {
+      "type": "products",
+      "id": "51",
+      "attributes": {
+        "name": "Adult Pick Up",
+        "price": 20,
+        "allow_end_user_cancel": false,
+        "hide_quantity": false,
+        "non_resident_price": 20,
+        "image_url": null,
+        "billing_cycle_length": null,
+        "billing_cycle_period": null,
+        "external_membership_type": null,
+        "hide_membership_online": 0,
+        "actual_price": 20,
+        "local_price": 20,
+        "has_location_pricing": false,
+        "icon_defaulted": "far fa-badge-dollar",
+        "image_url_default": "https://dash-platform-assets.s3.us-west-2.amazonaws.com/img/program-finder/default_ds_rec.png",
+        "billing_cycle_description": ""
+      },
+      "relationships": {
+        "teams": {
+          "data": null
+        },
+        "facilities": {
+          "data": null
+        },
+        "locations": {
+          "data": []
+        },
+        "program": {
+          "data": null
+        },
+        "availableAddons": {
+          "data": null
+        },
+        "defaultAddons": {
+          "data": null
+        },
+        "modifications": {
+          "data": null
+        },
+        "requiredMemberships": {
+          "data": null
+        },
+        "productAddons": {
+          "data": null
+        },
+        "taxes": {
+          "data": null
+        },
+        "taxedBy": {
+          "data": null
+        },
+        "generalLedgerAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null
+        },
+        "subCategory": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "size": {
+          "data": null
+        },
+        "color": {
+          "data": null
+        },
+        "sex": {
+          "data": null
+        },
+        "manufacturer": {
+          "data": null
+        },
+        "fulfillment": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/products/51"
+      }
+    },
+    {
+      "type": "event-summaries",
+      "id": "213399",
+      "attributes": {
+        "name": "(PLAYERS) ADULT Pick Up -AFTERNOON/EVENING",
+        "start_date": "2026-02-13T12:10:00-05:00",
+        "end_date": "2026-02-13T13:20:00-05:00",
+        "code": "k",
+        "color": "#6231c4",
+        "event_type": "Camp",
+        "publish": true,
+        "balance": 0,
+        "event_not_invoiced": false,
+        "customer_balance": "0.00",
+        "customer_not_invoiced": false,
+        "booking_balance": "0.00",
+        "has_balance": false,
+        "registered_count": 1,
+        "free_trial_count": 0,
+        "team_registered_count": 34,
+        "attendance_count": 0,
+        "comment_count": 0,
+        "remaining_registration_slots": 23,
+        "remaining_roster_slots": -1,
+        "free_trial_days_before": "0",
+        "free_trial_hours_before": 0,
+        "open_slots": 23,
+        "remaining_free_trial_slots": 0,
+        "has_invoicing": false,
+        "has_roster": true,
+        "has_home_team": true,
+        "has_away_team": false,
+        "registration_status": "open",
+        "allows_drop_ins": true,
+        "allows_makeups": false,
+        "makeups_max_per_event": 0,
+        "makeups_above_roster_limit": 0,
+        "makeups_signup_start": null,
+        "makeups_signup_end": null,
+        "makeups_count": 0,
+        "makeups_remaining_slots": 0,
+        "composite_capacity": 24,
+        "free_trials_status": null,
+        "makeups_status": null
+      },
+      "relationships": {
+        "event": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/event-summaries/213399"
+      }
+    },
+    {
+      "type": "teams",
+      "id": "5422",
+      "attributes": {
+        "name": "(GOALIES) ADULT Pick Up AFTERNOON/EVENING",
+        "facility_id": 1,
+        "league_id": 2170,
+        "season_id": 622,
+        "product_id": 51,
+        "is_flat_fee": 0,
+        "sex": "c",
+        "num_games": 1,
+        "start_date": "2026-02-04T12:10:00",
+        "days_of_week": [
+          "m",
+          "w",
+          "f"
+        ],
+        "team_type": "k",
+        "description": "<p>AFTERNOON/EVENING SESSIONS</p>\n<p>ADULT PICK UP</p>\n<ul>\n<li>Full gear required</li>\n<li>$20.00 per session</li>\n</ul>\n<p>ADULT PICK UP</p>\n<p><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
+        "min_roster_size": null,
+        "max_roster_size": null,
+        "is_private": false,
+        "event_length": 70,
+        "color": null,
+        "status": "active",
+        "max_free_trials": null,
+        "free_trial_cutoff": null,
+        "image_url": "https://dash-general.s3.amazonaws.com/extremeice/33c45cde-cbed-41f6-8cdf-28a2502256c9.png",
+        "free_trial_days_before": null,
+        "free_trial_opt_out": false,
+        "free_trial_hours_before": null,
+        "is_makeups_enabled": 0,
+        "makeups_max_per_event": null,
+        "makeups_above_roster_limit": null,
+        "makeups_signup_start_hours_before": null,
+        "makeups_signup_end_hours_before": null,
+        "best_description": "<p>AFTERNOON/EVENING SESSIONS</p>\n<p>ADULT PICK UP</p>\n<ul>\n<li>Full gear required</li>\n<li>$20.00 per session</li>\n</ul>\n<p>ADULT PICK UP</p>\n<p><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
+        "best_image_url": "https://dash-general.s3.amazonaws.com/extremeice/33c45cde-cbed-41f6-8cdf-28a2502256c9.png",
+        "has_free_trials": false,
+        "best_free_trial_cutoff": null,
+        "best_free_trial_days_before": null,
+        "best_free_trial_hours_before": null,
+        "is_registration_open": true,
+        "best_makeups_max_per_event": null,
+        "best_makeups_above_roster_limit": null,
+        "best_makeups_signup_start_hours_before": null,
+        "best_makeups_signup_end_hours_before": null,
+        "best_free_trial_customer_limit": null,
+        "best_is_makeups_enabled": false,
+        "has_upcoming_events": true
+      },
+      "relationships": {
+        "facility": {
+          "data": {
+            "type": "facilities",
+            "id": "1"
+          }
+        },
+        "league": {
+          "data": {
+            "type": "leagues",
+            "id": "2170"
+          }
+        },
+        "season": {
+          "data": null
+        },
+        "product": {
+          "data": {
+            "type": "products",
+            "id": "51"
+          }
+        },
+        "skillLevel": {
+          "data": null
+        },
+        "sport": {
+          "data": {
+            "type": "sports",
+            "id": "20"
+          }
+        },
+        "ageRange": {
+          "data": null
+        },
+        "employee": {
+          "data": null
+        },
+        "customers": {
+          "data": null
+        },
+        "registeredCustomers": {
+          "data": null
+        },
+        "managers": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "waitlistRegistrations": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "homeEvents": {
+          "data": null
+        },
+        "visitingEvents": {
+          "data": null
+        },
+        "playoffEvents": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "customerInvoices": {
+          "data": null
+        },
+        "notes": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        },
+        "purchaseOrders": {
+          "data": null
+        },
+        "programType": {
+          "data": {
+            "type": "program-types",
+            "id": "7"
+          }
+        },
+        "customFieldAnswers": {
+          "data": null
+        },
+        "customForm": {
+          "data": null
+        },
+        "events": {
+          "data": null
+        },
+        "allEvents": {
+          "data": null
+        },
+        "registrableEvents": {
+          "data": null
+        },
+        "finances": {
+          "data": null
+        },
+        "teamMessages": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        },
+        "nextHomeEvent": {
+          "data": null
+        },
+        "nextVisitingEvent": {
+          "data": null
+        },
+        "teamRequests": {
+          "data": null
+        },
+        "registrationInfo": {
+          "data": null
+        },
+        "expenses": {
+          "data": null
+        },
+        "copiedFromTeams": {
+          "data": null
+        },
+        "copiedToTeams": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/teams/5422"
+      }
+    },
+    {
+      "type": "event-summaries",
+      "id": "213412",
+      "attributes": {
+        "name": "(GOALIES) ADULT Pick Up AFTERNOON/EVENING",
+        "start_date": "2026-02-13T12:10:00-05:00",
+        "end_date": "2026-02-13T13:20:00-05:00",
+        "code": "k",
+        "color": "#6231c4",
+        "event_type": "Camp",
+        "publish": true,
+        "balance": 0,
+        "event_not_invoiced": false,
+        "customer_balance": "0.00",
+        "customer_not_invoiced": false,
+        "booking_balance": "0.00",
+        "has_balance": false,
+        "registered_count": 0,
+        "free_trial_count": 0,
+        "team_registered_count": 6,
+        "attendance_count": 0,
+        "comment_count": 0,
+        "remaining_registration_slots": 3,
+        "remaining_roster_slots": -1,
+        "free_trial_days_before": "0",
+        "free_trial_hours_before": 0,
+        "open_slots": 3,
+        "remaining_free_trial_slots": 0,
+        "has_invoicing": false,
+        "has_roster": true,
+        "has_home_team": true,
+        "has_away_team": false,
+        "registration_status": "open",
+        "allows_drop_ins": true,
+        "allows_makeups": false,
+        "makeups_max_per_event": 0,
+        "makeups_above_roster_limit": 0,
+        "makeups_signup_start": null,
+        "makeups_signup_end": null,
+        "makeups_count": 0,
+        "makeups_remaining_slots": 0,
+        "composite_capacity": 3,
+        "free_trials_status": null,
+        "makeups_status": null
+      },
+      "relationships": {
+        "event": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/event-summaries/213412"
+      }
+    },
+    {
+      "type": "teams",
+      "id": "5265",
+      "attributes": {
+        "name": "(PLAYERS) Broomball Pick Up",
+        "facility_id": 1,
+        "league_id": 2152,
+        "season_id": 617,
+        "product_id": 49,
+        "is_flat_fee": 0,
+        "sex": "c",
+        "num_games": 1,
+        "start_date": "2026-01-03T20:45:00",
+        "days_of_week": [
+          "sa"
+        ],
+        "team_type": "k",
+        "description": null,
+        "min_roster_size": null,
+        "max_roster_size": null,
+        "is_private": false,
+        "event_length": 100,
+        "color": null,
+        "status": "active",
+        "max_free_trials": null,
+        "free_trial_cutoff": null,
+        "image_url": "https://dash-general.s3.amazonaws.com/extremeice/0ec8a64c-8da2-42e8-9ee3-b3a364d62230.jpg",
+        "free_trial_days_before": null,
+        "free_trial_opt_out": true,
+        "free_trial_hours_before": null,
+        "is_makeups_enabled": 0,
+        "makeups_max_per_event": null,
+        "makeups_above_roster_limit": null,
+        "makeups_signup_start_hours_before": null,
+        "makeups_signup_end_hours_before": null,
+        "best_description": "BROOMBALL PICK UP<br />18yr &amp; older<br />$20.00 per player",
+        "best_image_url": "https://dash-general.s3.amazonaws.com/extremeice/0ec8a64c-8da2-42e8-9ee3-b3a364d62230.jpg",
+        "has_free_trials": false,
+        "best_free_trial_cutoff": null,
+        "best_free_trial_days_before": null,
+        "best_free_trial_hours_before": null,
+        "is_registration_open": true,
+        "best_makeups_max_per_event": null,
+        "best_makeups_above_roster_limit": null,
+        "best_makeups_signup_start_hours_before": null,
+        "best_makeups_signup_end_hours_before": null,
+        "best_free_trial_customer_limit": null,
+        "best_is_makeups_enabled": false,
+        "has_upcoming_events": true
+      },
+      "relationships": {
+        "facility": {
+          "data": {
+            "type": "facilities",
+            "id": "1"
+          }
+        },
+        "league": {
+          "data": {
+            "type": "leagues",
+            "id": "2152"
+          }
+        },
+        "season": {
+          "data": null
+        },
+        "product": {
+          "data": {
+            "type": "products",
+            "id": "49"
+          }
+        },
+        "skillLevel": {
+          "data": null
+        },
+        "sport": {
+          "data": {
+            "type": "sports",
+            "id": "28"
+          }
+        },
+        "ageRange": {
+          "data": null
+        },
+        "employee": {
+          "data": null
+        },
+        "customers": {
+          "data": null
+        },
+        "registeredCustomers": {
+          "data": null
+        },
+        "managers": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "waitlistRegistrations": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "homeEvents": {
+          "data": null
+        },
+        "visitingEvents": {
+          "data": null
+        },
+        "playoffEvents": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "customerInvoices": {
+          "data": null
+        },
+        "notes": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        },
+        "purchaseOrders": {
+          "data": null
+        },
+        "programType": {
+          "data": {
+            "type": "program-types",
+            "id": "8"
+          }
+        },
+        "customFieldAnswers": {
+          "data": null
+        },
+        "customForm": {
+          "data": null
+        },
+        "events": {
+          "data": null
+        },
+        "allEvents": {
+          "data": null
+        },
+        "registrableEvents": {
+          "data": null
+        },
+        "finances": {
+          "data": null
+        },
+        "teamMessages": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        },
+        "nextHomeEvent": {
+          "data": null
+        },
+        "nextVisitingEvent": {
+          "data": null
+        },
+        "teamRequests": {
+          "data": null
+        },
+        "registrationInfo": {
+          "data": null
+        },
+        "expenses": {
+          "data": null
+        },
+        "copiedFromTeams": {
+          "data": null
+        },
+        "copiedToTeams": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/teams/5265"
+      }
+    },
+    {
+      "type": "leagues",
+      "id": "2152",
+      "attributes": {
+        "sex": "c",
+        "season_id": 617,
+        "skill_level_id": 15,
+        "facility_id": 1,
+        "age_range_id": 25,
+        "start_date": "2026-01-01T00:00:00",
+        "min_birthdate": "1925-12-02T00:00:00",
+        "max_birthdate": "2008-01-01T00:00:00",
+        "sport_id": 28,
+        "name": "Broomball Pick Up",
+        "description": "",
+        "registration_prod_id": null,
+        "standings_type": 0,
+        "registration_closed": false,
+        "hide_private_teams": false,
+        "event_selection": true,
+        "event_selection_weekly": false,
+        "prorating": false,
+        "max_teams": 0,
+        "program_id": 8,
+        "rosters_lock_date": null,
+        "rosters_lock_date_gmt": null,
+        "display_standings": 1,
+        "is_flat_fee": 0,
+        "max_free_trials": null,
+        "free_trial_cutoff": null,
+        "image_url": "https://dash-general.s3.amazonaws.com/extremeice/02f00291-72dd-481a-8419-f33223255b36.jpg",
+        "days_of_week": null,
+        "free_trial_days_before": null,
+        "free_trial_opt_out": false,
+        "sportsninja_schedule_id": null,
+        "free_trial_customer_limit": null,
+        "free_trial_hours_before": null,
+        "default_registration_option": "Player",
+        "is_makeups_enabled": false,
+        "makeups_max_per_event": null,
+        "makeups_above_roster_limit": null,
+        "makeups_signup_start_hours_before": null,
+        "makeups_signup_end_hours_before": null,
+        "member_app_cost_display_mode": null,
+        "min_age": 18,
+        "min_age_months": 0,
+        "max_age": 100,
+        "max_age_months": 0,
+        "best_description": "BROOMBALL PICK UP<br />18yr &amp; older<br />$20.00 per player",
+        "best_image_url": "https://dash-general.s3.amazonaws.com/extremeice/02f00291-72dd-481a-8419-f33223255b36.jpg",
+        "best_max_free_trials": null,
+        "best_free_trial_cutoff": null,
+        "best_free_trial_days_before": null,
+        "best_free_trial_hours_before": null,
+        "best_free_trial_customer_limit": null,
+        "best_is_makeups_enabled": false,
+        "best_makeups_max_per_event": null,
+        "best_makeups_above_roster_limit": null,
+        "best_makeups_signup_start_hours_before": null,
+        "best_makeups_signup_end_hours_before": null
+      },
+      "relationships": {
+        "customForm": {
+          "data": null
+        },
+        "program": {
+          "data": null
+        },
+        "teamProduct": {
+          "data": null
+        },
+        "programType": {
+          "data": null
+        },
+        "season": {
+          "data": {
+            "type": "seasons",
+            "id": "617"
+          }
+        },
+        "facility": {
+          "data": null
+        },
+        "prereqLevel": {
+          "data": null
+        },
+        "priorLeague": {
+          "data": null
+        },
+        "priorYearLeague": {
+          "data": null
+        },
+        "skillLevel": {
+          "data": null
+        },
+        "ageRange": {
+          "data": null
+        },
+        "sport": {
+          "data": null
+        },
+        "individualProduct": {
+          "data": null
+        },
+        "houseProduct": {
+          "data": null
+        },
+        "registrationProduct": {
+          "data": null
+        },
+        "teams": {
+          "data": null
+        },
+        "playoffEvents": {
+          "data": null
+        },
+        "info": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        },
+        "registrationEmailTemplate": {
+          "data": null
+        },
+        "freeTrialEmailTemplate": {
+          "data": null
+        },
+        "makeupsEmailTemplate": {
+          "data": null
+        },
+        "emailTemplate": {
+          "data": null
+        },
+        "paymentPlan": {
+          "data": null
+        },
+        "leagueDetails": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/leagues/2152"
+      }
+    },
+    {
+      "type": "seasons",
+      "id": "617",
+      "attributes": {
+        "name": "BROOMBALL PICK UP - WINTER/SPRING 2026",
+        "start_date": "2026-01-01T00:00:00",
+        "end_date": "2026-05-30T00:00:00",
+        "signup_start": "2025-12-29T00:00:00",
+        "signup_start_gmt": "2025-12-29T05:00:00",
+        "signup_end": "2026-05-30T23:59:00",
+        "signup_end_gmt": "2026-05-31T03:59:00",
+        "is_team_registration": false,
+        "team_type": "k",
+        "description": "BROOMBALL PICK UP<br />18yr &amp; older<br />$20.00 per player",
+        "deposit": null,
+        "high_privacy": false,
+        "online_registration_enabled": true,
+        "image_url": "https://dash-general.s3.amazonaws.com/extremeice/2aa52635-5a7b-434f-b62b-c8bd13a2013b.jpg",
+        "is_free_trial_enabled": false,
+        "max_free_trials": null,
+        "free_trial_cutoff": null,
+        "free_trial_customer_limit": null,
+        "free_trial_days_before": null,
+        "enable_team_export": true,
+        "free_trial_hours_before": null,
+        "is_makeups_enabled": false,
+        "makeups_max_per_event": null,
+        "makeups_above_roster_limit": null,
+        "makeups_signup_start_hours_before": null,
+        "makeups_signup_end_hours_before": null,
+        "makeups_limit_per_customer": null,
+        "makeups_email_template_id": null,
+        "best_is_makeups_enabled": false
+      },
+      "relationships": {
+        "facility": {
+          "data": null
+        },
+        "paymentPlan": {
+          "data": null
+        },
+        "program": {
+          "data": null
+        },
+        "programType": {
+          "data": null
+        },
+        "priorSeason": {
+          "data": null
+        },
+        "priorYearSeason": {
+          "data": null
+        },
+        "leagues": {
+          "data": null
+        },
+        "teams": {
+          "data": null
+        },
+        "priorities": {
+          "data": []
+        },
+        "activatesPriorities": {
+          "data": null
+        },
+        "responsibleEmployee": {
+          "data": null
+        },
+        "approvalPendingTemplate": {
+          "data": null
+        },
+        "approvalDeclinedTemplate": {
+          "data": null
+        },
+        "approvalAcceptedTemplate": {
+          "data": null
+        },
+        "emailTemplate": {
+          "data": null
+        },
+        "freeTrialTemplate": {
+          "data": null
+        },
+        "makeUpsTemplate": {
+          "data": null
+        },
+        "timeOfYear": {
+          "data": null
+        },
+        "customForm": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/seasons/617"
+      }
+    },
+    {
+      "type": "products",
+      "id": "49",
+      "attributes": {
+        "name": "Broomball Pick Up",
+        "price": 20,
+        "allow_end_user_cancel": false,
+        "hide_quantity": false,
+        "non_resident_price": 20,
+        "image_url": null,
+        "billing_cycle_length": null,
+        "billing_cycle_period": null,
+        "external_membership_type": null,
+        "hide_membership_online": 0,
+        "actual_price": 20,
+        "local_price": 20,
+        "has_location_pricing": false,
+        "icon_defaulted": "far fa-badge-dollar",
+        "image_url_default": "https://dash-platform-assets.s3.us-west-2.amazonaws.com/img/program-finder/default_ds_rec.png",
+        "billing_cycle_description": ""
+      },
+      "relationships": {
+        "teams": {
+          "data": null
+        },
+        "facilities": {
+          "data": null
+        },
+        "locations": {
+          "data": []
+        },
+        "program": {
+          "data": null
+        },
+        "availableAddons": {
+          "data": null
+        },
+        "defaultAddons": {
+          "data": null
+        },
+        "modifications": {
+          "data": null
+        },
+        "requiredMemberships": {
+          "data": null
+        },
+        "productAddons": {
+          "data": null
+        },
+        "taxes": {
+          "data": null
+        },
+        "taxedBy": {
+          "data": null
+        },
+        "generalLedgerAccount": {
+          "data": null
+        },
+        "category": {
+          "data": null
+        },
+        "subCategory": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "size": {
+          "data": null
+        },
+        "color": {
+          "data": null
+        },
+        "sex": {
+          "data": null
+        },
+        "manufacturer": {
+          "data": null
+        },
+        "fulfillment": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/products/49"
+      }
+    },
+    {
+      "type": "sports",
+      "id": "28",
+      "attributes": {
+        "name": "Broomball",
+        "stat_table": 0,
+        "active": true
+      },
+      "relationships": {
+        "leagues": {
+          "data": null
+        },
+        "teams": {
+          "data": null
+        },
+        "stats": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/sports/28"
+      }
+    },
+    {
+      "type": "program-types",
+      "id": "8",
+      "attributes": {
+        "name": "Broomball Pick Up",
+        "billing_type": "per-day",
+        "old_team_type_code": "k",
+        "is_active": true
+      },
+      "relationships": {
+        "teams": {
+          "data": null
+        },
+        "seasons": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/program-types/8"
+      }
+    },
+    {
+      "type": "event-summaries",
+      "id": "213851",
+      "attributes": {
+        "name": "(PLAYERS) Broomball Pick Up",
+        "start_date": "2026-02-13T21:45:00-05:00",
+        "end_date": "2026-02-13T23:00:00-05:00",
+        "code": "k",
+        "color": "#6231c4",
+        "event_type": "Camp",
+        "publish": true,
+        "balance": 0,
+        "event_not_invoiced": false,
+        "customer_balance": "0.00",
+        "customer_not_invoiced": false,
+        "booking_balance": "0.00",
+        "has_balance": false,
+        "registered_count": 1,
+        "free_trial_count": 0,
+        "team_registered_count": 6,
+        "attendance_count": 0,
+        "comment_count": 0,
+        "remaining_registration_slots": 23,
+        "remaining_roster_slots": -1,
+        "free_trial_days_before": "0",
+        "free_trial_hours_before": 0,
+        "open_slots": 23,
+        "remaining_free_trial_slots": 0,
+        "has_invoicing": false,
+        "has_roster": true,
+        "has_home_team": true,
+        "has_away_team": false,
+        "registration_status": "open",
+        "allows_drop_ins": true,
+        "allows_makeups": false,
+        "makeups_max_per_event": 0,
+        "makeups_above_roster_limit": 0,
+        "makeups_signup_start": null,
+        "makeups_signup_end": null,
+        "makeups_count": 0,
+        "makeups_remaining_slots": 0,
+        "composite_capacity": 24,
+        "free_trials_status": null,
+        "makeups_status": null
+      },
+      "relationships": {
+        "event": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/event-summaries/213851"
+      }
+    },
+    {
+      "type": "teams",
+      "id": "5264",
+      "attributes": {
+        "name": "(GOALIES) Broomball Pick Up",
+        "facility_id": 1,
+        "league_id": 2152,
+        "season_id": 617,
+        "product_id": 49,
+        "is_flat_fee": 0,
+        "sex": "c",
+        "num_games": 1,
+        "start_date": "2026-01-03T20:45:00",
+        "days_of_week": [
+          "sa"
+        ],
+        "team_type": "k",
+        "description": null,
+        "min_roster_size": null,
+        "max_roster_size": null,
+        "is_private": false,
+        "event_length": 100,
+        "color": null,
+        "status": "active",
+        "max_free_trials": null,
+        "free_trial_cutoff": null,
+        "image_url": "https://dash-general.s3.amazonaws.com/extremeice/52b75a2b-4e2e-4411-b109-d443f8d777c3.jpg",
+        "free_trial_days_before": null,
+        "free_trial_opt_out": true,
+        "free_trial_hours_before": null,
+        "is_makeups_enabled": 0,
+        "makeups_max_per_event": null,
+        "makeups_above_roster_limit": null,
+        "makeups_signup_start_hours_before": null,
+        "makeups_signup_end_hours_before": null,
+        "best_description": "BROOMBALL PICK UP<br />18yr &amp; older<br />$20.00 per player",
+        "best_image_url": "https://dash-general.s3.amazonaws.com/extremeice/52b75a2b-4e2e-4411-b109-d443f8d777c3.jpg",
+        "has_free_trials": false,
+        "best_free_trial_cutoff": null,
+        "best_free_trial_days_before": null,
+        "best_free_trial_hours_before": null,
+        "is_registration_open": true,
+        "best_makeups_max_per_event": null,
+        "best_makeups_above_roster_limit": null,
+        "best_makeups_signup_start_hours_before": null,
+        "best_makeups_signup_end_hours_before": null,
+        "best_free_trial_customer_limit": null,
+        "best_is_makeups_enabled": false,
+        "has_upcoming_events": true
+      },
+      "relationships": {
+        "facility": {
+          "data": {
+            "type": "facilities",
+            "id": "1"
+          }
+        },
+        "league": {
+          "data": {
+            "type": "leagues",
+            "id": "2152"
+          }
+        },
+        "season": {
+          "data": null
+        },
+        "product": {
+          "data": {
+            "type": "products",
+            "id": "49"
+          }
+        },
+        "skillLevel": {
+          "data": null
+        },
+        "sport": {
+          "data": {
+            "type": "sports",
+            "id": "28"
+          }
+        },
+        "ageRange": {
+          "data": null
+        },
+        "employee": {
+          "data": null
+        },
+        "customers": {
+          "data": null
+        },
+        "registeredCustomers": {
+          "data": null
+        },
+        "managers": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "waitlistRegistrations": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "homeEvents": {
+          "data": null
+        },
+        "visitingEvents": {
+          "data": null
+        },
+        "playoffEvents": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "customerInvoices": {
+          "data": null
+        },
+        "notes": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        },
+        "purchaseOrders": {
+          "data": null
+        },
+        "programType": {
+          "data": {
+            "type": "program-types",
+            "id": "8"
+          }
+        },
+        "customFieldAnswers": {
+          "data": null
+        },
+        "customForm": {
+          "data": null
+        },
+        "events": {
+          "data": null
+        },
+        "allEvents": {
+          "data": null
+        },
+        "registrableEvents": {
+          "data": null
+        },
+        "finances": {
+          "data": null
+        },
+        "teamMessages": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        },
+        "nextHomeEvent": {
+          "data": null
+        },
+        "nextVisitingEvent": {
+          "data": null
+        },
+        "teamRequests": {
+          "data": null
+        },
+        "registrationInfo": {
+          "data": null
+        },
+        "expenses": {
+          "data": null
+        },
+        "copiedFromTeams": {
+          "data": null
+        },
+        "copiedToTeams": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/teams/5264"
+      }
+    },
+    {
+      "type": "event-summaries",
+      "id": "213853",
+      "attributes": {
+        "name": "(GOALIES) Broomball Pick Up",
+        "start_date": "2026-02-13T21:45:00-05:00",
+        "end_date": "2026-02-13T23:00:00-05:00",
+        "code": "k",
+        "color": "#6231c4",
+        "event_type": "Camp",
+        "publish": true,
+        "balance": 0,
+        "event_not_invoiced": false,
+        "customer_balance": "0.00",
+        "customer_not_invoiced": false,
+        "booking_balance": "0.00",
+        "has_balance": false,
+        "registered_count": 0,
+        "free_trial_count": 0,
+        "team_registered_count": 0,
+        "attendance_count": 0,
+        "comment_count": 0,
+        "remaining_registration_slots": 4,
+        "remaining_roster_slots": -1,
+        "free_trial_days_before": "0",
+        "free_trial_hours_before": 0,
+        "open_slots": 4,
+        "remaining_free_trial_slots": 0,
+        "has_invoicing": false,
+        "has_roster": true,
+        "has_home_team": true,
+        "has_away_team": false,
+        "registration_status": "open",
+        "allows_drop_ins": true,
+        "allows_makeups": false,
+        "makeups_max_per_event": 0,
+        "makeups_above_roster_limit": 0,
+        "makeups_signup_start": null,
+        "makeups_signup_end": null,
+        "makeups_count": 0,
+        "makeups_remaining_slots": 0,
+        "composite_capacity": 4,
+        "free_trials_status": null,
+        "makeups_status": null
+      },
+      "relationships": {
+        "event": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/event-summaries/213853"
+      }
+    },
+    {
+      "type": "event-summaries",
+      "id": "214134",
+      "attributes": {
+        "name": "(PLAYERS) ADULT Pick Up -AFTERNOON/EVENING",
+        "start_date": "2026-02-13T21:50:00-05:00",
+        "end_date": "2026-02-13T23:00:00-05:00",
+        "code": "k",
+        "color": "#6231c4",
+        "event_type": "Camp",
+        "publish": true,
+        "balance": 0,
+        "event_not_invoiced": false,
+        "customer_balance": "0.00",
+        "customer_not_invoiced": false,
+        "booking_balance": "0.00",
+        "has_balance": false,
+        "registered_count": 1,
+        "free_trial_count": 0,
+        "team_registered_count": 34,
+        "attendance_count": 0,
+        "comment_count": 0,
+        "remaining_registration_slots": 23,
+        "remaining_roster_slots": -1,
+        "free_trial_days_before": "0",
+        "free_trial_hours_before": 0,
+        "open_slots": 23,
+        "remaining_free_trial_slots": 0,
+        "has_invoicing": false,
+        "has_roster": true,
+        "has_home_team": true,
+        "has_away_team": false,
+        "registration_status": "open",
+        "allows_drop_ins": true,
+        "allows_makeups": false,
+        "makeups_max_per_event": 0,
+        "makeups_above_roster_limit": 0,
+        "makeups_signup_start": null,
+        "makeups_signup_end": null,
+        "makeups_count": 0,
+        "makeups_remaining_slots": 0,
+        "composite_capacity": 24,
+        "free_trials_status": null,
+        "makeups_status": null
+      },
+      "relationships": {
+        "event": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/event-summaries/214134"
+      }
+    },
+    {
+      "type": "resources",
+      "id": "4",
+      "attributes": {
+        "name": "TRAINING RINK",
+        "desc": "NHL regulation size",
+        "facility_id": 1,
+        "type_id": 2,
+        "lat": null,
+        "lng": null,
+        "booking_option_id": 2,
+        "terms_and_conditions_id": null,
+        "has_agreed_terms_and_conditions": null
+      },
+      "relationships": {
+        "facility": {
+          "data": {
+            "type": "facilities",
+            "id": "1"
+          }
+        },
+        "resourceAreas": {
+          "data": null
+        },
+        "resourceGroups": {
+          "data": null
+        },
+        "resourceType": {
+          "data": null
+        },
+        "eventTypes": {
+          "data": null
+        },
+        "address": {
+          "data": null
+        },
+        "employee": {
+          "data": null
+        },
+        "inventories": {
+          "data": null
+        },
+        "amenities": {
+          "data": null
+        },
+        "files": {
+          "data": null
+        },
+        "bookingOption": {
+          "data": null
+        },
+        "termsAndConditions": {
+          "data": null
+        },
+        "termsAndConditionsResponses": {
+          "data": null
+        },
+        "blockedResources": {
+          "data": null
+        },
+        "blockedResourceAreas": {
+          "data": null
+        },
+        "blockingRules": {
+          "data": null
+        },
+        "flattenedBlockingRules": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/resources/4"
+      }
+    },
+    {
+      "type": "event-summaries",
+      "id": "214136",
+      "attributes": {
+        "name": "(GOALIES) ADULT Pick Up AFTERNOON/EVENING",
+        "start_date": "2026-02-13T21:50:00-05:00",
+        "end_date": "2026-02-13T23:00:00-05:00",
+        "code": "k",
+        "color": "#6231c4",
+        "event_type": "Camp",
+        "publish": true,
+        "balance": 0,
+        "event_not_invoiced": false,
+        "customer_balance": "0.00",
+        "customer_not_invoiced": false,
+        "booking_balance": "0.00",
+        "has_balance": false,
+        "registered_count": 1,
+        "free_trial_count": 0,
+        "team_registered_count": 6,
+        "attendance_count": 0,
+        "comment_count": 0,
+        "remaining_registration_slots": 2,
+        "remaining_roster_slots": -1,
+        "free_trial_days_before": "0",
+        "free_trial_hours_before": 0,
+        "open_slots": 2,
+        "remaining_free_trial_slots": 0,
+        "has_invoicing": false,
+        "has_roster": true,
+        "has_home_team": true,
+        "has_away_team": false,
+        "registration_status": "open",
+        "allows_drop_ins": true,
+        "allows_makeups": false,
+        "makeups_max_per_event": 0,
+        "makeups_above_roster_limit": 0,
+        "makeups_signup_start": null,
+        "makeups_signup_end": null,
+        "makeups_count": 0,
+        "makeups_remaining_slots": 0,
+        "composite_capacity": 3,
+        "free_trials_status": null,
+        "makeups_status": null
+      },
+      "relationships": {
+        "event": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "https://apps.daysmartrecreation.com/dash/jsonapi/api/v1/event-summaries/214136"
+      }
+    }
+  ]
+}
