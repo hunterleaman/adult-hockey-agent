@@ -166,7 +166,7 @@ Must handle gracefully:
 ### Learning Extraction
 8. Update LEARNINGS.md:
    - Patterns that worked or didn't
-   - Reusable code worth extracting to /shared/lib/ (tag with // TODO: Extract to shared)
+   - Reusable code worth extracting (tag with // TODO: Extract to claude-mastery-agents/shared/)
    - Prompt templates that proved effective
    - Session token usage and estimated cost
 9. Tag content ideas inline with: [CONTENT: X-thread], [CONTENT: LinkedIn], [CONTENT: Technical], [CONTENT: Course]
