@@ -20,117 +20,18 @@
       "attributes": {
         "date": "2026-02-13T00:00:00",
         "count": 8,
-        "events": [
-          213376,
-          214134,
-          213364,
-          213412,
-          213853,
-          213851,
-          214136,
-          213399
-        ],
-        "teams": [
-          5420,
-          5423,
-          5421,
-          5422,
-          5264,
-          5265,
-          5422,
-          5423
-        ],
-        "leagues": [
-          2169,
-          2170,
-          2169,
-          2170,
-          2152,
-          2152,
-          2170,
-          2170
-        ],
-        "sports": [
-          20,
-          20,
-          20,
-          20,
-          28,
-          28,
-          20,
-          20
-        ],
-        "programs": [
-          7,
-          7,
-          7,
-          7,
-          8,
-          8,
-          7,
-          7
-        ],
-        "locations": [
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
+        "events": [213376, 214134, 213364, 213412, 213853, 213851, 214136, 213399],
+        "teams": [5420, 5423, 5421, 5422, 5264, 5265, 5422, 5423],
+        "leagues": [2169, 2170, 2169, 2170, 2152, 2152, 2170, 2170],
+        "sports": [20, 20, 20, 20, 28, 28, 20, 20],
+        "programs": [7, 7, 7, 7, 8, 8, 7, 7],
+        "locations": [1, 1, 1, 1, 1, 1, 1, 1],
+        "team_max_free_trials": [0, 0, 0, 0, 0, 0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0, 0, 0, 0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0, 0, 0, 0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0, 0, 0, 0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0, 0, 0, 0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -147,42 +48,18 @@
       "attributes": {
         "date": "2026-02-15T00:00:00",
         "count": 1,
-        "events": [
-          208819
-        ],
-        "teams": [
-          5256
-        ],
-        "leagues": [
-          2148
-        ],
-        "sports": [
-          20
-        ],
-        "programs": [
-          52
-        ],
-        "locations": [
-          1
-        ],
-        "team_max_free_trials": [
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0
-        ],
-        "age_range_ids": [
-          1
-        ],
-        "team_free_trial_days_before": [
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0
-        ]
+        "events": [208819],
+        "teams": [5256],
+        "leagues": [2148],
+        "sports": [20],
+        "programs": [52],
+        "locations": [1],
+        "team_max_free_trials": [0],
+        "best_is_free_trial_enabled": [0],
+        "age_range_ids": [1],
+        "team_free_trial_days_before": [0],
+        "team_free_trial_hours_before": [0],
+        "season_is_free_trial_enabled": [0]
       },
       "relationships": {
         "audits": {
@@ -199,51 +76,18 @@
       "attributes": {
         "date": "2026-02-16T00:00:00",
         "count": 2,
-        "events": [
-          213862,
-          213864
-        ],
-        "teams": [
-          5423,
-          5422
-        ],
-        "leagues": [
-          2170,
-          2170
-        ],
-        "sports": [
-          20,
-          20
-        ],
-        "programs": [
-          7,
-          7
-        ],
-        "locations": [
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0
-        ],
+        "events": [213862, 213864],
+        "teams": [5423, 5422],
+        "leagues": [2170, 2170],
+        "sports": [20, 20],
+        "programs": [7, 7],
+        "locations": [1, 1],
+        "team_max_free_trials": [0, 0],
+        "best_is_free_trial_enabled": [0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0],
+        "team_free_trial_hours_before": [0, 0],
+        "season_is_free_trial_enabled": [0, 0]
       },
       "relationships": {
         "audits": {
@@ -260,73 +104,18 @@
       "attributes": {
         "date": "2026-02-18T00:00:00",
         "count": 4,
-        "events": [
-          213401,
-          213378,
-          213366,
-          213413
-        ],
-        "teams": [
-          5423,
-          5420,
-          5421,
-          5422
-        ],
-        "leagues": [
-          2170,
-          2169,
-          2169,
-          2170
-        ],
-        "sports": [
-          20,
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          7,
-          7,
-          7,
-          7
-        ],
-        "locations": [
-          1,
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ],
+        "events": [213401, 213378, 213366, 213413],
+        "teams": [5423, 5420, 5421, 5422],
+        "leagues": [2170, 2169, 2169, 2170],
+        "sports": [20, 20, 20, 20],
+        "programs": [7, 7, 7, 7],
+        "locations": [1, 1, 1, 1],
+        "team_max_free_trials": [0, 0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -343,51 +132,18 @@
       "attributes": {
         "date": "2026-02-20T00:00:00",
         "count": 2,
-        "events": [
-          213720,
-          213718
-        ],
-        "teams": [
-          5420,
-          5421
-        ],
-        "leagues": [
-          2169,
-          2169
-        ],
-        "sports": [
-          20,
-          20
-        ],
-        "programs": [
-          7,
-          7
-        ],
-        "locations": [
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0
-        ],
+        "events": [213720, 213718],
+        "teams": [5420, 5421],
+        "leagues": [2169, 2169],
+        "sports": [20, 20],
+        "programs": [7, 7],
+        "locations": [1, 1],
+        "team_max_free_trials": [0, 0],
+        "best_is_free_trial_enabled": [0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0],
+        "team_free_trial_hours_before": [0, 0],
+        "season_is_free_trial_enabled": [0, 0]
       },
       "relationships": {
         "audits": {
@@ -404,73 +160,18 @@
       "attributes": {
         "date": "2026-02-22T00:00:00",
         "count": 4,
-        "events": [
-          208895,
-          208858,
-          208821,
-          213258
-        ],
-        "teams": [
-          5258,
-          5257,
-          5256,
-          5417
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148,
-          2132
-        ],
-        "sports": [
-          20,
-          20,
-          20,
-          27
-        ],
-        "programs": [
-          52,
-          52,
-          52,
-          10
-        ],
-        "locations": [
-          1,
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ],
+        "events": [208895, 208858, 208821, 213258],
+        "teams": [5258, 5257, 5256, 5417],
+        "leagues": [2148, 2148, 2148, 2132],
+        "sports": [20, 20, 20, 27],
+        "programs": [52, 52, 52, 10],
+        "locations": [1, 1, 1, 1],
+        "team_max_free_trials": [0, 0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -487,62 +188,18 @@
       "attributes": {
         "date": "2026-02-23T00:00:00",
         "count": 3,
-        "events": [
-          213403,
-          206663,
-          213414
-        ],
-        "teams": [
-          5423,
-          5188,
-          5422
-        ],
-        "leagues": [
-          2170,
-          2133,
-          2170
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          7,
-          60,
-          7
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [213403, 206663, 213414],
+        "teams": [5423, 5188, 5422],
+        "leagues": [2170, 2133, 2170],
+        "sports": [20, 20, 20],
+        "programs": [7, 60, 7],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -559,73 +216,18 @@
       "attributes": {
         "date": "2026-02-25T00:00:00",
         "count": 4,
-        "events": [
-          213415,
-          213405,
-          213380,
-          213368
-        ],
-        "teams": [
-          5422,
-          5423,
-          5420,
-          5421
-        ],
-        "leagues": [
-          2170,
-          2170,
-          2169,
-          2169
-        ],
-        "sports": [
-          20,
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          7,
-          7,
-          7,
-          7
-        ],
-        "locations": [
-          1,
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ],
+        "events": [213415, 213405, 213380, 213368],
+        "teams": [5422, 5423, 5420, 5421],
+        "leagues": [2170, 2170, 2169, 2169],
+        "sports": [20, 20, 20, 20],
+        "programs": [7, 7, 7, 7],
+        "locations": [1, 1, 1, 1],
+        "team_max_free_trials": [0, 0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -642,73 +244,18 @@
       "attributes": {
         "date": "2026-02-27T00:00:00",
         "count": 4,
-        "events": [
-          213416,
-          213407,
-          213382,
-          213370
-        ],
-        "teams": [
-          5422,
-          5423,
-          5420,
-          5421
-        ],
-        "leagues": [
-          2170,
-          2170,
-          2169,
-          2169
-        ],
-        "sports": [
-          20,
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          7,
-          7,
-          7,
-          7
-        ],
-        "locations": [
-          1,
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ],
+        "events": [213416, 213407, 213382, 213370],
+        "teams": [5422, 5423, 5420, 5421],
+        "leagues": [2170, 2170, 2169, 2169],
+        "sports": [20, 20, 20, 20],
+        "programs": [7, 7, 7, 7],
+        "locations": [1, 1, 1, 1],
+        "team_max_free_trials": [0, 0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -725,42 +272,18 @@
       "attributes": {
         "date": "2026-02-28T00:00:00",
         "count": 1,
-        "events": [
-          208697
-        ],
-        "teams": [
-          5255
-        ],
-        "leagues": [
-          2148
-        ],
-        "sports": [
-          20
-        ],
-        "programs": [
-          52
-        ],
-        "locations": [
-          1
-        ],
-        "team_max_free_trials": [
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0
-        ],
-        "age_range_ids": [
-          1
-        ],
-        "team_free_trial_days_before": [
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0
-        ]
+        "events": [208697],
+        "teams": [5255],
+        "leagues": [2148],
+        "sports": [20],
+        "programs": [52],
+        "locations": [1],
+        "team_max_free_trials": [0],
+        "best_is_free_trial_enabled": [0],
+        "age_range_ids": [1],
+        "team_free_trial_days_before": [0],
+        "team_free_trial_hours_before": [0],
+        "season_is_free_trial_enabled": [0]
       },
       "relationships": {
         "audits": {
@@ -777,62 +300,18 @@
       "attributes": {
         "date": "2026-03-01T00:00:00",
         "count": 3,
-        "events": [
-          208897,
-          208860,
-          208823
-        ],
-        "teams": [
-          5258,
-          5257,
-          5256
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208897, 208860, 208823],
+        "teams": [5258, 5257, 5256],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -849,42 +328,18 @@
       "attributes": {
         "date": "2026-03-02T00:00:00",
         "count": 1,
-        "events": [
-          206664
-        ],
-        "teams": [
-          5188
-        ],
-        "leagues": [
-          2133
-        ],
-        "sports": [
-          20
-        ],
-        "programs": [
-          60
-        ],
-        "locations": [
-          1
-        ],
-        "team_max_free_trials": [
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0
-        ],
-        "age_range_ids": [
-          25
-        ],
-        "team_free_trial_days_before": [
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0
-        ]
+        "events": [206664],
+        "teams": [5188],
+        "leagues": [2133],
+        "sports": [20],
+        "programs": [60],
+        "locations": [1],
+        "team_max_free_trials": [0],
+        "best_is_free_trial_enabled": [0],
+        "age_range_ids": [25],
+        "team_free_trial_days_before": [0],
+        "team_free_trial_hours_before": [0],
+        "season_is_free_trial_enabled": [0]
       },
       "relationships": {
         "audits": {
@@ -901,62 +356,18 @@
       "attributes": {
         "date": "2026-03-07T00:00:00",
         "count": 3,
-        "events": [
-          208781,
-          208699,
-          208740
-        ],
-        "teams": [
-          5254,
-          5255,
-          5253
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208781, 208699, 208740],
+        "teams": [5254, 5255, 5253],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -973,62 +384,18 @@
       "attributes": {
         "date": "2026-03-08T00:00:00",
         "count": 3,
-        "events": [
-          208899,
-          208862,
-          208825
-        ],
-        "teams": [
-          5258,
-          5257,
-          5256
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208899, 208862, 208825],
+        "teams": [5258, 5257, 5256],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -1045,42 +412,18 @@
       "attributes": {
         "date": "2026-03-09T00:00:00",
         "count": 1,
-        "events": [
-          206665
-        ],
-        "teams": [
-          5188
-        ],
-        "leagues": [
-          2133
-        ],
-        "sports": [
-          20
-        ],
-        "programs": [
-          60
-        ],
-        "locations": [
-          1
-        ],
-        "team_max_free_trials": [
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0
-        ],
-        "age_range_ids": [
-          25
-        ],
-        "team_free_trial_days_before": [
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0
-        ]
+        "events": [206665],
+        "teams": [5188],
+        "leagues": [2133],
+        "sports": [20],
+        "programs": [60],
+        "locations": [1],
+        "team_max_free_trials": [0],
+        "best_is_free_trial_enabled": [0],
+        "age_range_ids": [25],
+        "team_free_trial_days_before": [0],
+        "team_free_trial_hours_before": [0],
+        "season_is_free_trial_enabled": [0]
       },
       "relationships": {
         "audits": {
@@ -1097,73 +440,18 @@
       "attributes": {
         "date": "2026-03-14T00:00:00",
         "count": 4,
-        "events": [
-          213490,
-          208783,
-          208701,
-          208742
-        ],
-        "teams": [
-          5427,
-          5254,
-          5255,
-          5253
-        ],
-        "leagues": [
-          2173,
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          27,
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          10,
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ],
+        "events": [213490, 208783, 208701, 208742],
+        "teams": [5427, 5254, 5255, 5253],
+        "leagues": [2173, 2148, 2148, 2148],
+        "sports": [27, 20, 20, 20],
+        "programs": [10, 52, 52, 52],
+        "locations": [1, 1, 1, 1],
+        "team_max_free_trials": [0, 0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -1180,62 +468,18 @@
       "attributes": {
         "date": "2026-03-15T00:00:00",
         "count": 3,
-        "events": [
-          208827,
-          208901,
-          208864
-        ],
-        "teams": [
-          5256,
-          5258,
-          5257
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208827, 208901, 208864],
+        "teams": [5256, 5258, 5257],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -1252,42 +496,18 @@
       "attributes": {
         "date": "2026-03-16T00:00:00",
         "count": 1,
-        "events": [
-          206666
-        ],
-        "teams": [
-          5188
-        ],
-        "leagues": [
-          2133
-        ],
-        "sports": [
-          20
-        ],
-        "programs": [
-          60
-        ],
-        "locations": [
-          1
-        ],
-        "team_max_free_trials": [
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0
-        ],
-        "age_range_ids": [
-          25
-        ],
-        "team_free_trial_days_before": [
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0
-        ]
+        "events": [206666],
+        "teams": [5188],
+        "leagues": [2133],
+        "sports": [20],
+        "programs": [60],
+        "locations": [1],
+        "team_max_free_trials": [0],
+        "best_is_free_trial_enabled": [0],
+        "age_range_ids": [25],
+        "team_free_trial_days_before": [0],
+        "team_free_trial_hours_before": [0],
+        "season_is_free_trial_enabled": [0]
       },
       "relationships": {
         "audits": {
@@ -1304,62 +524,18 @@
       "attributes": {
         "date": "2026-03-21T00:00:00",
         "count": 3,
-        "events": [
-          208785,
-          208703,
-          208744
-        ],
-        "teams": [
-          5254,
-          5255,
-          5253
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208785, 208703, 208744],
+        "teams": [5254, 5255, 5253],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -1376,42 +552,18 @@
       "attributes": {
         "date": "2026-03-22T00:00:00",
         "count": 1,
-        "events": [
-          208903
-        ],
-        "teams": [
-          5258
-        ],
-        "leagues": [
-          2148
-        ],
-        "sports": [
-          20
-        ],
-        "programs": [
-          52
-        ],
-        "locations": [
-          1
-        ],
-        "team_max_free_trials": [
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0
-        ],
-        "age_range_ids": [
-          1
-        ],
-        "team_free_trial_days_before": [
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0
-        ]
+        "events": [208903],
+        "teams": [5258],
+        "leagues": [2148],
+        "sports": [20],
+        "programs": [52],
+        "locations": [1],
+        "team_max_free_trials": [0],
+        "best_is_free_trial_enabled": [0],
+        "age_range_ids": [1],
+        "team_free_trial_days_before": [0],
+        "team_free_trial_hours_before": [0],
+        "season_is_free_trial_enabled": [0]
       },
       "relationships": {
         "audits": {
@@ -1428,42 +580,18 @@
       "attributes": {
         "date": "2026-03-23T00:00:00",
         "count": 1,
-        "events": [
-          206667
-        ],
-        "teams": [
-          5188
-        ],
-        "leagues": [
-          2133
-        ],
-        "sports": [
-          20
-        ],
-        "programs": [
-          60
-        ],
-        "locations": [
-          1
-        ],
-        "team_max_free_trials": [
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0
-        ],
-        "age_range_ids": [
-          25
-        ],
-        "team_free_trial_days_before": [
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0
-        ]
+        "events": [206667],
+        "teams": [5188],
+        "leagues": [2133],
+        "sports": [20],
+        "programs": [60],
+        "locations": [1],
+        "team_max_free_trials": [0],
+        "best_is_free_trial_enabled": [0],
+        "age_range_ids": [25],
+        "team_free_trial_days_before": [0],
+        "team_free_trial_hours_before": [0],
+        "season_is_free_trial_enabled": [0]
       },
       "relationships": {
         "audits": {
@@ -1480,42 +608,18 @@
       "attributes": {
         "date": "2026-03-27T00:00:00",
         "count": 1,
-        "events": [
-          213491
-        ],
-        "teams": [
-          5429
-        ],
-        "leagues": [
-          2174
-        ],
-        "sports": [
-          27
-        ],
-        "programs": [
-          10
-        ],
-        "locations": [
-          1
-        ],
-        "team_max_free_trials": [
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0
-        ],
-        "age_range_ids": [
-          14
-        ],
-        "team_free_trial_days_before": [
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0
-        ]
+        "events": [213491],
+        "teams": [5429],
+        "leagues": [2174],
+        "sports": [27],
+        "programs": [10],
+        "locations": [1],
+        "team_max_free_trials": [0],
+        "best_is_free_trial_enabled": [0],
+        "age_range_ids": [14],
+        "team_free_trial_days_before": [0],
+        "team_free_trial_hours_before": [0],
+        "season_is_free_trial_enabled": [0]
       },
       "relationships": {
         "audits": {
@@ -1532,62 +636,18 @@
       "attributes": {
         "date": "2026-03-28T00:00:00",
         "count": 3,
-        "events": [
-          208705,
-          208746,
-          208787
-        ],
-        "teams": [
-          5255,
-          5253,
-          5254
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208705, 208746, 208787],
+        "teams": [5255, 5253, 5254],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -1604,73 +664,18 @@
       "attributes": {
         "date": "2026-03-29T00:00:00",
         "count": 4,
-        "events": [
-          208866,
-          208905,
-          208829,
-          213493
-        ],
-        "teams": [
-          5257,
-          5258,
-          5256,
-          5431
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148,
-          2175
-        ],
-        "sports": [
-          20,
-          20,
-          20,
-          27
-        ],
-        "programs": [
-          52,
-          52,
-          52,
-          10
-        ],
-        "locations": [
-          1,
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ],
+        "events": [208866, 208905, 208829, 213493],
+        "teams": [5257, 5258, 5256, 5431],
+        "leagues": [2148, 2148, 2148, 2175],
+        "sports": [20, 20, 20, 27],
+        "programs": [52, 52, 52, 10],
+        "locations": [1, 1, 1, 1],
+        "team_max_free_trials": [0, 0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -1687,42 +692,18 @@
       "attributes": {
         "date": "2026-03-30T00:00:00",
         "count": 1,
-        "events": [
-          206668
-        ],
-        "teams": [
-          5188
-        ],
-        "leagues": [
-          2133
-        ],
-        "sports": [
-          20
-        ],
-        "programs": [
-          60
-        ],
-        "locations": [
-          1
-        ],
-        "team_max_free_trials": [
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0
-        ],
-        "age_range_ids": [
-          25
-        ],
-        "team_free_trial_days_before": [
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0
-        ]
+        "events": [206668],
+        "teams": [5188],
+        "leagues": [2133],
+        "sports": [20],
+        "programs": [60],
+        "locations": [1],
+        "team_max_free_trials": [0],
+        "best_is_free_trial_enabled": [0],
+        "age_range_ids": [25],
+        "team_free_trial_days_before": [0],
+        "team_free_trial_hours_before": [0],
+        "season_is_free_trial_enabled": [0]
       },
       "relationships": {
         "audits": {
@@ -1739,62 +720,18 @@
       "attributes": {
         "date": "2026-04-04T00:00:00",
         "count": 3,
-        "events": [
-          208789,
-          208707,
-          208748
-        ],
-        "teams": [
-          5254,
-          5255,
-          5253
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208789, 208707, 208748],
+        "teams": [5254, 5255, 5253],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -1811,62 +748,18 @@
       "attributes": {
         "date": "2026-04-11T00:00:00",
         "count": 3,
-        "events": [
-          208791,
-          208709,
-          208750
-        ],
-        "teams": [
-          5254,
-          5255,
-          5253
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208791, 208709, 208750],
+        "teams": [5254, 5255, 5253],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -1883,62 +776,18 @@
       "attributes": {
         "date": "2026-04-12T00:00:00",
         "count": 3,
-        "events": [
-          208868,
-          208907,
-          208831
-        ],
-        "teams": [
-          5257,
-          5258,
-          5256
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208868, 208907, 208831],
+        "teams": [5257, 5258, 5256],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -1955,42 +804,18 @@
       "attributes": {
         "date": "2026-04-13T00:00:00",
         "count": 1,
-        "events": [
-          206670
-        ],
-        "teams": [
-          5188
-        ],
-        "leagues": [
-          2133
-        ],
-        "sports": [
-          20
-        ],
-        "programs": [
-          60
-        ],
-        "locations": [
-          1
-        ],
-        "team_max_free_trials": [
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0
-        ],
-        "age_range_ids": [
-          25
-        ],
-        "team_free_trial_days_before": [
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0
-        ]
+        "events": [206670],
+        "teams": [5188],
+        "leagues": [2133],
+        "sports": [20],
+        "programs": [60],
+        "locations": [1],
+        "team_max_free_trials": [0],
+        "best_is_free_trial_enabled": [0],
+        "age_range_ids": [25],
+        "team_free_trial_days_before": [0],
+        "team_free_trial_hours_before": [0],
+        "season_is_free_trial_enabled": [0]
       },
       "relationships": {
         "audits": {
@@ -2007,42 +832,18 @@
       "attributes": {
         "date": "2026-04-17T00:00:00",
         "count": 1,
-        "events": [
-          213501
-        ],
-        "teams": [
-          5434
-        ],
-        "leagues": [
-          2177
-        ],
-        "sports": [
-          27
-        ],
-        "programs": [
-          10
-        ],
-        "locations": [
-          1
-        ],
-        "team_max_free_trials": [
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0
-        ],
-        "age_range_ids": [
-          14
-        ],
-        "team_free_trial_days_before": [
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0
-        ]
+        "events": [213501],
+        "teams": [5434],
+        "leagues": [2177],
+        "sports": [27],
+        "programs": [10],
+        "locations": [1],
+        "team_max_free_trials": [0],
+        "best_is_free_trial_enabled": [0],
+        "age_range_ids": [14],
+        "team_free_trial_days_before": [0],
+        "team_free_trial_hours_before": [0],
+        "season_is_free_trial_enabled": [0]
       },
       "relationships": {
         "audits": {
@@ -2059,62 +860,18 @@
       "attributes": {
         "date": "2026-04-18T00:00:00",
         "count": 3,
-        "events": [
-          208793,
-          208711,
-          208752
-        ],
-        "teams": [
-          5254,
-          5255,
-          5253
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208793, 208711, 208752],
+        "teams": [5254, 5255, 5253],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -2131,62 +888,18 @@
       "attributes": {
         "date": "2026-04-19T00:00:00",
         "count": 3,
-        "events": [
-          208870,
-          208909,
-          208833
-        ],
-        "teams": [
-          5257,
-          5258,
-          5256
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208870, 208909, 208833],
+        "teams": [5257, 5258, 5256],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -2203,42 +916,18 @@
       "attributes": {
         "date": "2026-04-20T00:00:00",
         "count": 1,
-        "events": [
-          206671
-        ],
-        "teams": [
-          5188
-        ],
-        "leagues": [
-          2133
-        ],
-        "sports": [
-          20
-        ],
-        "programs": [
-          60
-        ],
-        "locations": [
-          1
-        ],
-        "team_max_free_trials": [
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0
-        ],
-        "age_range_ids": [
-          25
-        ],
-        "team_free_trial_days_before": [
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0
-        ]
+        "events": [206671],
+        "teams": [5188],
+        "leagues": [2133],
+        "sports": [20],
+        "programs": [60],
+        "locations": [1],
+        "team_max_free_trials": [0],
+        "best_is_free_trial_enabled": [0],
+        "age_range_ids": [25],
+        "team_free_trial_days_before": [0],
+        "team_free_trial_hours_before": [0],
+        "season_is_free_trial_enabled": [0]
       },
       "relationships": {
         "audits": {
@@ -2255,73 +944,18 @@
       "attributes": {
         "date": "2026-04-25T00:00:00",
         "count": 4,
-        "events": [
-          208754,
-          213500,
-          208795,
-          208713
-        ],
-        "teams": [
-          5253,
-          5433,
-          5254,
-          5255
-        ],
-        "leagues": [
-          2148,
-          2176,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          27,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          10,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ],
+        "events": [208754, 213500, 208795, 208713],
+        "teams": [5253, 5433, 5254, 5255],
+        "leagues": [2148, 2176, 2148, 2148],
+        "sports": [20, 27, 20, 20],
+        "programs": [52, 10, 52, 52],
+        "locations": [1, 1, 1, 1],
+        "team_max_free_trials": [0, 0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -2338,73 +972,18 @@
       "attributes": {
         "date": "2026-04-26T00:00:00",
         "count": 4,
-        "events": [
-          213503,
-          208872,
-          208911,
-          208835
-        ],
-        "teams": [
-          5436,
-          5257,
-          5258,
-          5256
-        ],
-        "leagues": [
-          2178,
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          27,
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          10,
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ],
+        "events": [213503, 208872, 208911, 208835],
+        "teams": [5436, 5257, 5258, 5256],
+        "leagues": [2178, 2148, 2148, 2148],
+        "sports": [27, 20, 20, 20],
+        "programs": [10, 52, 52, 52],
+        "locations": [1, 1, 1, 1],
+        "team_max_free_trials": [0, 0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -2421,42 +1000,18 @@
       "attributes": {
         "date": "2026-04-27T00:00:00",
         "count": 1,
-        "events": [
-          206672
-        ],
-        "teams": [
-          5188
-        ],
-        "leagues": [
-          2133
-        ],
-        "sports": [
-          20
-        ],
-        "programs": [
-          60
-        ],
-        "locations": [
-          1
-        ],
-        "team_max_free_trials": [
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0
-        ],
-        "age_range_ids": [
-          25
-        ],
-        "team_free_trial_days_before": [
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0
-        ]
+        "events": [206672],
+        "teams": [5188],
+        "leagues": [2133],
+        "sports": [20],
+        "programs": [60],
+        "locations": [1],
+        "team_max_free_trials": [0],
+        "best_is_free_trial_enabled": [0],
+        "age_range_ids": [25],
+        "team_free_trial_days_before": [0],
+        "team_free_trial_hours_before": [0],
+        "season_is_free_trial_enabled": [0]
       },
       "relationships": {
         "audits": {
@@ -2473,62 +1028,18 @@
       "attributes": {
         "date": "2026-05-02T00:00:00",
         "count": 3,
-        "events": [
-          208797,
-          208715,
-          208756
-        ],
-        "teams": [
-          5254,
-          5255,
-          5253
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208797, 208715, 208756],
+        "teams": [5254, 5255, 5253],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -2545,62 +1056,18 @@
       "attributes": {
         "date": "2026-05-03T00:00:00",
         "count": 3,
-        "events": [
-          208874,
-          208913,
-          208837
-        ],
-        "teams": [
-          5257,
-          5258,
-          5256
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208874, 208913, 208837],
+        "teams": [5257, 5258, 5256],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -2617,62 +1084,18 @@
       "attributes": {
         "date": "2026-05-09T00:00:00",
         "count": 3,
-        "events": [
-          208799,
-          208717,
-          208758
-        ],
-        "teams": [
-          5254,
-          5255,
-          5253
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208799, 208717, 208758],
+        "teams": [5254, 5255, 5253],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -2689,62 +1112,18 @@
       "attributes": {
         "date": "2026-05-10T00:00:00",
         "count": 3,
-        "events": [
-          208876,
-          208915,
-          208839
-        ],
-        "teams": [
-          5257,
-          5258,
-          5256
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208876, 208915, 208839],
+        "teams": [5257, 5258, 5256],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -2761,62 +1140,18 @@
       "attributes": {
         "date": "2026-05-16T00:00:00",
         "count": 3,
-        "events": [
-          208801,
-          208719,
-          208760
-        ],
-        "teams": [
-          5254,
-          5255,
-          5253
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208801, 208719, 208760],
+        "teams": [5254, 5255, 5253],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -2833,62 +1168,18 @@
       "attributes": {
         "date": "2026-05-17T00:00:00",
         "count": 3,
-        "events": [
-          208878,
-          208917,
-          208841
-        ],
-        "teams": [
-          5257,
-          5258,
-          5256
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208878, 208917, 208841],
+        "teams": [5257, 5258, 5256],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -2905,62 +1196,18 @@
       "attributes": {
         "date": "2026-05-23T00:00:00",
         "count": 3,
-        "events": [
-          208803,
-          208721,
-          208762
-        ],
-        "teams": [
-          5254,
-          5255,
-          5253
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208803, 208721, 208762],
+        "teams": [5254, 5255, 5253],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -2977,62 +1224,18 @@
       "attributes": {
         "date": "2026-05-24T00:00:00",
         "count": 3,
-        "events": [
-          208880,
-          208919,
-          208843
-        ],
-        "teams": [
-          5257,
-          5258,
-          5256
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208880, 208919, 208843],
+        "teams": [5257, 5258, 5256],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -3049,62 +1252,18 @@
       "attributes": {
         "date": "2026-05-30T00:00:00",
         "count": 3,
-        "events": [
-          208723,
-          208764,
-          208805
-        ],
-        "teams": [
-          5255,
-          5253,
-          5254
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208723, 208764, 208805],
+        "teams": [5255, 5253, 5254],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {
@@ -3121,62 +1280,18 @@
       "attributes": {
         "date": "2026-05-31T00:00:00",
         "count": 3,
-        "events": [
-          208845,
-          208882,
-          208921
-        ],
-        "teams": [
-          5256,
-          5257,
-          5258
-        ],
-        "leagues": [
-          2148,
-          2148,
-          2148
-        ],
-        "sports": [
-          20,
-          20,
-          20
-        ],
-        "programs": [
-          52,
-          52,
-          52
-        ],
-        "locations": [
-          1,
-          1,
-          1
-        ],
-        "team_max_free_trials": [
-          0,
-          0,
-          0
-        ],
-        "best_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ],
+        "events": [208845, 208882, 208921],
+        "teams": [5256, 5257, 5258],
+        "leagues": [2148, 2148, 2148],
+        "sports": [20, 20, 20],
+        "programs": [52, 52, 52],
+        "locations": [1, 1, 1],
+        "team_max_free_trials": [0, 0, 0],
+        "best_is_free_trial_enabled": [0, 0, 0],
         "age_range_ids": null,
-        "team_free_trial_days_before": [
-          0,
-          0,
-          0
-        ],
-        "team_free_trial_hours_before": [
-          0,
-          0,
-          0
-        ],
-        "season_is_free_trial_enabled": [
-          0,
-          0,
-          0
-        ]
+        "team_free_trial_days_before": [0, 0, 0],
+        "team_free_trial_hours_before": [0, 0, 0],
+        "season_is_free_trial_enabled": [0, 0, 0]
       },
       "relationships": {
         "audits": {

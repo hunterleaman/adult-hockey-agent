@@ -1,10 +1,6 @@
 import type { Session } from './parser'
 
-export type AlertType =
-  | 'OPPORTUNITY'
-  | 'FILLING_FAST'
-  | 'SOLD_OUT'
-  | 'NEWLY_AVAILABLE'
+export type AlertType = 'OPPORTUNITY' | 'FILLING_FAST' | 'SOLD_OUT' | 'NEWLY_AVAILABLE'
 
 export interface SessionState {
   session: Session
@@ -21,10 +17,7 @@ export interface Alert {
   registrationUrl: string
 }
 
-export function evaluate(
-  sessions: Session[],
-  previousState: SessionState[]
-): Alert[] {
+export function evaluate(sessions: Session[], previousState: SessionState[]): Alert[] {
   const alerts: Alert[] = []
 
   for (const session of sessions) {
@@ -81,15 +74,11 @@ function findPreviousState(
   previousState: SessionState[]
 ): SessionState | undefined {
   return previousState.find(
-    (state) =>
-      state.session.date === session.date && state.session.time === session.time
+    (state) => state.session.date === session.date && state.session.time === session.time
   )
 }
 
-function shouldAlertOpportunity(
-  session: Session,
-  prevState: SessionState | undefined
-): boolean {
+function shouldAlertOpportunity(session: Session, prevState: SessionState | undefined): boolean {
   // No previous alert - fire it
   if (!prevState || prevState.lastAlertType !== 'OPPORTUNITY') {
     return true
@@ -97,19 +86,14 @@ function shouldAlertOpportunity(
 
   // Suppression rule: only re-alert if spots decreased by >= 2
   const prevSpotsRemaining =
-    (prevState.lastPlayerCount ?? 0) > 0
-      ? session.playersMax - (prevState.lastPlayerCount ?? 0)
-      : 0
+    (prevState.lastPlayerCount ?? 0) > 0 ? session.playersMax - (prevState.lastPlayerCount ?? 0) : 0
   const currentSpotsRemaining = session.playersMax - session.playersRegistered
   const decrease = prevSpotsRemaining - currentSpotsRemaining
 
   return decrease >= 2
 }
 
-function shouldAlertFillingFast(
-  session: Session,
-  prevState: SessionState | undefined
-): boolean {
+function shouldAlertFillingFast(session: Session, prevState: SessionState | undefined): boolean {
   // No previous alert - fire it
   if (!prevState || prevState.lastAlertType !== 'FILLING_FAST') {
     return true

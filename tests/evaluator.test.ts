@@ -119,9 +119,7 @@ describe('evaluator', () => {
         playersMax: 24, // 10 spots
         goaliesRegistered: 2,
       })
-      const state: SessionState[] = [
-        createState(session, { isRegistered: true }),
-      ]
+      const state: SessionState[] = [createState(session, { isRegistered: true })]
 
       const alerts = evaluate([session], state)
 
@@ -201,9 +199,7 @@ describe('evaluator', () => {
         playersRegistered: 20,
         playersMax: 24, // 4 spots
       })
-      const state: SessionState[] = [
-        createState(session, { isRegistered: true }),
-      ]
+      const state: SessionState[] = [createState(session, { isRegistered: true })]
 
       const alerts = evaluate([session], state)
 
@@ -314,9 +310,7 @@ describe('evaluator', () => {
 
       // Should get NEWLY_AVAILABLE + FILLING_FAST (1 spot <= 4)
       expect(alerts.length).toBeGreaterThanOrEqual(1)
-      const newlyAvailableAlert = alerts.find(
-        (a) => a.type === 'NEWLY_AVAILABLE'
-      )
+      const newlyAvailableAlert = alerts.find((a) => a.type === 'NEWLY_AVAILABLE')
       expect(newlyAvailableAlert).toBeDefined()
     })
 
@@ -339,9 +333,7 @@ describe('evaluator', () => {
       const alerts = evaluate([session], state)
 
       // May fire other alerts (OPPORTUNITY, FILLING_FAST) but not NEWLY_AVAILABLE
-      const newlyAvailableAlerts = alerts.filter(
-        (a) => a.type === 'NEWLY_AVAILABLE'
-      )
+      const newlyAvailableAlerts = alerts.filter((a) => a.type === 'NEWLY_AVAILABLE')
       expect(newlyAvailableAlerts).toHaveLength(0)
     })
 
@@ -409,20 +401,13 @@ describe('evaluator', () => {
         playersMax: 24, // 4 spots
         goaliesRegistered: 1,
       })
-      const state: SessionState[] = [
-        createState(session1),
-        createState(session2),
-      ]
+      const state: SessionState[] = [createState(session1), createState(session2)]
 
       const alerts = evaluate([session1, session2], state)
 
       expect(alerts).toHaveLength(2)
-      expect(alerts.find((a) => a.session.time === '06:00')?.type).toBe(
-        'OPPORTUNITY'
-      )
-      expect(alerts.find((a) => a.session.time === '18:30')?.type).toBe(
-        'FILLING_FAST'
-      )
+      expect(alerts.find((a) => a.session.time === '06:00')?.type).toBe('OPPORTUNITY')
+      expect(alerts.find((a) => a.session.time === '18:30')?.type).toBe('FILLING_FAST')
     })
   })
 

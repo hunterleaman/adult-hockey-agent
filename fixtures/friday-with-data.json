@@ -1300,10 +1300,7 @@
         "sex": "c",
         "num_games": 1,
         "start_date": "2026-02-04T06:00:00",
-        "days_of_week": [
-          "w",
-          "f"
-        ],
+        "days_of_week": ["w", "f"],
         "team_type": "k",
         "description": "<p>ADULT PICK UP</p>\n<p>Morning 6am Skate:</p>\n<ul>\n<li>Full gear required&nbsp; &nbsp;</li>\n<li>$12.00 per person</li>\n</ul>\n<p>ADULT PICK UP HOCKEY<br /><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
         "min_roster_size": null,
@@ -2082,10 +2079,7 @@
         "sex": "c",
         "num_games": 1,
         "start_date": "2026-02-04T06:00:00",
-        "days_of_week": [
-          "w",
-          "f"
-        ],
+        "days_of_week": ["w", "f"],
         "team_type": "k",
         "description": "<p>ADULT PICK UP</p>\n<p>Morning 6am Skate:</p>\n<ul>\n<li>Full gear required</li>\n<li>$12.00 per person</li>\n</ul>\n<p>ADULT PICK UP HOCKEY<br /><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
         "min_roster_size": null,
@@ -2325,11 +2319,7 @@
         "sex": "c",
         "num_games": 1,
         "start_date": "2026-02-04T12:10:00",
-        "days_of_week": [
-          "m",
-          "w",
-          "f"
-        ],
+        "days_of_week": ["m", "w", "f"],
         "team_type": "k",
         "description": "<p>AFTERNOON/EVENING SESSIONS</p>\n<p>ADULT PICK UP</p>\n<ul>\n<li>Full gear required</li>\n<li>$20.00 per session</li>\n</ul>\n<p>ADULT PICK UP</p>\n<p><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
         "min_roster_size": null,
@@ -2801,11 +2791,7 @@
         "sex": "c",
         "num_games": 1,
         "start_date": "2026-02-04T12:10:00",
-        "days_of_week": [
-          "m",
-          "w",
-          "f"
-        ],
+        "days_of_week": ["m", "w", "f"],
         "team_type": "k",
         "description": "<p>AFTERNOON/EVENING SESSIONS</p>\n<p>ADULT PICK UP</p>\n<ul>\n<li>Full gear required</li>\n<li>$20.00 per session</li>\n</ul>\n<p>ADULT PICK UP</p>\n<p><br />Drop in hockey opportunity.<br /><br />Pre-Registration encouraged to secure your space.<br /><br />Please keep in mind that walk up space may not be available and may not be able to enter the ice pending online registration rosters.<br /><br /><b>PICK UP CANCELLATION NOTICE:<br /></b>Cancellations/transfers must be emailed to Jenny, Tyler, or Anna day before the skate. No phone calls, texts, or Messenger will be accepted.<br />Emails to send cancellation request must be received 24 hours prior to scheduled session:<br />Jennyg@xicenter.com<br />TylerL@xicenter.com<br />Anna@xicenter.com<br /><br /><b>** Goalies will be charged unless they email the staff the day prior, to allow other goalies to register.</b><br /><b>** Phone calls will not be accepted as notice of cancellation.</b></p>",
         "min_roster_size": null,
@@ -3045,9 +3031,7 @@
         "sex": "c",
         "num_games": 1,
         "start_date": "2026-01-03T20:45:00",
-        "days_of_week": [
-          "sa"
-        ],
+        "days_of_week": ["sa"],
         "team_type": "k",
         "description": null,
         "min_roster_size": null,
@@ -3663,9 +3647,7 @@
         "sex": "c",
         "num_games": 1,
         "start_date": "2026-01-03T20:45:00",
-        "days_of_week": [
-          "sa"
-        ],
+        "days_of_week": ["sa"],
         "team_type": "k",
         "description": null,
         "min_roster_size": null,

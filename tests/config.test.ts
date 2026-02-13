@@ -144,36 +144,28 @@ describe('config', () => {
       const config = loadConfig()
       config.pollIntervalMinutes = 0
 
-      expect(() => validateConfig(config)).toThrow(
-        'pollIntervalMinutes must be > 0'
-      )
+      expect(() => validateConfig(config)).toThrow('pollIntervalMinutes must be > 0')
     })
 
     it('throws when poll interval is negative', () => {
       const config = loadConfig()
       config.pollIntervalMinutes = -5
 
-      expect(() => validateConfig(config)).toThrow(
-        'pollIntervalMinutes must be > 0'
-      )
+      expect(() => validateConfig(config)).toThrow('pollIntervalMinutes must be > 0')
     })
 
     it('throws when accelerated interval is zero', () => {
       const config = loadConfig()
       config.pollIntervalAcceleratedMinutes = 0
 
-      expect(() => validateConfig(config)).toThrow(
-        'pollIntervalAcceleratedMinutes must be > 0'
-      )
+      expect(() => validateConfig(config)).toThrow('pollIntervalAcceleratedMinutes must be > 0')
     })
 
     it('throws when pollStartHour is out of range', () => {
       const config = loadConfig()
       config.pollStartHour = 24
 
-      expect(() => validateConfig(config)).toThrow(
-        'pollStartHour must be 0-23'
-      )
+      expect(() => validateConfig(config)).toThrow('pollStartHour must be 0-23')
     })
 
     it('throws when pollEndHour is out of range', () => {
@@ -188,18 +180,14 @@ describe('config', () => {
       config.pollStartHour = 10
       config.pollEndHour = 10
 
-      expect(() => validateConfig(config)).toThrow(
-        'pollEndHour must be > pollStartHour'
-      )
+      expect(() => validateConfig(config)).toThrow('pollEndHour must be > pollStartHour')
     })
 
     it('throws when forwardWindowDays is zero', () => {
       const config = loadConfig()
       config.forwardWindowDays = 0
 
-      expect(() => validateConfig(config)).toThrow(
-        'forwardWindowDays must be > 0'
-      )
+      expect(() => validateConfig(config)).toThrow('forwardWindowDays must be > 0')
     })
 
     it('throws when minGoalies is negative', () => {
@@ -213,18 +201,14 @@ describe('config', () => {
       const config = loadConfig()
       config.playerSpotsAlert = 0
 
-      expect(() => validateConfig(config)).toThrow(
-        'playerSpotsAlert must be > 0'
-      )
+      expect(() => validateConfig(config)).toThrow('playerSpotsAlert must be > 0')
     })
 
     it('throws when playerSpotsUrgent is zero', () => {
       const config = loadConfig()
       config.playerSpotsUrgent = 0
 
-      expect(() => validateConfig(config)).toThrow(
-        'playerSpotsUrgent must be > 0'
-      )
+      expect(() => validateConfig(config)).toThrow('playerSpotsUrgent must be > 0')
     })
 
     it('throws when playerSpotsUrgent > playerSpotsAlert', () => {
@@ -232,18 +216,14 @@ describe('config', () => {
       config.playerSpotsUrgent = 15
       config.playerSpotsAlert = 10
 
-      expect(() => validateConfig(config)).toThrow(
-        'playerSpotsUrgent must be <= playerSpotsAlert'
-      )
+      expect(() => validateConfig(config)).toThrow('playerSpotsUrgent must be <= playerSpotsAlert')
     })
 
     it('throws when Slack webhook URL is invalid', () => {
       const config = loadConfig()
       config.slackWebhookUrl = 'not-a-url'
 
-      expect(() => validateConfig(config)).toThrow(
-        'slackWebhookUrl must be a valid URL'
-      )
+      expect(() => validateConfig(config)).toThrow('slackWebhookUrl must be a valid URL')
     })
 
     it('accepts valid Slack webhook URL', () => {

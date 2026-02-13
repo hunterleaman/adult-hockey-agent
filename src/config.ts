@@ -15,10 +15,7 @@ export interface Config {
  */
 export function loadConfig(): Config {
   return {
-    pollIntervalMinutes: parseIntOrDefault(
-      process.env.POLL_INTERVAL_MINUTES,
-      60
-    ),
+    pollIntervalMinutes: parseIntOrDefault(process.env.POLL_INTERVAL_MINUTES, 60),
     pollIntervalAcceleratedMinutes: parseIntOrDefault(
       process.env.POLL_INTERVAL_ACCELERATED_MINUTES,
       30

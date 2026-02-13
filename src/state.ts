@@ -114,8 +114,7 @@ export function updateSessionState(
     lastAlertType: alertType,
     lastAlertAt: alertAt,
     lastPlayerCount: alertType ? session.playersRegistered : null,
-    isRegistered:
-      existingIndex >= 0 ? state[existingIndex].isRegistered : false,
+    isRegistered: existingIndex >= 0 ? state[existingIndex].isRegistered : false,
   }
 
   if (existingIndex >= 0) {

@@ -53,9 +53,7 @@ export class SlackNotifier implements Notifier {
     })
 
     if (!response.ok) {
-      throw new Error(
-        `Slack webhook failed: ${response.status} ${response.statusText}`
-      )
+      throw new Error(`Slack webhook failed: ${response.status} ${response.statusText}`)
     }
   }
 

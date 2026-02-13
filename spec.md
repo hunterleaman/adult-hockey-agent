@@ -1,9 +1,11 @@
 # Adult Hockey Agent: Spec
 
 ## Overview
+
 Monitoring agent that polls the DaySmart DASH webapp to track adult pick-up hockey registration at Extreme Ice Center (Indian Trail, NC). Sends notifications when sessions meet criteria. Designed for future extension to league standings, stats, and scheduling. Phase 2 adds auto-registration with human approval.
 
 ## Target URL
+
 ```
 https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registration?date={YYYY-MM-DD}&facility_ids=1
 ```
@@ -11,6 +13,7 @@ https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registratio
 ## Phase 1: Monitor + Alert
 
 ### What It Does
+
 1. Polls DASH event page for Mon/Wed/Fri sessions within a configurable forward window (default: 5 days)
 2. Parses registration counts for both PLAYERS and GOALIES entries per session
 3. Evaluates alert rules against parsed data
@@ -19,6 +22,7 @@ https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registratio
 6. Tracks user registrations via manual flag (Slack command or API)
 
 ### Sessions of Interest
+
 - Event type: Any event whose name contains "ADULT Pick Up" (hockey only, not Broomball)
 - Days: Monday, Wednesday, Friday
 - All time slots discovered on those days (do NOT hardcode specific times)
@@ -30,35 +34,42 @@ https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registratio
 ### Alert Rules
 
 **OPPORTUNITY (primary)**
+
 - `goalies_registered >= 2 AND player_spots_remaining <= 10`
 - Purpose: Session is worth attending (enough goalies) and filling up
 
 **FILLING_FAST (urgency)**
+
 - `player_spots_remaining <= 4`
 - Purpose: Act now regardless of goalie count
 - Triggers accelerated polling (30-min interval)
 
 **SOLD_OUT (informational)**
+
 - Session transitioned from available to full since last poll
 - Always fires even if previously alerted for other conditions
 
 **NEWLY_AVAILABLE (recovery)**
+
 - Session was previously full, now has spots (cancellation)
 - Re-evaluate OPPORTUNITY and FILLING_FAST rules
 
 ### Alert Suppression
+
 - OPPORTUNITY: Don't re-alert for same session unless spots decreased by >= 2 since last alert
 - FILLING_FAST: Alert once per session, then only if spots decrease further
 - SOLD_OUT: Always alert (once per transition)
 - NEWLY_AVAILABLE: Always alert (once per transition)
 
 ### Polling Schedule
+
 - Default interval: 60 minutes
 - Accelerated interval: 30 minutes (when any tracked session has <= 4 player spots)
 - Active hours: 0600-2300 ET
 - Configurable via environment variables
 
 ### Registration Tracking (v1: Manual)
+
 - User marks sessions as "registered" via Slack command or HTTP API
 - Format: `POST /register { "date": "2026-02-18", "time": "06:00" }`
 - Or Slack: `/hockey registered 2026-02-18 06:00`
@@ -66,6 +77,7 @@ https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registratio
 - SOLD_OUT alerts still fire for registered sessions (confirmation that you got in)
 
 ### Notification Modules (implement in order)
+
 1. **Console** - stdout logging, always active
 2. **Slack webhook** - primary notification channel
 3. **Email** - via Resend or SendGrid (free tier)
@@ -73,15 +85,17 @@ https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registratio
 5. **Push** - via Pushover ($5 one-time)
 
 Each module implements a common interface:
+
 ```typescript
 interface Notifier {
-  name: string;
-  send(alert: Alert): Promise<void>;
-  isConfigured(): boolean;
+  name: string
+  send(alert: Alert): Promise<void>
+  isConfigured(): boolean
 }
 ```
 
 ### Notification Content
+
 ```
 🏒 OPPORTUNITY: Friday Feb 20, 6:00am
 Players: 14/24 (10 spots left)
@@ -91,38 +105,40 @@ Status: Worth signing up!
 ```
 
 ### Data Model
+
 ```typescript
 interface Session {
-  date: string;           // YYYY-MM-DD
-  dayOfWeek: string;      // Monday | Wednesday | Friday
-  time: string;           // HH:MM (24h)
-  timeLabel: string;      // "6:00am - 7:10am"
-  eventName: string;      // Full event name from DASH
-  playersRegistered: number;
-  playersMax: number;
-  goaliesRegistered: number;
-  goaliesMax: number;
-  isFull: boolean;        // Derived: playersRegistered >= playersMax
-  price: number;
+  date: string // YYYY-MM-DD
+  dayOfWeek: string // Monday | Wednesday | Friday
+  time: string // HH:MM (24h)
+  timeLabel: string // "6:00am - 7:10am"
+  eventName: string // Full event name from DASH
+  playersRegistered: number
+  playersMax: number
+  goaliesRegistered: number
+  goaliesMax: number
+  isFull: boolean // Derived: playersRegistered >= playersMax
+  price: number
 }
 
 interface SessionState {
-  session: Session;
-  lastAlertType: AlertType | null;
-  lastAlertAt: string | null;      // ISO timestamp
-  lastPlayerCount: number | null;
-  isRegistered: boolean;           // Manual flag
+  session: Session
+  lastAlertType: AlertType | null
+  lastAlertAt: string | null // ISO timestamp
+  lastPlayerCount: number | null
+  isRegistered: boolean // Manual flag
 }
 
 interface Alert {
-  type: 'OPPORTUNITY' | 'FILLING_FAST' | 'SOLD_OUT' | 'NEWLY_AVAILABLE';
-  session: Session;
-  message: string;
-  registrationUrl: string;
+  type: 'OPPORTUNITY' | 'FILLING_FAST' | 'SOLD_OUT' | 'NEWLY_AVAILABLE'
+  session: Session
+  message: string
+  registrationUrl: string
 }
 ```
 
 ### State Persistence
+
 - JSON file on disk (simple, no database needed)
 - Path: `./data/state.json`
 - Contains: array of SessionState for all tracked sessions
@@ -131,6 +147,7 @@ interface Alert {
 ## Phase 2: Auto-Registration (Future)
 
 ### What It Does
+
 1. When OPPORTUNITY or FILLING_FAST alert fires, agent asks user for approval
 2. User approves via Slack reaction, Slack command, or API call
 3. Agent launches authenticated browser session
@@ -138,11 +155,13 @@ interface Alert {
 5. Reports success/failure back to user
 
 ### Authentication
+
 - Credentials stored in environment variables
 - `DASH_EMAIL` and `DASH_PASSWORD`
 - Session cookies cached to avoid re-login on every action
 
 ### Checkout Flow (from screenshots)
+
 1. Navigate to event date page
 2. Click "Add to cart" on target PLAYERS session
 3. Login with stored credentials
@@ -155,6 +174,7 @@ interface Alert {
 10. Capture confirmation and report back
 
 ### Safety Gates
+
 - Never auto-checkout without explicit user approval
 - Verify session details match what was alerted before purchasing
 - Timeout if any step takes > 30 seconds
@@ -164,6 +184,7 @@ interface Alert {
 ## Technical Architecture
 
 ### Stack
+
 - Runtime: Node.js 20+ with TypeScript
 - Browser automation: Playwright (Chromium)
 - Scheduling: node-cron
@@ -172,6 +193,7 @@ interface Alert {
 - Deployment: DigitalOcean droplet ($6/mo)
 
 ### Project Structure
+
 ```
 adult-hockey-agent/
 ├── src/
@@ -218,6 +240,7 @@ adult-hockey-agent/
 ```
 
 ### Environment Variables
+
 ```bash
 # Required
 ANTHROPIC_API_KEY=           # Only needed if adding AI-powered features later
@@ -256,6 +279,7 @@ PLAYER_SPOTS_URGENT=4
 **Finding**: DASH exposes a full JSON:API at `/dash/jsonapi/api/v1/`. Playwright NOT needed for polling. Use direct HTTP requests (faster, cheaper, more reliable). Playwright retained only for Phase 2 auto-registration.
 
 **Key Endpoints**:
+
 1. **GET** `/dash/jsonapi/api/v1/date-availabilities?filter[date__gte]={date}&company=extremeice`
    - Returns event IDs grouped by date
    - Response: `{ data: [{ id: "2026-02-13", attributes: { events: [213376, 214134, ...] } }] }`
@@ -266,6 +290,7 @@ PLAYER_SPOTS_URGENT=4
    - Relationships in `included[]` array (JSON:API spec)
 
 **Data Structure**:
+
 - Event names: `event → homeTeam → included[] where type="teams" → attributes.name`
 - Registration counts: `event → summary → included[] where type="event-summaries" → attributes.{registered_count, composite_capacity, registration_status}`
 - Must resolve JSON:API relationships via `{type, id}` pairs
@@ -273,6 +298,7 @@ PLAYER_SPOTS_URGENT=4
 **Authentication**: None required for read-only event queries. Auth needed only for Phase 2 checkout.
 
 ## Success Criteria
+
 - Accurately parses registration counts matching what the DASH UI shows
 - Alerts arrive within polling interval of criteria being met
 - No duplicate alerts for the same condition on the same session
@@ -281,6 +307,7 @@ PLAYER_SPOTS_URGENT=4
 - All alert rules covered by automated tests
 
 ## Out of Scope (v1)
+
 - Mobile app
 - Web dashboard
 - Multi-rink support

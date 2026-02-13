@@ -1,7 +1,9 @@
 # Architecture Decision Records
 
 ## Format
+
 Each entry follows:
+
 - **Date**: YYYY-MM-DD
 - **Decision**: What was decided
 - **Context**: Why it mattered
@@ -16,6 +18,7 @@ Each entry follows:
 **Context**: Modern Node.js supports ES modules natively. TypeScript's NodeNext resolution provides the best compatibility between CommonJS and ESM.
 
 **Consequences**:
+
 - Must use `.js` extensions in import statements (TypeScript limitation)
 - Better tree-shaking and modern tooling support
 - Cleaner async/await syntax
@@ -29,6 +32,7 @@ Each entry follows:
 **Context**: Simple state (session tracking, alert suppression). No complex queries needed. Must survive process restarts.
 
 **Consequences**:
+
 - Atomic write pattern required (write to temp, rename)
 - Limited to single-process deployment
 - Easy to inspect and debug
@@ -43,6 +47,7 @@ Each entry follows:
 **Context**: Multiple notification channels needed (Slack, Email, SMS, Push). Users configure only what they want.
 
 **Consequences**:
+
 - Each notifier independently testable
 - Easy to add new channels
 - Graceful degradation if one channel fails
@@ -57,6 +62,7 @@ Each entry follows:
 **Context**: Initial assumption was that DASH is a SPA requiring browser rendering to access data. API discovery revealed DASH exposes a full JSON:API at `/dash/jsonapi/api/v1/` that returns all registration data as structured JSON. The web UI internally uses this API via XHR/fetch calls.
 
 **Consequences**:
+
 - ✅ **Faster**: HTTP requests complete in ~200ms vs 3-5s for browser rendering
 - ✅ **Cheaper**: No need for Chromium process (saves ~150MB RAM per poll)
 - ✅ **More reliable**: No browser crashes, render timeouts, or DOM parsing fragility
@@ -66,6 +72,7 @@ Each entry follows:
 - ⚠️ **Playwright still needed**: Phase 2 auto-registration requires authenticated checkout flow via browser automation
 
 **Implementation**:
+
 - Polling: `src/scraper.ts` uses `fetch()` to call DASH API
 - Phase 2: `src/registrar.ts` (future) uses Playwright for checkout
 
@@ -78,6 +85,7 @@ Each entry follows:
 **Context**: DASH API does not support direct date range queries on the events endpoint. The SPA frontend calls `/date-availabilities` first to discover which events exist on which dates, then fetches those specific event IDs. Attempting to fetch events by date range alone (`filter[start_date__gte]`) without event IDs returns incomplete results.
 
 **Consequences**:
+
 - ✅ **Matches SPA behavior**: Replicates the exact flow the web UI uses
 - ✅ **Complete data**: Ensures we get all events DASH considers "available" for a date
 - ✅ **Efficient**: date-availabilities returns minimal metadata (just IDs), then we fetch full details only for dates we care about (Mon/Wed/Fri)
@@ -85,6 +93,7 @@ Each entry follows:
 - ⚠️ **Cache coordination**: date-availabilities response should be cached for the poll cycle to avoid redundant requests
 
 **Implementation**:
+
 1. Calculate target dates (today + forward window, filter Mon/Wed/Fri)
 2. `GET /date-availabilities?filter[date__gte]={earliest-date}`
 3. Extract `attributes.events[]` arrays for target dates
@@ -100,6 +109,7 @@ Each entry follows:
 **Context**: Initial investigation assumed event names would be in `event.attributes.name` or `event.attributes.desc`. Both fields are empty or contain generic values. The actual event names (e.g., "(PLAYERS) ADULT Pick Up MORNINGS") are stored in a separate `teams` entity and linked via the `homeTeam` relationship. This follows JSON:API spec for normalized relational data.
 
 **Consequences**:
+
 - ✅ **Correct data**: Gets the actual team names displayed in the DASH UI
 - ✅ **Structured**: Separation of events from teams allows reuse (teams can have multiple events)
 - ⚠️ **Complex parsing**: Parser must build lookup maps from `included[]` and resolve relationships by `{type, id}` pairs
@@ -107,6 +117,7 @@ Each entry follows:
 - ⚠️ **Include parameter required**: API requests must include `include=homeTeam` or teams won't be in response
 
 **Implementation**:
+
 - Parser builds `Map<string, JsonApiIncluded>` from `included[]` keyed by `"${type}:${id}"`
 - For each event: `event.relationships.homeTeam.data.id` → lookup `"teams:{id}"` → get `attributes.name`
 - Same pattern for summary data: `event.relationships.summary.data.id` → lookup `"event-summaries:{id}"` → get registration counts

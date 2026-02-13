@@ -25,17 +25,20 @@ Polls the DaySmart DASH webapp to track registration counts for Mon/Wed/Fri pick
 ### Local Development
 
 1. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 2. **Configure environment:**
+
    ```bash
    cp .env.example .env
    # Edit .env and add your SLACK_WEBHOOK_URL
    ```
 
 3. **Run tests:**
+
    ```bash
    npm test
    ```
@@ -46,6 +49,7 @@ Polls the DaySmart DASH webapp to track registration counts for Mon/Wed/Fri pick
    ```
 
 The agent will:
+
 - Run an initial poll immediately
 - Schedule polls every 60 minutes (configurable)
 - Only poll during active hours (6am-11pm ET)
@@ -57,9 +61,11 @@ The agent will:
 All configuration via environment variables. See `.env.example` for full list:
 
 ### Required
+
 - `SLACK_WEBHOOK_URL` - Slack incoming webhook (get from https://api.slack.com/messaging/webhooks)
 
 ### Optional (with defaults)
+
 - `POLL_INTERVAL_MINUTES=60` - Default polling interval
 - `POLL_INTERVAL_ACCELERATED_MINUTES=30` - Accelerated interval when sessions filling
 - `POLL_START_HOUR=6` - Start polling at 6am ET
@@ -226,21 +232,25 @@ adult-hockey-agent/
 ## Alert Rules
 
 ### OPPORTUNITY 🏒
+
 - `goalies_registered >= 2 AND player_spots_remaining <= 10`
 - Purpose: Session is worth attending and filling up
 - Suppression: Re-alert only if spots decreased by >= 2
 
 ### FILLING_FAST ⚡
+
 - `player_spots_remaining <= 4`
 - Purpose: Act now regardless of goalie count
 - Suppression: Re-alert only if spots decreased
 
 ### SOLD_OUT 🚫
+
 - Session transitioned from available → full
 - Always fires (once per transition)
 - Includes registered sessions (confirmation)
 
 ### NEWLY_AVAILABLE ✅
+
 - Session transitioned from full → available
 - Always fires (once per transition)
 - Re-evaluates OPPORTUNITY and FILLING_FAST
@@ -272,16 +282,19 @@ npm test
 ## Troubleshooting
 
 ### Agent not polling
+
 - Check logs: `pm2 logs hockey-agent`
 - Verify active hours in .env (POLL_START_HOUR, POLL_END_HOUR)
 - Check system time matches ET timezone
 
 ### No Slack notifications
+
 - Verify SLACK_WEBHOOK_URL in .env
 - Test webhook manually: `curl -X POST -H 'Content-Type: application/json' -d '{"text":"Test"}' YOUR_WEBHOOK_URL`
 - Check Slack app permissions
 
 ### Build errors
+
 - Ensure Node.js 20+: `node --version`
 - Clean install: `rm -rf node_modules package-lock.json && npm install`
 - Check TypeScript: `npm run typecheck`

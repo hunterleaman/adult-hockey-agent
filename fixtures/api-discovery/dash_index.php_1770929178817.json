@@ -152,9 +152,7 @@
       }
     },
     "websites": {
-      "value": [
-        "https://xicenter.com/"
-      ]
+      "value": ["https://xicenter.com/"]
     },
     "currency": {
       "option_type": "string",

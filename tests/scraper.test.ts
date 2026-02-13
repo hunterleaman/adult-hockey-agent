@@ -1,10 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import {
-  scrapeEvents,
-  calculateTargetDates,
-  isMonWedFri,
-  extractEventIds,
-} from '../src/scraper'
+import { scrapeEvents, calculateTargetDates, isMonWedFri, extractEventIds } from '../src/scraper'
 import type { Session } from '../src/parser'
 
 // Mock fetch globally
@@ -346,9 +341,7 @@ describe('scraper', () => {
 
       const today = new Date('2026-02-20T12:00:00Z')
 
-      await expect(scrapeEvents(today, 5)).rejects.toThrow(
-        'Failed to fetch events: 404 Not Found'
-      )
+      await expect(scrapeEvents(today, 5)).rejects.toThrow('Failed to fetch events: 404 Not Found')
     })
 
     it('builds correct date-availabilities URL', async () => {

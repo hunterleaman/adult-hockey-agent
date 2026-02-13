@@ -24,7 +24,9 @@ async function main() {
     console.log()
 
     // Run initial poll immediately
-    console.log(`⏰ Running initial poll at ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })}`)
+    console.log(
+      `⏰ Running initial poll at ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })}`
+    )
     await poll(config, STATE_PATH)
     console.log('✓ Initial poll complete\n')
 
@@ -51,9 +53,7 @@ async function main() {
         await poll(config, STATE_PATH)
         console.log('✓ Poll complete\n')
       } else {
-        console.log(
-          `⏸  Outside active hours (${etHour}:00 ET) - skipping poll\n`
-        )
+        console.log(`⏸  Outside active hours (${etHour}:00 ET) - skipping poll\n`)
       }
     })
 

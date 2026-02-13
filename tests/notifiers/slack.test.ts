@@ -31,10 +31,7 @@ describe('SlackNotifier', () => {
     ...overrides,
   })
 
-  const createAlert = (
-    type: Alert['type'],
-    sessionOverrides: Partial<Session> = {}
-  ): Alert => {
+  const createAlert = (type: Alert['type'], sessionOverrides: Partial<Session> = {}): Alert => {
     const session = createSession(sessionOverrides)
     return {
       type,
@@ -184,9 +181,7 @@ describe('SlackNotifier', () => {
       const notifier = new SlackNotifier('https://hooks.slack.com/test')
       const alert = createAlert('OPPORTUNITY')
 
-      await expect(notifier.send(alert)).rejects.toThrow(
-        'Slack webhook failed: 400 Bad Request'
-      )
+      await expect(notifier.send(alert)).rejects.toThrow('Slack webhook failed: 400 Bad Request')
     })
 
     it('throws error when fetch fails', async () => {
@@ -202,9 +197,7 @@ describe('SlackNotifier', () => {
       const notifier = new SlackNotifier('')
       const alert = createAlert('OPPORTUNITY')
 
-      await expect(notifier.send(alert)).rejects.toThrow(
-        'Slack notifier not configured'
-      )
+      await expect(notifier.send(alert)).rejects.toThrow('Slack notifier not configured')
     })
 
     it('formats OPPORTUNITY alerts with appropriate emoji', async () => {

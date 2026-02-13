@@ -22,10 +22,7 @@ describe('ConsoleNotifier', () => {
     ...overrides,
   })
 
-  const createAlert = (
-    type: Alert['type'],
-    sessionOverrides: Partial<Session> = {}
-  ): Alert => {
+  const createAlert = (type: Alert['type'], sessionOverrides: Partial<Session> = {}): Alert => {
     const session = createSession(sessionOverrides)
     return {
       type,

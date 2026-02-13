@@ -165,11 +165,7 @@ describe('state', () => {
       const todaySession = createSession({ date: '2026-02-20' })
       const tomorrow = createSession({ date: '2026-02-21' })
 
-      const state = [
-        createState(yesterday),
-        createState(todaySession),
-        createState(tomorrow),
-      ]
+      const state = [createState(yesterday), createState(todaySession), createState(tomorrow)]
 
       const pruned = pruneOldSessions(state, today)
 
@@ -235,12 +231,7 @@ describe('state', () => {
       const session = createSession()
       const state = [createState(session)]
 
-      const updated = updateRegistrationStatus(
-        state,
-        '2026-02-20',
-        '06:00',
-        true
-      )
+      const updated = updateRegistrationStatus(state, '2026-02-20', '06:00', true)
 
       expect(updated).toHaveLength(1)
       expect(updated[0].isRegistered).toBe(true)
@@ -250,12 +241,7 @@ describe('state', () => {
       const session = createSession()
       const state = [createState(session, { isRegistered: true })]
 
-      const updated = updateRegistrationStatus(
-        state,
-        '2026-02-20',
-        '06:00',
-        false
-      )
+      const updated = updateRegistrationStatus(state, '2026-02-20', '06:00', false)
 
       expect(updated).toHaveLength(1)
       expect(updated[0].isRegistered).toBe(false)
@@ -281,12 +267,7 @@ describe('state', () => {
       const session2 = createSession({ date: '2026-02-20', time: '18:30' })
       const state = [createState(session1), createState(session2)]
 
-      const updated = updateRegistrationStatus(
-        state,
-        '2026-02-20',
-        '18:30',
-        true
-      )
+      const updated = updateRegistrationStatus(state, '2026-02-20', '18:30', true)
 
       expect(updated[0].isRegistered).toBe(false)
       expect(updated[1].isRegistered).toBe(true)
@@ -298,12 +279,7 @@ describe('state', () => {
       const session = createSession({ playersRegistered: 14 })
       const state = [createState(session)]
 
-      const updated = updateSessionState(
-        state,
-        session,
-        'OPPORTUNITY',
-        '2026-02-19T10:00:00Z'
-      )
+      const updated = updateSessionState(state, session, 'OPPORTUNITY', '2026-02-19T10:00:00Z')
 
       expect(updated).toHaveLength(1)
       expect(updated[0].lastAlertType).toBe('OPPORTUNITY')
@@ -315,12 +291,7 @@ describe('state', () => {
       const session = createSession()
       const state: SessionState[] = []
 
-      const updated = updateSessionState(
-        state,
-        session,
-        'FILLING_FAST',
-        '2026-02-19T10:00:00Z'
-      )
+      const updated = updateSessionState(state, session, 'FILLING_FAST', '2026-02-19T10:00:00Z')
 
       expect(updated).toHaveLength(1)
       expect(updated[0].session).toEqual(session)
@@ -346,12 +317,7 @@ describe('state', () => {
       const newSession = createSession({ playersRegistered: 14 })
       const state = [createState(oldSession, { isRegistered: true })]
 
-      const updated = updateSessionState(
-        state,
-        newSession,
-        'OPPORTUNITY',
-        '2026-02-19T10:00:00Z'
-      )
+      const updated = updateSessionState(state, newSession, 'OPPORTUNITY', '2026-02-19T10:00:00Z')
 
       expect(updated[0].isRegistered).toBe(true)
     })
@@ -411,12 +377,7 @@ describe('state', () => {
         time: '06:00',
         playersRegistered: 16,
       })
-      state = updateSessionState(
-        state,
-        updatedSession,
-        'OPPORTUNITY',
-        '2026-02-20T12:00:00Z'
-      )
+      state = updateSessionState(state, updatedSession, 'OPPORTUNITY', '2026-02-20T12:00:00Z')
 
       // Save state
       saveState(testStatePath, state)

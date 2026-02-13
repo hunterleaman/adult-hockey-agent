@@ -3,12 +3,7 @@ import type { Notifier } from './notifiers/interface'
 import type { SessionState } from './evaluator'
 import { scrapeEvents } from './scraper'
 import { evaluate } from './evaluator'
-import {
-  loadState,
-  saveState,
-  pruneOldSessions,
-  updateSessionState,
-} from './state'
+import { loadState, saveState, pruneOldSessions, updateSessionState } from './state'
 import { ConsoleNotifier } from './notifiers/console'
 import { SlackNotifier } from './notifiers/slack'
 
@@ -43,16 +38,10 @@ export function createNotifiers(config: Config): Notifier[] {
  * 5. Send notifications
  * 6. Update and save state
  */
-export async function poll(
-  config: Config,
-  statePath: string = DEFAULT_STATE_PATH
-): Promise<void> {
+export async function poll(config: Config, statePath: string = DEFAULT_STATE_PATH): Promise<void> {
   try {
     // Step 1: Scrape current events
-    const sessions = await scrapeEvents(
-      new Date(),
-      config.forwardWindowDays
-    )
+    const sessions = await scrapeEvents(new Date(), config.forwardWindowDays)
 
     // Step 2: Load and prune state
     let state = loadState(statePath)
@@ -87,12 +76,7 @@ export async function poll(
       const key = `${session.date}:${session.time}`
       const alertInfo = alertedSessions.get(key)
 
-      state = updateSessionState(
-        state,
-        session,
-        alertInfo?.type || null,
-        alertInfo?.at || null
-      )
+      state = updateSessionState(state, session, alertInfo?.type || null, alertInfo?.at || null)
     }
 
     // Step 6: Save state

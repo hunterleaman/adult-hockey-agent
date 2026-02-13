@@ -25,10 +25,7 @@ export function isMonWedFri(dateStr: string): boolean {
 /**
  * Calculate target dates (Mon/Wed/Fri only) within forward window from today
  */
-export function calculateTargetDates(
-  today: Date = new Date(),
-  forwardDays: number = 5
-): string[] {
+export function calculateTargetDates(today: Date = new Date(), forwardDays: number = 5): string[] {
   const dates: string[] = []
   const endDate = new Date(today)
   endDate.setDate(endDate.getDate() + forwardDays)
@@ -95,8 +92,7 @@ export async function scrapeEvents(
     )
   }
 
-  const dateAvailabilitiesData: DateAvailabilitiesResponse =
-    await dateAvailabilitiesResponse.json()
+  const dateAvailabilitiesData: DateAvailabilitiesResponse = await dateAvailabilitiesResponse.json()
 
   // Step 3: Extract event IDs for target dates
   const eventIds = extractEventIds(dateAvailabilitiesData, targetDates)
@@ -110,9 +106,7 @@ export async function scrapeEvents(
 
   const eventsResponse = await fetch(eventsUrl)
   if (!eventsResponse.ok) {
-    throw new Error(
-      `Failed to fetch events: ${eventsResponse.status} ${eventsResponse.statusText}`
-    )
+    throw new Error(`Failed to fetch events: ${eventsResponse.status} ${eventsResponse.statusText}`)
   }
 
   const eventsData = await eventsResponse.json()
