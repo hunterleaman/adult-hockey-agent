@@ -151,13 +151,28 @@ Must handle gracefully:
 6. Push to remote
 
 ## Session-End Protocol (mandatory before ending any session)
-1. Update spec.md if requirements changed or were clarified
-2. Update "Known Mistakes" section above if Claude Code produced errors that needed correction
-3. Add entries to docs/decisions.md for non-obvious architectural choices
-4. Commit doc updates separately: `docs: update spec and learnings from session N`
-5. Run all tests, lint, type-check
-6. `git push` — work is NOT done until push succeeds
-7. Summarize what was accomplished and what remains
+
+### Code Quality
+1. Run all tests, lint, type-check — fix any failures
+2. Format all files with prettier
+3. Commit with descriptive message
+4. `git push` — work is NOT done until push succeeds
+
+### Documentation
+5. Update spec.md if requirements changed or were clarified
+6. Update "Known Mistakes" section if Claude Code produced errors needing correction
+7. Add entries to docs/decisions.md for non-obvious architectural choices
+
+### Learning Extraction
+8. Update LEARNINGS.md:
+   - Patterns that worked or didn't
+   - Reusable code worth extracting to /shared/lib/ (tag with // TODO: Extract to shared)
+   - Prompt templates that proved effective
+   - Session token usage and estimated cost
+9. Tag content ideas inline with: [CONTENT: X-thread], [CONTENT: LinkedIn], [CONTENT: Technical], [CONTENT: Course]
+
+### Handoff
+10. Summarize what was accomplished and what remains for next session
 
 ## File Organization
 - src/ — all source code
