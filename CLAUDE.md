@@ -40,6 +40,10 @@ Monitoring agent that tracks adult pick-up hockey registration at Extreme Ice Ce
 3. **Missing event names (empty desc field)**: Initially looked for event names in `event.attributes.desc` which was empty. Event names actually come from the `homeTeam` relationship resolved via JSON:API `included[]` array where `type="teams"`.
 4. **Case-sensitive team name filtering**: Parser initially used `teamName.includes('ADULT Pick Up')` which failed to match `"Adult Pick Up Hockey (Mornings)"` (lowercase 'A'). Fixed by using case-insensitive comparison: `teamName.toLowerCase().includes('adult pick up')`.
 
+### Session 2 (2026-02-13) - Core Implementation
+
+1. **Plan mode cannot be exited cleanly from within plan mode**: `/plan mode` cannot be exited cleanly from within plan mode. Use `/plan off` from the CLI prompt to exit, which ends the session. Resume with a fresh claude session to continue work.
+
 ## API Architecture
 
 DASH exposes a JSON:API at `/dash/jsonapi/api/v1/`. Polling requires a **two-step fetch flow**:
