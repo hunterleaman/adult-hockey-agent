@@ -48,9 +48,7 @@ export async function poll(config: Config, statePath: string = DEFAULT_STATE_PAT
     state = pruneOldSessions(state, new Date())
 
     // Step 3: Evaluate alerts
-    console.log(`Evaluating ${sessions.length} sessions...`)
     const alerts = evaluate(sessions, state, config)
-    console.log(`Found ${alerts.length} alerts`)
 
     // Step 4: Send notifications
     const notifiers = createNotifiers(config)
