@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "clear-state": "rm -f data/state.json && echo 'State cleared'",
     "discover": "tsc && node dist/api-discovery.js",
     "fetch-events": "tsc && node dist/fetch-events.js",
     "fetch-availabilities": "tsc && node dist/fetch-availabilities.js"

@@ -23,7 +23,7 @@ export function loadConfig(): Config {
     pollStartHour: parseIntOrDefault(process.env.POLL_START_HOUR, 6),
     pollEndHour: parseIntOrDefault(process.env.POLL_END_HOUR, 23),
     forwardWindowDays: parseIntOrDefault(process.env.FORWARD_WINDOW_DAYS, 5),
-    minGoalies: parseIntOrDefault(process.env.MIN_GOALIES, 2),
+    minGoalies: parseIntOrDefault(process.env.MIN_GOALIES, 1),
     minPlayersRegistered: parseIntOrDefault(process.env.MIN_PLAYERS_REGISTERED, 10),
     playerSpotsUrgent: parseIntOrDefault(process.env.PLAYER_SPOTS_URGENT, 4),
     slackWebhookUrl: process.env.SLACK_WEBHOOK_URL || undefined,

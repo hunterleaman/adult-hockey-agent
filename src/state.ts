@@ -109,12 +109,14 @@ export function updateSessionState(
     (s) => s.session.date === session.date && s.session.time === session.time
   )
 
+  const existingState = existingIndex >= 0 ? state[existingIndex] : null
+
   const newState: SessionState = {
     session,
-    lastAlertType: alertType,
-    lastAlertAt: alertAt,
-    lastPlayerCount: alertType ? session.playersRegistered : null,
-    isRegistered: existingIndex >= 0 ? state[existingIndex].isRegistered : false,
+    lastAlertType: alertType !== null ? alertType : existingState?.lastAlertType ?? null,
+    lastAlertAt: alertAt !== null ? alertAt : existingState?.lastAlertAt ?? null,
+    lastPlayerCount: alertType !== null ? session.playersRegistered : existingState?.lastPlayerCount ?? null,
+    isRegistered: existingState?.isRegistered ?? false,
   }
 
   if (existingIndex >= 0) {

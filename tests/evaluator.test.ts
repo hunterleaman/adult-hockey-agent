@@ -11,7 +11,7 @@ describe('evaluator', () => {
     pollStartHour: 6,
     pollEndHour: 23,
     forwardWindowDays: 5,
-    minGoalies: 2,
+    minGoalies: 1,
     minPlayersRegistered: 10,
     playerSpotsUrgent: 4,
     slackWebhookUrl: undefined,
@@ -45,11 +45,11 @@ describe('evaluator', () => {
   })
 
   describe('OPPORTUNITY alerts', () => {
-    it('fires when goalies >= 2 AND players registered >= 10', () => {
+    it('fires when goalies >= 1 AND players registered >= 10', () => {
       const session = createSession({
         playersRegistered: 10,
         playersMax: 24,
-        goaliesRegistered: 2,
+        goaliesRegistered: 1,
       })
       const state: SessionState[] = [createState(session)]
 
@@ -65,7 +65,7 @@ describe('evaluator', () => {
       const session = createSession({
         playersRegistered: 9,
         playersMax: 24,
-        goaliesRegistered: 2,
+        goaliesRegistered: 1,
       })
       const state: SessionState[] = [createState(session)]
 
@@ -74,11 +74,11 @@ describe('evaluator', () => {
       expect(alerts).toHaveLength(0)
     })
 
-    it('does not fire when goalies < 2', () => {
+    it('does not fire when goalies < 1', () => {
       const session = createSession({
         playersRegistered: 10,
         playersMax: 24,
-        goaliesRegistered: 1,
+        goaliesRegistered: 0,
       })
       const state: SessionState[] = [createState(session)]
 
@@ -145,7 +145,7 @@ describe('evaluator', () => {
       const session = createSession({
         playersRegistered: 20,
         playersMax: 24, // 4 spots
-        goaliesRegistered: 1, // doesn't matter
+        goaliesRegistered: 0, // 0 goalies to avoid OPPORTUNITY
       })
       const state: SessionState[] = [createState(session)]
 
@@ -354,7 +354,7 @@ describe('evaluator', () => {
       const session = createSession({
         playersRegistered: 20,
         playersMax: 24, // 4 spots remaining
-        goaliesRegistered: 2,
+        goaliesRegistered: 1,
         isFull: false,
       })
       const state: SessionState[] = [
@@ -373,7 +373,7 @@ describe('evaluator', () => {
       expect(alerts.length).toBeGreaterThanOrEqual(1)
       const types = alerts.map((a) => a.type)
       expect(types).toContain('NEWLY_AVAILABLE')
-      // OPPORTUNITY: 20 players registered >= 10, 2 goalies >= 2 ✓
+      // OPPORTUNITY: 20 players registered >= 10, 1 goalie >= 1 ✓
       // FILLING_FAST: 4 spots remaining <= 4 ✓
       expect(types).toContain('OPPORTUNITY')
       expect(types).toContain('FILLING_FAST')
@@ -412,7 +412,7 @@ describe('evaluator', () => {
         time: '18:30',
         playersRegistered: 20,
         playersMax: 24, // 4 spots remaining
-        goaliesRegistered: 1,
+        goaliesRegistered: 0, // 0 goalies to avoid OPPORTUNITY
       })
       const state: SessionState[] = [createState(session1), createState(session2)]
 

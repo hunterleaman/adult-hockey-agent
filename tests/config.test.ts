@@ -24,7 +24,7 @@ describe('config', () => {
       expect(config.pollStartHour).toBe(6)
       expect(config.pollEndHour).toBe(23)
       expect(config.forwardWindowDays).toBe(5)
-      expect(config.minGoalies).toBe(2)
+      expect(config.minGoalies).toBe(1)
       expect(config.minPlayersRegistered).toBe(10)
       expect(config.playerSpotsUrgent).toBe(4)
       expect(config.slackWebhookUrl).toBeUndefined()
@@ -115,7 +115,7 @@ describe('config', () => {
         pollStartHour: 6,
         pollEndHour: 23,
         forwardWindowDays: 5,
-        minGoalies: 2,
+        minGoalies: 1,
         minPlayersRegistered: 10,
         playerSpotsUrgent: 4,
         slackWebhookUrl: undefined,
@@ -131,7 +131,7 @@ describe('config', () => {
         pollStartHour: 6,
         pollEndHour: 23,
         forwardWindowDays: 5,
-        minGoalies: 2,
+        minGoalies: 1,
         minPlayersRegistered: 10,
         playerSpotsUrgent: 4,
         slackWebhookUrl: 'https://hooks.slack.com/test',

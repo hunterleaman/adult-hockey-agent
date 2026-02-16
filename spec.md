@@ -36,7 +36,7 @@ https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registratio
 **OPPORTUNITY (primary)**
 
 - `goalies_registered >= MIN_GOALIES AND players_registered >= MIN_PLAYERS_REGISTERED`
-- Defaults: `MIN_GOALIES=2`, `MIN_PLAYERS_REGISTERED=10`
+- Defaults: `MIN_GOALIES=1`, `MIN_PLAYERS_REGISTERED=10`
 - Purpose: Session is worth attending (enough goalies and players committed)
 
 **FILLING_FAST (urgency)**

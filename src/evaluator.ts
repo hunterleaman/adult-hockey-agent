@@ -24,8 +24,15 @@ export function evaluate(
   config: Config
 ): Alert[] {
   const alerts: Alert[] = []
+  const now = new Date()
 
   for (const session of sessions) {
+    // Skip sessions in the past
+    const sessionDateTime = new Date(`${session.date}T${session.time}:00`)
+    if (sessionDateTime < now) {
+      continue
+    }
+
     const prevState = findPreviousState(session, previousState)
 
     // Check for state transitions first (SOLD_OUT, NEWLY_AVAILABLE)
@@ -74,7 +81,12 @@ export function evaluate(
     }
   }
 
-  return alerts
+  // Sort alerts chronologically (earliest first)
+  return alerts.sort((a, b) => {
+    const dateCompare = a.session.date.localeCompare(b.session.date)
+    if (dateCompare !== 0) return dateCompare
+    return a.session.time.localeCompare(b.session.time)
+  })
 }
 
 function findPreviousState(

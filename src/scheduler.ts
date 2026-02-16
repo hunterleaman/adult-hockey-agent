@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import 'dotenv/config'
 import cron from 'node-cron'
 import { loadConfig, validateConfig } from './config.js'
 import { poll } from './index.js'

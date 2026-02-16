@@ -10,7 +10,10 @@ interface SlackBlock {
   }
   elements?: Array<{
     type: string
-    text?: string
+    text?: {
+      type: string
+      text: string
+    }
     url?: string
     style?: string
   }>
@@ -82,7 +85,10 @@ export class SlackNotifier implements Notifier {
         elements: [
           {
             type: 'button',
-            text: 'Register Now',
+            text: {
+              type: 'plain_text',
+              text: 'Register Now',
+            },
             url: alert.registrationUrl,
             style: this.getButtonStyle(alert.type),
           },
