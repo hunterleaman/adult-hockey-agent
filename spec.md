@@ -35,12 +35,14 @@ https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registratio
 
 **OPPORTUNITY (primary)**
 
-- `goalies_registered >= 2 AND player_spots_remaining <= 10`
-- Purpose: Session is worth attending (enough goalies) and filling up
+- `goalies_registered >= MIN_GOALIES AND players_registered >= MIN_PLAYERS_REGISTERED`
+- Defaults: `MIN_GOALIES=2`, `MIN_PLAYERS_REGISTERED=10`
+- Purpose: Session is worth attending (enough goalies and players committed)
 
 **FILLING_FAST (urgency)**
 
-- `player_spots_remaining <= 4`
+- `player_spots_remaining <= PLAYER_SPOTS_URGENT`
+- Default: `PLAYER_SPOTS_URGENT=4`
 - Purpose: Act now regardless of goalie count
 - Triggers accelerated polling (30-min interval)
 

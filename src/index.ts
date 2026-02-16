@@ -1,11 +1,11 @@
 import type { Config } from './config'
 import type { Notifier } from './notifiers/interface'
 import type { SessionState } from './evaluator'
-import { scrapeEvents } from './scraper'
-import { evaluate } from './evaluator'
-import { loadState, saveState, pruneOldSessions, updateSessionState } from './state'
-import { ConsoleNotifier } from './notifiers/console'
-import { SlackNotifier } from './notifiers/slack'
+import { scrapeEvents } from './scraper.js'
+import { evaluate } from './evaluator.js'
+import { loadState, saveState, pruneOldSessions, updateSessionState } from './state.js'
+import { ConsoleNotifier } from './notifiers/console.js'
+import { SlackNotifier } from './notifiers/slack.js'
 
 const DEFAULT_STATE_PATH = './data/state.json'
 
@@ -48,7 +48,7 @@ export async function poll(config: Config, statePath: string = DEFAULT_STATE_PAT
     state = pruneOldSessions(state, new Date())
 
     // Step 3: Evaluate alerts
-    const alerts = evaluate(sessions, state)
+    const alerts = evaluate(sessions, state, config)
 
     // Step 4: Send notifications
     const notifiers = createNotifiers(config)

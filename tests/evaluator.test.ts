@@ -2,8 +2,21 @@ import { describe, it, expect } from 'vitest'
 import { evaluate } from '../src/evaluator'
 import type { Session } from '../src/parser'
 import type { SessionState, Alert, AlertType } from '../src/evaluator'
+import type { Config } from '../src/config'
 
 describe('evaluator', () => {
+  const defaultConfig: Config = {
+    pollIntervalMinutes: 60,
+    pollIntervalAcceleratedMinutes: 30,
+    pollStartHour: 6,
+    pollEndHour: 23,
+    forwardWindowDays: 5,
+    minGoalies: 2,
+    minPlayersRegistered: 10,
+    playerSpotsUrgent: 4,
+    slackWebhookUrl: undefined,
+  }
+
   const createSession = (overrides: Partial<Session> = {}): Session => ({
     date: '2026-02-20',
     dayOfWeek: 'Friday',
@@ -32,15 +45,15 @@ describe('evaluator', () => {
   })
 
   describe('OPPORTUNITY alerts', () => {
-    it('fires when goalies >= 2 AND player spots <= 10', () => {
+    it('fires when goalies >= 2 AND players registered >= 10', () => {
       const session = createSession({
-        playersRegistered: 14,
-        playersMax: 24, // 10 spots remaining
+        playersRegistered: 10,
+        playersMax: 24,
         goaliesRegistered: 2,
       })
       const state: SessionState[] = [createState(session)]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(1)
       expect(alerts[0].type).toBe('OPPORTUNITY')
@@ -48,28 +61,28 @@ describe('evaluator', () => {
       expect(alerts[0].message).toContain('OPPORTUNITY')
     })
 
-    it('does not fire when player spots > 10', () => {
+    it('does not fire when players registered < 10', () => {
       const session = createSession({
-        playersRegistered: 13,
-        playersMax: 24, // 11 spots remaining
+        playersRegistered: 9,
+        playersMax: 24,
         goaliesRegistered: 2,
       })
       const state: SessionState[] = [createState(session)]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(0)
     })
 
     it('does not fire when goalies < 2', () => {
       const session = createSession({
-        playersRegistered: 14,
-        playersMax: 24, // 10 spots remaining
+        playersRegistered: 10,
+        playersMax: 24,
         goaliesRegistered: 1,
       })
       const state: SessionState[] = [createState(session)]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(0)
     })
@@ -77,18 +90,18 @@ describe('evaluator', () => {
     it('suppresses repeat alert unless spots decreased by >= 2', () => {
       const session = createSession({
         playersRegistered: 15,
-        playersMax: 24, // 9 spots
+        playersMax: 24, // 9 spots remaining
         goaliesRegistered: 2,
       })
       const state: SessionState[] = [
         createState(session, {
           lastAlertType: 'OPPORTUNITY',
           lastAlertAt: '2026-02-19T10:00:00Z',
-          lastPlayerCount: 14, // was 10 spots, now 9 spots (decreased by 1)
+          lastPlayerCount: 14, // was 10 spots remaining, now 9 spots (decreased by 1)
         }),
       ]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(0) // suppressed (only decreased by 1)
     })
@@ -96,18 +109,18 @@ describe('evaluator', () => {
     it('re-alerts when spots decreased by >= 2 since last alert', () => {
       const session = createSession({
         playersRegistered: 16,
-        playersMax: 24, // 8 spots
+        playersMax: 24, // 8 spots remaining
         goaliesRegistered: 2,
       })
       const state: SessionState[] = [
         createState(session, {
           lastAlertType: 'OPPORTUNITY',
           lastAlertAt: '2026-02-19T10:00:00Z',
-          lastPlayerCount: 14, // was 10 spots, now 8 spots (decreased by 2)
+          lastPlayerCount: 14, // was 10 spots remaining, now 8 spots (decreased by 2)
         }),
       ]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(1)
       expect(alerts[0].type).toBe('OPPORTUNITY')
@@ -115,13 +128,13 @@ describe('evaluator', () => {
 
     it('excludes registered sessions from OPPORTUNITY alerts', () => {
       const session = createSession({
-        playersRegistered: 14,
-        playersMax: 24, // 10 spots
+        playersRegistered: 10,
+        playersMax: 24,
         goaliesRegistered: 2,
       })
       const state: SessionState[] = [createState(session, { isRegistered: true })]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(0)
     })
@@ -136,7 +149,7 @@ describe('evaluator', () => {
       })
       const state: SessionState[] = [createState(session)]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(1)
       expect(alerts[0].type).toBe('FILLING_FAST')
@@ -150,7 +163,7 @@ describe('evaluator', () => {
       })
       const state: SessionState[] = [createState(session)]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(0)
     })
@@ -169,7 +182,7 @@ describe('evaluator', () => {
         }),
       ]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(0)
     })
@@ -188,7 +201,7 @@ describe('evaluator', () => {
         }),
       ]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(1)
       expect(alerts[0].type).toBe('FILLING_FAST')
@@ -201,7 +214,7 @@ describe('evaluator', () => {
       })
       const state: SessionState[] = [createState(session, { isRegistered: true })]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(0)
     })
@@ -224,7 +237,7 @@ describe('evaluator', () => {
         ),
       ]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(1)
       expect(alerts[0].type).toBe('SOLD_OUT')
@@ -246,7 +259,7 @@ describe('evaluator', () => {
         ),
       ]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(0)
     })
@@ -268,7 +281,7 @@ describe('evaluator', () => {
         ),
       ]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(1)
       expect(alerts[0].type).toBe('SOLD_OUT')
@@ -282,7 +295,7 @@ describe('evaluator', () => {
       })
       const state: SessionState[] = [] // no previous state
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(0)
     })
@@ -306,7 +319,7 @@ describe('evaluator', () => {
         ),
       ]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       // Should get NEWLY_AVAILABLE + FILLING_FAST (1 spot <= 4)
       expect(alerts.length).toBeGreaterThanOrEqual(1)
@@ -330,7 +343,7 @@ describe('evaluator', () => {
         ),
       ]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       // May fire other alerts (OPPORTUNITY, FILLING_FAST) but not NEWLY_AVAILABLE
       const newlyAvailableAlerts = alerts.filter((a) => a.type === 'NEWLY_AVAILABLE')
@@ -340,7 +353,7 @@ describe('evaluator', () => {
     it('re-evaluates OPPORTUNITY and FILLING_FAST after NEWLY_AVAILABLE', () => {
       const session = createSession({
         playersRegistered: 20,
-        playersMax: 24, // 4 spots
+        playersMax: 24, // 4 spots remaining
         goaliesRegistered: 2,
         isFull: false,
       })
@@ -354,14 +367,14 @@ describe('evaluator', () => {
         ),
       ]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       // Should get NEWLY_AVAILABLE + OPPORTUNITY + FILLING_FAST
       expect(alerts.length).toBeGreaterThanOrEqual(1)
       const types = alerts.map((a) => a.type)
       expect(types).toContain('NEWLY_AVAILABLE')
-      // OPPORTUNITY: 4 spots, 2 goalies ✓
-      // FILLING_FAST: 4 spots ✓
+      // OPPORTUNITY: 20 players registered >= 10, 2 goalies >= 2 ✓
+      // FILLING_FAST: 4 spots remaining <= 4 ✓
       expect(types).toContain('OPPORTUNITY')
       expect(types).toContain('FILLING_FAST')
     })
@@ -370,13 +383,13 @@ describe('evaluator', () => {
   describe('alert message formatting', () => {
     it('includes all required fields in Alert', () => {
       const session = createSession({
-        playersRegistered: 14,
+        playersRegistered: 10,
         playersMax: 24,
         goaliesRegistered: 2,
       })
       const state: SessionState[] = [createState(session)]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(1)
       expect(alerts[0]).toHaveProperty('type')
@@ -391,19 +404,19 @@ describe('evaluator', () => {
     it('processes all sessions independently', () => {
       const session1 = createSession({
         time: '06:00',
-        playersRegistered: 14,
-        playersMax: 24, // 10 spots
+        playersRegistered: 10,
+        playersMax: 24,
         goaliesRegistered: 2,
       })
       const session2 = createSession({
         time: '18:30',
         playersRegistered: 20,
-        playersMax: 24, // 4 spots
+        playersMax: 24, // 4 spots remaining
         goaliesRegistered: 1,
       })
       const state: SessionState[] = [createState(session1), createState(session2)]
 
-      const alerts = evaluate([session1, session2], state)
+      const alerts = evaluate([session1, session2], state, defaultConfig)
 
       expect(alerts).toHaveLength(2)
       expect(alerts.find((a) => a.session.time === '06:00')?.type).toBe('OPPORTUNITY')
@@ -420,20 +433,20 @@ describe('evaluator', () => {
       })
       const state: SessionState[] = [createState(session)]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(0) // no transition, just full
     })
 
     it('handles missing state for session (first poll)', () => {
       const session = createSession({
-        playersRegistered: 14,
+        playersRegistered: 10,
         playersMax: 24,
         goaliesRegistered: 2,
       })
       const state: SessionState[] = [] // no state yet
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       expect(alerts).toHaveLength(1)
       expect(alerts[0].type).toBe('OPPORTUNITY')
@@ -443,7 +456,7 @@ describe('evaluator', () => {
       const session = createSession({
         date: '2026-02-20',
         time: '06:00',
-        playersRegistered: 14,
+        playersRegistered: 10,
         playersMax: 24,
         goaliesRegistered: 2,
       })
@@ -456,7 +469,7 @@ describe('evaluator', () => {
         ),
       ]
 
-      const alerts = evaluate([session], state)
+      const alerts = evaluate([session], state, defaultConfig)
 
       // Treats as new session (no matching state)
       expect(alerts).toHaveLength(1)

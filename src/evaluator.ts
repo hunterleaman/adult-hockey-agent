@@ -1,4 +1,5 @@
 import type { Session } from './parser'
+import type { Config } from './config'
 
 export type AlertType = 'OPPORTUNITY' | 'FILLING_FAST' | 'SOLD_OUT' | 'NEWLY_AVAILABLE'
 
@@ -17,7 +18,11 @@ export interface Alert {
   registrationUrl: string
 }
 
-export function evaluate(sessions: Session[], previousState: SessionState[]): Alert[] {
+export function evaluate(
+  sessions: Session[],
+  previousState: SessionState[],
+  config: Config
+): Alert[] {
   const alerts: Alert[] = []
 
   for (const session of sessions) {
@@ -51,15 +56,18 @@ export function evaluate(sessions: Session[], previousState: SessionState[]): Al
     // Calculate player spots remaining
     const spotsRemaining = session.playersMax - session.playersRegistered
 
-    // FILLING_FAST: player spots <= 4
-    if (spotsRemaining <= 4) {
+    // FILLING_FAST: player spots <= playerSpotsUrgent
+    if (spotsRemaining <= config.playerSpotsUrgent) {
       if (shouldAlertFillingFast(session, prevState)) {
         alerts.push(createAlert('FILLING_FAST', session))
       }
     }
 
-    // OPPORTUNITY: goalies >= 2 AND player spots <= 10
-    if (session.goaliesRegistered >= 2 && spotsRemaining <= 10) {
+    // OPPORTUNITY: goalies >= minGoalies AND players registered >= minPlayersRegistered
+    if (
+      session.goaliesRegistered >= config.minGoalies &&
+      session.playersRegistered >= config.minPlayersRegistered
+    ) {
       if (shouldAlertOpportunity(session, prevState)) {
         alerts.push(createAlert('OPPORTUNITY', session))
       }

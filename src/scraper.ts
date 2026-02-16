@@ -1,4 +1,4 @@
-import { parseEvents } from './parser'
+import { parseEvents } from './parser.js'
 import type { Session } from './parser'
 
 const BASE_URL = 'https://apps.daysmartrecreation.com'

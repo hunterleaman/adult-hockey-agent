@@ -25,7 +25,7 @@ describe('config', () => {
       expect(config.pollEndHour).toBe(23)
       expect(config.forwardWindowDays).toBe(5)
       expect(config.minGoalies).toBe(2)
-      expect(config.playerSpotsAlert).toBe(10)
+      expect(config.minPlayersRegistered).toBe(10)
       expect(config.playerSpotsUrgent).toBe(4)
       expect(config.slackWebhookUrl).toBeUndefined()
     })
@@ -68,13 +68,13 @@ describe('config', () => {
 
     it('loads custom alert thresholds from env', () => {
       process.env.MIN_GOALIES = '3'
-      process.env.PLAYER_SPOTS_ALERT = '8'
+      process.env.MIN_PLAYERS_REGISTERED = '8'
       process.env.PLAYER_SPOTS_URGENT = '3'
 
       const config = loadConfig()
 
       expect(config.minGoalies).toBe(3)
-      expect(config.playerSpotsAlert).toBe(8)
+      expect(config.minPlayersRegistered).toBe(8)
       expect(config.playerSpotsUrgent).toBe(3)
     })
 
@@ -116,7 +116,7 @@ describe('config', () => {
         pollEndHour: 23,
         forwardWindowDays: 5,
         minGoalies: 2,
-        playerSpotsAlert: 10,
+        minPlayersRegistered: 10,
         playerSpotsUrgent: 4,
         slackWebhookUrl: undefined,
       }
@@ -132,7 +132,7 @@ describe('config', () => {
         pollEndHour: 23,
         forwardWindowDays: 5,
         minGoalies: 2,
-        playerSpotsAlert: 10,
+        minPlayersRegistered: 10,
         playerSpotsUrgent: 4,
         slackWebhookUrl: 'https://hooks.slack.com/test',
       }
@@ -197,11 +197,11 @@ describe('config', () => {
       expect(() => validateConfig(config)).toThrow('minGoalies must be >= 0')
     })
 
-    it('throws when playerSpotsAlert is zero', () => {
+    it('throws when minPlayersRegistered is zero', () => {
       const config = loadConfig()
-      config.playerSpotsAlert = 0
+      config.minPlayersRegistered = 0
 
-      expect(() => validateConfig(config)).toThrow('playerSpotsAlert must be > 0')
+      expect(() => validateConfig(config)).toThrow('minPlayersRegistered must be > 0')
     })
 
     it('throws when playerSpotsUrgent is zero', () => {
@@ -209,14 +209,6 @@ describe('config', () => {
       config.playerSpotsUrgent = 0
 
       expect(() => validateConfig(config)).toThrow('playerSpotsUrgent must be > 0')
-    })
-
-    it('throws when playerSpotsUrgent > playerSpotsAlert', () => {
-      const config = loadConfig()
-      config.playerSpotsUrgent = 15
-      config.playerSpotsAlert = 10
-
-      expect(() => validateConfig(config)).toThrow('playerSpotsUrgent must be <= playerSpotsAlert')
     })
 
     it('throws when Slack webhook URL is invalid', () => {

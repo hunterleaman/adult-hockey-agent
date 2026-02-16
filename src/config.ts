@@ -5,7 +5,7 @@ export interface Config {
   pollEndHour: number
   forwardWindowDays: number
   minGoalies: number
-  playerSpotsAlert: number
+  minPlayersRegistered: number
   playerSpotsUrgent: number
   slackWebhookUrl?: string
 }
@@ -24,7 +24,7 @@ export function loadConfig(): Config {
     pollEndHour: parseIntOrDefault(process.env.POLL_END_HOUR, 23),
     forwardWindowDays: parseIntOrDefault(process.env.FORWARD_WINDOW_DAYS, 5),
     minGoalies: parseIntOrDefault(process.env.MIN_GOALIES, 2),
-    playerSpotsAlert: parseIntOrDefault(process.env.PLAYER_SPOTS_ALERT, 10),
+    minPlayersRegistered: parseIntOrDefault(process.env.MIN_PLAYERS_REGISTERED, 10),
     playerSpotsUrgent: parseIntOrDefault(process.env.PLAYER_SPOTS_URGENT, 4),
     slackWebhookUrl: process.env.SLACK_WEBHOOK_URL || undefined,
   }
@@ -63,16 +63,12 @@ export function validateConfig(config: Config): void {
     throw new Error('minGoalies must be >= 0')
   }
 
-  if (config.playerSpotsAlert <= 0) {
-    throw new Error('playerSpotsAlert must be > 0')
+  if (config.minPlayersRegistered <= 0) {
+    throw new Error('minPlayersRegistered must be > 0')
   }
 
   if (config.playerSpotsUrgent <= 0) {
     throw new Error('playerSpotsUrgent must be > 0')
-  }
-
-  if (config.playerSpotsUrgent > config.playerSpotsAlert) {
-    throw new Error('playerSpotsUrgent must be <= playerSpotsAlert')
   }
 
   if (config.slackWebhookUrl) {

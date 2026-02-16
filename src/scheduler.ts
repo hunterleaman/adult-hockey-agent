@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import cron from 'node-cron'
-import { loadConfig, validateConfig } from './config'
-import { poll } from './index'
+import { loadConfig, validateConfig } from './config.js'
+import { poll } from './index.js'
 
 const STATE_PATH = './data/state.json'
 
@@ -75,9 +75,7 @@ async function main() {
   }
 }
 
-// Run if executed directly
-if (require.main === module) {
-  main()
-}
-
 export { main }
+
+// Run main when module is executed
+main()
