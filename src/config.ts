@@ -7,6 +7,7 @@ export interface Config {
   minGoalies: number
   minPlayersRegistered: number
   playerSpotsUrgent: number
+  port: number
   slackWebhookUrl?: string
 }
 
@@ -26,6 +27,7 @@ export function loadConfig(): Config {
     minGoalies: parseIntOrDefault(process.env.MIN_GOALIES, 1),
     minPlayersRegistered: parseIntOrDefault(process.env.MIN_PLAYERS_REGISTERED, 10),
     playerSpotsUrgent: parseIntOrDefault(process.env.PLAYER_SPOTS_URGENT, 4),
+    port: parseIntOrDefault(process.env.PORT, 3000),
     slackWebhookUrl: process.env.SLACK_WEBHOOK_URL || undefined,
   }
 }
@@ -69,6 +71,10 @@ export function validateConfig(config: Config): void {
 
   if (config.playerSpotsUrgent <= 0) {
     throw new Error('playerSpotsUrgent must be > 0')
+  }
+
+  if (config.port <= 0 || config.port > 65535) {
+    throw new Error('port must be 1-65535')
   }
 
   if (config.slackWebhookUrl) {

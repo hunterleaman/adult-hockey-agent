@@ -3,6 +3,9 @@ import * as path from 'path'
 import type { SessionState, AlertType } from './evaluator'
 import type { Session } from './parser'
 
+// Re-export types for external use
+export type { SessionState }
+
 /**
  * Load session state from disk.
  * Returns empty array if file doesn't exist or is invalid.

@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 import 'dotenv/config'
+import type { Server } from 'http'
 import { loadConfig, validateConfig } from './config.js'
 import { poll } from './index.js'
 import { loadState } from './state.js'
+import { startServer } from './server.js'
 
 const STATE_PATH = './data/state.json'
 
 let scheduledTimeout: NodeJS.Timeout | null = null
+let httpServer: Server | null = null
 
 /**
  * Check if any tracked session requires accelerated polling
@@ -99,6 +102,11 @@ async function main(): Promise<void> {
     console.log(`   Slack: ${config.slackWebhookUrl ? 'configured ✓' : 'not configured'}`)
     console.log()
 
+    // Start HTTP server for health endpoint
+    httpServer = startServer(config.port, STATE_PATH)
+    console.log(`🌐 Health endpoint available at http://localhost:${config.port}/health`)
+    console.log()
+
     // Run initial poll immediately
     console.log(
       `⏰ Running initial poll at ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })}`
@@ -117,7 +125,14 @@ async function main(): Promise<void> {
       if (scheduledTimeout) {
         clearTimeout(scheduledTimeout)
       }
-      process.exit(0)
+      if (httpServer) {
+        httpServer.close(() => {
+          console.log('✓ HTTP server stopped')
+          process.exit(0)
+        })
+      } else {
+        process.exit(0)
+      }
     })
 
     process.on('SIGTERM', () => {
@@ -125,7 +140,14 @@ async function main(): Promise<void> {
       if (scheduledTimeout) {
         clearTimeout(scheduledTimeout)
       }
-      process.exit(0)
+      if (httpServer) {
+        httpServer.close(() => {
+          console.log('✓ HTTP server stopped')
+          process.exit(0)
+        })
+      } else {
+        process.exit(0)
+      }
     })
   } catch (error) {
     console.error('❌ Failed to start agent:', error)

@@ -75,117 +75,21 @@ All configuration via environment variables. See `.env.example` for full list:
 - `PLAYER_SPOTS_ALERT=10` - Player spots threshold for OPPORTUNITY
 - `PLAYER_SPOTS_URGENT=4` - Player spots threshold for FILLING_FAST
 
-## Production Deployment (DigitalOcean)
+## Production Deployment
 
-### 1. Create Droplet
+For complete deployment instructions including DigitalOcean droplet setup, server configuration, PM2 process management, monitoring, and troubleshooting, see **[docs/DEPLOY.md](docs/DEPLOY.md)**.
 
-```bash
-# $6/month Basic Droplet (1GB RAM, 25GB SSD)
-# Ubuntu 24.04 LTS
-# Select datacenter closest to you
-```
+**Quick Start**:
+1. Create DigitalOcean droplet (Ubuntu 24.04, $6/mo)
+2. Clone repo and run `./scripts/setup-server.sh`
+3. Configure `.env` with your `SLACK_WEBHOOK_URL`
+4. Restart: `pm2 restart adult-hockey-agent`
 
-### 2. Initial Server Setup
-
-```bash
-# SSH into droplet
-ssh root@your-droplet-ip
-
-# Update system
-apt update && apt upgrade -y
-
-# Install Node.js 20
-curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-apt install -y nodejs
-
-# Create app user
-adduser --disabled-password --gecos "" hockey
-usermod -aG sudo hockey
-
-# Switch to app user
-su - hockey
-```
-
-### 3. Deploy Application
-
-```bash
-# Clone repository
-cd ~
-git clone https://github.com/hunterleaman/adult-hockey-agent.git
-cd adult-hockey-agent
-
-# Install dependencies
-npm install
-
-# Configure environment
-cp .env.example .env
-nano .env  # Add your SLACK_WEBHOOK_URL
-
-# Build
-npm run build
-
-# Test run
-npm start
-# Press Ctrl+C after verifying it works
-```
-
-### 4. Setup PM2 for Process Management
-
-```bash
-# Install PM2 globally
-sudo npm install -g pm2
-
-# Start agent with PM2
-pm2 start dist/scheduler.js --name hockey-agent
-
-# Save PM2 configuration
-pm2 save
-
-# Setup PM2 to start on boot
-pm2 startup
-# Run the command PM2 outputs (starts with sudo)
-
-# View logs
-pm2 logs hockey-agent
-
-# Monitor
-pm2 monit
-```
-
-### 5. Setup Automatic Updates (Optional)
-
-```bash
-# Create update script
-cat > ~/update-agent.sh << 'EOF'
-#!/bin/bash
-cd ~/adult-hockey-agent
-git pull
-npm install
-npm run build
-pm2 restart hockey-agent
-EOF
-
-chmod +x ~/update-agent.sh
-
-# Test it
-./update-agent.sh
-```
-
-### 6. Monitoring
-
-```bash
-# View logs
-pm2 logs hockey-agent
-
-# Tail logs
-pm2 logs hockey-agent --lines 100
-
-# Check status
-pm2 status
-
-# Restart if needed
-pm2 restart hockey-agent
-```
+The agent includes:
+- PM2 process management (auto-restart on crashes)
+- Survives server reboots
+- Health check endpoint at `http://localhost:3000/health`
+- Automated deployment script: `./scripts/deploy.sh`
 
 ## Development
 
