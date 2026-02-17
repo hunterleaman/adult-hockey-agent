@@ -101,14 +101,24 @@ function findPreviousState(
 }
 
 function shouldAlertOpportunity(session: Session, prevState: SessionState | undefined): boolean {
-  // No previous alert - fire it
+  // CRITICAL: Don't downgrade from higher-priority alerts
+  // If previous alert was FILLING_FAST, NEWLY_AVAILABLE, or SOLD_OUT,
+  // suppress OPPORTUNITY (maintains alert hierarchy)
+  if (
+    prevState?.lastAlertType === 'FILLING_FAST' ||
+    prevState?.lastAlertType === 'NEWLY_AVAILABLE' ||
+    prevState?.lastAlertType === 'SOLD_OUT'
+  ) {
+    return false
+  }
+
+  // No previous alert OR previous was also OPPORTUNITY - check if we should fire
   if (!prevState || prevState.lastAlertType !== 'OPPORTUNITY') {
     return true
   }
 
   // Suppression rule: only re-alert if spots decreased by >= 2
-  const prevSpotsRemaining =
-    (prevState.lastPlayerCount ?? 0) > 0 ? session.playersMax - (prevState.lastPlayerCount ?? 0) : 0
+  const prevSpotsRemaining = session.playersMax - (prevState.lastPlayerCount ?? 0)
   const currentSpotsRemaining = session.playersMax - session.playersRegistered
   const decrease = prevSpotsRemaining - currentSpotsRemaining
 
@@ -116,7 +126,16 @@ function shouldAlertOpportunity(session: Session, prevState: SessionState | unde
 }
 
 function shouldAlertFillingFast(session: Session, prevState: SessionState | undefined): boolean {
-  // No previous alert - fire it
+  // CRITICAL: Don't downgrade from higher-priority alerts
+  // If previous alert was NEWLY_AVAILABLE or SOLD_OUT, suppress FILLING_FAST
+  // unless session state has changed (more registrations)
+  if (prevState?.lastAlertType === 'NEWLY_AVAILABLE' || prevState?.lastAlertType === 'SOLD_OUT') {
+    // Only allow FILLING_FAST if spots decreased since the higher-priority alert
+    const prevPlayerCount = prevState.lastPlayerCount ?? 0
+    return session.playersRegistered > prevPlayerCount
+  }
+
+  // No previous alert OR previous was also FILLING_FAST - check if we should fire
   if (!prevState || prevState.lastAlertType !== 'FILLING_FAST') {
     return true
   }

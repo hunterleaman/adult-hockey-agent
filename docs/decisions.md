@@ -123,3 +123,77 @@ Each entry follows:
 - Same pattern for summary data: `event.relationships.summary.data.id` → lookup `"event-summaries:{id}"` → get registration counts
 
 ---
+
+## ADR-004: 2026-02-17 - Dynamic Polling with setTimeout Instead of Cron
+
+**Decision**: Use `setTimeout` with recursive scheduling instead of `node-cron` for poll scheduling.
+
+**Context**: Spec requires accelerated polling (30 min) when any session has <= 4 spots remaining, otherwise normal polling (60 min). Cron schedules are static and cannot change interval based on application state.
+
+**Consequences**:
+
+- ✅ **Dynamic intervals**: Can check session state after each poll and adjust next interval
+- ✅ **Simpler code**: No cron expression parsing, just plain milliseconds
+- ✅ **Precise timing**: Schedules exactly N minutes from completion of previous poll (not wall-clock aligned)
+- ✅ **Fewer dependencies**: Removed `node-cron` package
+- ⚠️ **Process must stay alive**: Unlike cron, scheduler stops if process crashes (acceptable for systemd-managed service)
+- ⚠️ **Drift from wall-clock**: Polls at completion+interval, not on-the-hour (acceptable, more predictable)
+
+**Implementation**:
+
+- `scheduleNextPoll()`: Checks `shouldAccelerate()`, uses `pollIntervalAcceleratedMinutes` or `pollIntervalMinutes`
+- Recursive: Each poll completion calls `scheduleNextPoll()` to queue the next one
+- Graceful shutdown: Clears timeout on SIGINT/SIGTERM
+
+---
+
+## ADR-005: 2026-02-17 - Alert Hierarchy Enforcement in Suppression Logic
+
+**Decision**: Suppress lower-priority alerts when a higher-priority alert was previously sent for the same session, unless session state has meaningfully changed.
+
+**Context**: Initial priority system (Session 4) only enforced hierarchy in evaluation ORDER (check FILLING_FAST before OPPORTUNITY). Suppression logic checked `prevState.lastAlertType !== CURRENT_TYPE`, allowing alerts to oscillate (FILLING_FAST → OPPORTUNITY → FILLING_FAST) despite no session changes. This spammed users with redundant notifications.
+
+**Consequences**:
+
+- ✅ **Prevents alert oscillation**: Lower-priority alerts cannot fire after higher-priority alerts
+- ✅ **Clearer UX**: User receives one definitive alert about current session state
+- ✅ **Enforces priority hierarchy**:
+  - SOLD_OUT > NEWLY_AVAILABLE > FILLING_FAST > OPPORTUNITY
+  - Once higher-priority alert fires, lower-priority suppressed
+- ⚠️ **Requires state tracking**: Suppression depends on knowing previous alert type
+- ⚠️ **No downgrade notifications**: If spots open up (FILLING_FAST → fewer spots), user not notified (acceptable - can add PRESSURE_EASED alert type later if needed)
+
+**Implementation**:
+
+- `shouldAlertOpportunity()`: Returns false if previous alert was FILLING_FAST, NEWLY_AVAILABLE, or SOLD_OUT
+- `shouldAlertFillingFast()`: Returns false if previous alert was NEWLY_AVAILABLE or SOLD_OUT (unless player count increased)
+- Comprehensive test coverage: 7 tests for valid transitions, blocking downgrades, and same-priority suppression
+
+**See Also**: `docs/sessions/2026-02-17-alert-hierarchy-fix.md` for detailed analysis
+
+---
+
+## ADR-006: 2026-02-17 - ESLint Integration for Code Quality
+
+**Decision**: Add ESLint with TypeScript support to enforce architectural rules and catch common issues.
+
+**Context**: CLAUDE.md specifies rules like "no console.log in production code" and "no any types", but these were only enforced via manual review. Project lacked a lint script, making it unclear if code met standards.
+
+**Consequences**:
+
+- ✅ **Automated enforcement**: ESLint catches violations in CI/CD
+- ✅ **Prevents regressions**: Rules like no-floating-promises catch async bugs
+- ✅ **Self-documenting**: Rules encode architectural decisions in config
+- ✅ **IDE integration**: Developers get real-time feedback
+- ⚠️ **Build overhead**: Adds ~300ms to build time
+- ⚠️ **Config complexity**: ESLint v10 uses flat config format (learning curve)
+- ⚠️ **Rule exceptions needed**: Parser deals with untyped external API, needs `any` usage
+
+**Implementation**:
+
+- `eslint.config.js`: Flat config for ESLint v10
+- Enforces: no-console (except specific files), no-explicit-any, explicit-function-return-type, no-floating-promises
+- Exceptions: Parser (warns on `any`), tests (relaxed), discovery scripts (ignored)
+- Scripts: `npm run lint`, `npm run lint:fix`
+
+---

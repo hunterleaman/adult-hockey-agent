@@ -440,6 +440,186 @@ describe('evaluator', () => {
     })
   })
 
+  describe('alert hierarchy and suppression', () => {
+    it('does not downgrade from FILLING_FAST to OPPORTUNITY when session unchanged', () => {
+      // Bug fix test: Prevents oscillating between FILLING_FAST and OPPORTUNITY
+      const session = createSession({
+        playersRegistered: 21,
+        playersMax: 24, // 3 spots remaining
+        goaliesRegistered: 2,
+        isFull: false,
+      })
+
+      // Previous poll: FILLING_FAST fired
+      const state: SessionState[] = [
+        {
+          session,
+          lastAlertType: 'FILLING_FAST',
+          lastAlertAt: new Date(Date.now() - 60000).toISOString(),
+          lastPlayerCount: 21,
+          isRegistered: false,
+        },
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      // Should NOT fire OPPORTUNITY (no downgrade from FILLING_FAST)
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('allows upgrade from OPPORTUNITY to FILLING_FAST when spots decrease', () => {
+      const session = createSession({
+        playersRegistered: 20,
+        playersMax: 24, // 4 spots remaining (at threshold)
+        goaliesRegistered: 2,
+        isFull: false,
+      })
+
+      // Previous poll: OPPORTUNITY fired with 14 players
+      const state: SessionState[] = [
+        {
+          session: createSession({ playersRegistered: 14 }),
+          lastAlertType: 'OPPORTUNITY',
+          lastAlertAt: new Date(Date.now() - 60000).toISOString(),
+          lastPlayerCount: 14,
+          isRegistered: false,
+        },
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      // Should upgrade to FILLING_FAST (spots decreased from 10 to 4)
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].type).toBe('FILLING_FAST')
+    })
+
+    it('suppresses FILLING_FAST when session unchanged after FILLING_FAST', () => {
+      const session = createSession({
+        playersRegistered: 20,
+        playersMax: 24, // 4 spots remaining
+        goaliesRegistered: 2,
+        isFull: false,
+      })
+
+      // Previous poll: FILLING_FAST fired with same data
+      const state: SessionState[] = [
+        {
+          session,
+          lastAlertType: 'FILLING_FAST',
+          lastAlertAt: new Date(Date.now() - 60000).toISOString(),
+          lastPlayerCount: 20,
+          isRegistered: false,
+        },
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      // Should NOT fire any alert (no change)
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('does not downgrade from NEWLY_AVAILABLE to OPPORTUNITY', () => {
+      const session = createSession({
+        playersRegistered: 20,
+        playersMax: 24, // 4 spots available after opening up
+        goaliesRegistered: 2,
+        isFull: false,
+      })
+
+      // Previous poll: NEWLY_AVAILABLE fired (session opened up)
+      const state: SessionState[] = [
+        {
+          session,
+          lastAlertType: 'NEWLY_AVAILABLE',
+          lastAlertAt: new Date(Date.now() - 60000).toISOString(),
+          lastPlayerCount: 20,
+          isRegistered: false,
+        },
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      // Should NOT fire OPPORTUNITY (no downgrade from NEWLY_AVAILABLE)
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('does not downgrade from SOLD_OUT to any alert', () => {
+      const session = createSession({
+        playersRegistered: 24,
+        playersMax: 24,
+        goaliesRegistered: 3,
+        isFull: true,
+      })
+
+      // Previous poll: SOLD_OUT fired
+      const state: SessionState[] = [
+        {
+          session,
+          lastAlertType: 'SOLD_OUT',
+          lastAlertAt: new Date(Date.now() - 60000).toISOString(),
+          lastPlayerCount: 24,
+          isRegistered: false,
+        },
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      // Should NOT fire any alert (session still full, no transition)
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('fires FILLING_FAST again when spots decrease after previous FILLING_FAST', () => {
+      const session = createSession({
+        playersRegistered: 22,
+        playersMax: 24, // 2 spots remaining
+        goaliesRegistered: 2,
+        isFull: false,
+      })
+
+      // Previous poll: FILLING_FAST fired with 20 players (4 spots left)
+      const state: SessionState[] = [
+        {
+          session: createSession({ playersRegistered: 20 }),
+          lastAlertType: 'FILLING_FAST',
+          lastAlertAt: new Date(Date.now() - 60000).toISOString(),
+          lastPlayerCount: 20,
+          isRegistered: false,
+        },
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      // Should fire FILLING_FAST again (spots decreased from 4 to 2)
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].type).toBe('FILLING_FAST')
+    })
+
+    it('suppresses OPPORTUNITY when repeated with insufficient change', () => {
+      const session = createSession({
+        playersRegistered: 15,
+        playersMax: 24, // 9 spots remaining
+        goaliesRegistered: 2,
+        isFull: false,
+      })
+
+      // Previous poll: OPPORTUNITY fired with 14 players (10 spots left)
+      const state: SessionState[] = [
+        {
+          session: createSession({ playersRegistered: 14 }),
+          lastAlertType: 'OPPORTUNITY',
+          lastAlertAt: new Date(Date.now() - 60000).toISOString(),
+          lastPlayerCount: 14,
+          isRegistered: false,
+        },
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      // Should NOT fire OPPORTUNITY (only 1 player increase, need >= 2)
+      expect(alerts).toHaveLength(0)
+    })
+  })
+
   describe('edge cases', () => {
     it('handles session with 0 spots remaining', () => {
       const session = createSession({

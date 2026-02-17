@@ -1,15 +1,90 @@
 #!/usr/bin/env node
 import 'dotenv/config'
-import cron from 'node-cron'
 import { loadConfig, validateConfig } from './config.js'
 import { poll } from './index.js'
+import { loadState } from './state.js'
 
 const STATE_PATH = './data/state.json'
 
+let scheduledTimeout: NodeJS.Timeout | null = null
+
 /**
- * Main entry point - runs the agent with scheduled polling
+ * Check if any tracked session requires accelerated polling
+ * (any session with <= playerSpotsUrgent spots remaining)
  */
-async function main() {
+function shouldAccelerate(config: ReturnType<typeof loadConfig>): boolean {
+  const state = loadState(STATE_PATH)
+
+  for (const sessionState of state) {
+    const session = sessionState.session
+    const spotsRemaining = session.playersMax - session.playersRegistered
+
+    // Check if session is in FILLING_FAST range
+    if (!session.isFull && spotsRemaining <= config.playerSpotsUrgent) {
+      return true
+    }
+  }
+
+  return false
+}
+
+/**
+ * Get current ET hour for active hours check
+ */
+function getCurrentETHour(): number {
+  const now = new Date()
+  return parseInt(
+    now.toLocaleString('en-US', {
+      timeZone: 'America/New_York',
+      hour: '2-digit',
+      hour12: false,
+    })
+  )
+}
+
+/**
+ * Schedule the next poll with dynamic interval based on session state
+ */
+function scheduleNextPoll(config: ReturnType<typeof loadConfig>): void {
+  // Determine interval based on session state
+  const accelerate = shouldAccelerate(config)
+  const intervalMinutes = accelerate
+    ? config.pollIntervalAcceleratedMinutes
+    : config.pollIntervalMinutes
+  const intervalMs = intervalMinutes * 60 * 1000
+
+  console.log(
+    `📅 Next poll in ${intervalMinutes} minutes ${accelerate ? '(accelerated - FILLING_FAST detected)' : '(normal)'}`
+  )
+
+  scheduledTimeout = setTimeout(() => {
+    void (async () => {
+      const etHour = getCurrentETHour()
+
+      // Check if within active hours
+      if (etHour >= config.pollStartHour && etHour <= config.pollEndHour) {
+        console.log(
+          `⏰ Polling at ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })}`
+        )
+        await poll(config, STATE_PATH)
+        console.log('✓ Poll complete\n')
+
+        // Schedule next poll (recursive)
+        scheduleNextPoll(config)
+      } else {
+        console.log(`⏸  Outside active hours (${etHour}:00 ET) - skipping poll\n`)
+
+        // Still schedule next poll to check again later
+        scheduleNextPoll(config)
+      }
+    })()
+  }, intervalMs)
+}
+
+/**
+ * Main entry point - runs the agent with dynamic polling
+ */
+async function main(): Promise<void> {
   try {
     // Load and validate configuration
     const config = loadConfig()
@@ -31,43 +106,25 @@ async function main() {
     await poll(config, STATE_PATH)
     console.log('✓ Initial poll complete\n')
 
-    // Schedule regular polls
-    const cronSchedule = `*/${config.pollIntervalMinutes} * * * *` // Every N minutes
-    console.log(`📅 Scheduling polls: ${cronSchedule}`)
-    console.log(`   (every ${config.pollIntervalMinutes} minutes)\n`)
-
-    cron.schedule(cronSchedule, async () => {
-      const now = new Date()
-      const etHour = parseInt(
-        now.toLocaleString('en-US', {
-          timeZone: 'America/New_York',
-          hour: '2-digit',
-          hour12: false,
-        })
-      )
-
-      // Check if within active hours
-      if (etHour >= config.pollStartHour && etHour <= config.pollEndHour) {
-        console.log(
-          `⏰ Polling at ${now.toLocaleString('en-US', { timeZone: 'America/New_York' })}`
-        )
-        await poll(config, STATE_PATH)
-        console.log('✓ Poll complete\n')
-      } else {
-        console.log(`⏸  Outside active hours (${etHour}:00 ET) - skipping poll\n`)
-      }
-    })
+    // Start dynamic polling
+    scheduleNextPoll(config)
 
     console.log('✅ Agent running. Press Ctrl+C to stop.\n')
 
-    // Keep process alive
+    // Graceful shutdown
     process.on('SIGINT', () => {
       console.log('\n👋 Shutting down gracefully...')
+      if (scheduledTimeout) {
+        clearTimeout(scheduledTimeout)
+      }
       process.exit(0)
     })
 
     process.on('SIGTERM', () => {
       console.log('\n👋 Shutting down gracefully...')
+      if (scheduledTimeout) {
+        clearTimeout(scheduledTimeout)
+      }
       process.exit(0)
     })
   } catch (error) {
@@ -79,4 +136,4 @@ async function main() {
 export { main }
 
 // Run main when module is executed
-main()
+void main()

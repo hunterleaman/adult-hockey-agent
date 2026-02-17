@@ -92,7 +92,7 @@ export async function scrapeEvents(
     )
   }
 
-  const dateAvailabilitiesData: DateAvailabilitiesResponse = await dateAvailabilitiesResponse.json()
+  const dateAvailabilitiesData = (await dateAvailabilitiesResponse.json()) as DateAvailabilitiesResponse
 
   // Step 3: Extract event IDs for target dates
   const eventIds = extractEventIds(dateAvailabilitiesData, targetDates)
@@ -109,6 +109,7 @@ export async function scrapeEvents(
     throw new Error(`Failed to fetch events: ${eventsResponse.status} ${eventsResponse.statusText}`)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const eventsData = await eventsResponse.json()
 
   // Step 5: Parse events into sessions

@@ -54,6 +54,12 @@ Monitoring agent that tracks adult pick-up hockey registration at Extreme Ice Ce
 1. **Slack 400 Bad Request on SOLD_OUT alerts**: SlackNotifier used `style: 'default'` for buttons, but Slack's Block Kit only accepts `'primary'`, `'danger'`, or omitting the field. Invalid `'default'` value caused 400 errors. Fixed by returning `undefined` for default styling and omitting action button entirely for SOLD_OUT alerts (since registration isn't possible).
 2. **Multiple alerts firing for same session**: Evaluator allowed both FILLING_FAST and OPPORTUNITY to fire for the same session. For example, a session with 19/24 players would trigger both alerts with redundant information. Implemented priority hierarchy (SOLD_OUT > NEWLY_AVAILABLE > FILLING_FAST > OPPORTUNITY) with `continue` statements to ensure only one alert per session fires based on highest priority condition met.
 
+### Session 5 (2026-02-17) - Alert Oscillation Fix
+
+1. **Alert oscillation bug**: Despite Session 4 implementing priority hierarchy in evaluation order, the suppression logic had a critical flaw causing alerts to oscillate between FILLING_FAST and OPPORTUNITY. Suppression functions checked `prevState.lastAlertType !== CURRENT_TYPE`, which returned TRUE when previous alert was a different type, causing alerts to alternate indefinitely (e.g., FILLING_FAST → OPPORTUNITY → FILLING_FAST → OPPORTUNITY) despite no session changes. Root cause: suppression logic didn't enforce the priority hierarchy - it only checked if the previous alert was the SAME type, not if it was a HIGHER priority type.
+
+2. **Fix: Hierarchy-aware suppression**: Updated `shouldAlertOpportunity()` and `shouldAlertFillingFast()` to block "downgrades" from higher-priority alerts. OPPORTUNITY now suppressed if previous alert was FILLING_FAST, NEWLY_AVAILABLE, or SOLD_OUT. FILLING_FAST now suppressed if previous alert was NEWLY_AVAILABLE or SOLD_OUT (unless session state changed). This enforces: once a higher-priority alert fires, lower-priority alerts cannot fire unless session meaningfully changes. Added 7 comprehensive tests covering all valid state transitions and blocking invalid downgrades. See `ALERT-HIERARCHY-FIX.md` for complete analysis.
+
 ## API Architecture
 
 DASH exposes a JSON:API at `/dash/jsonapi/api/v1/`. Polling requires a **two-step fetch flow**:

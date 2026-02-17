@@ -19,7 +19,7 @@ export class ConsoleNotifier implements Notifier {
       console.log(alert.message)
       console.log(`\nRegister: ${alert.registrationUrl}`)
       console.log(separator)
-    } catch (error) {
+    } catch (_error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       // Silently ignore console errors (e.g., stdout closed)
       // Don't throw - console notifier should never block
     }
