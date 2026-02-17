@@ -99,6 +99,16 @@ Monitoring agent that tracks adult pick-up hockey registration at Extreme Ice Ce
 
 2. **Fix: Hierarchy-aware suppression**: Updated `shouldAlertOpportunity()` and `shouldAlertFillingFast()` to block "downgrades" from higher-priority alerts. OPPORTUNITY now suppressed if previous alert was FILLING_FAST, NEWLY_AVAILABLE, or SOLD_OUT. FILLING_FAST now suppressed if previous alert was NEWLY_AVAILABLE or SOLD_OUT (unless session state changed). This enforces: once a higher-priority alert fires, lower-priority alerts cannot fire unless session meaningfully changes. Added 7 comprehensive tests covering all valid state transitions and blocking invalid downgrades. See `ALERT-HIERARCHY-FIX.md` for complete analysis.
 
+### Session 6 (2026-02-17) - DigitalOcean Production Deployment
+
+1. **Deployment scripts skipped TypeScript**: Both `scripts/setup-server.sh` and `scripts/deploy.sh` used `npm ci --omit=dev` and `npm install --omit=dev` to install dependencies. This skipped devDependencies including TypeScript. Build step (`npm run build`) then failed with `tsc: not found` error. Root cause: TypeScript is a devDependency but required for building. **Fix**: Removed `--omit=dev` flag from both scripts. Dev dependencies are needed for builds and consume minimal disk space (~25MB on 25GB droplet). This also simplifies future rebuilds and dependency management.
+
+2. **SSH key not loaded in agent**: First SSH attempt failed with "Permission denied (publickey)" even though SSH key was added to DigitalOcean. Root cause: SSH key wasn't loaded into local SSH agent. **Fix**: Run `ssh-add ~/.ssh/id_ed25519` before connecting. Verify with `ssh-add -l`. Added to docs/DEPLOY.md troubleshooting section.
+
+3. **Interactive apt prompts during setup**: Running `apt upgrade` presented interactive prompt about `sshd_config` modifications: "What do you want to do about modified configuration file sshd_config?" This blocks automated setup. **Workaround**: Select "install the package maintainer's version" (Option 1) during manual setup. **Future fix**: Add `DEBIAN_FRONTEND=noninteractive` to apt commands in setup script for fully unattended installation.
+
+4. **Repository visibility for cloning**: Attempted `git clone https://github.com/hunterleaman/adult-hockey-agent.git` failed with "Authentication failed" because repo was private. **Options**: (a) Make repo public (easiest for portfolio, all secrets in gitignored .env), or (b) Setup SSH keys on server and use `git clone git@github.com:...`. Made repo public since it's for portfolio and contains no secrets.
+
 ## API Architecture
 
 DASH exposes a JSON:API at `/dash/jsonapi/api/v1/`. Polling requires a **two-step fetch flow**:
