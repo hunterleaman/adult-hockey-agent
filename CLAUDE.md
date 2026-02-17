@@ -4,6 +4,45 @@
 
 Monitoring agent that tracks adult pick-up hockey registration at Extreme Ice Center via the DaySmart DASH webapp. Sends notifications when sessions meet configurable criteria. Future scope includes league standings, stats, and scheduling.
 
+## Naming Convention
+
+**CRITICAL**: Always use the full three-word name "adult-hockey-agent" in all contexts. Never use shortened versions.
+
+### Internal References (code, configs, infrastructure)
+- **Repository name**: `adult-hockey-agent`
+- **Package name**: `adult-hockey-agent` (package.json)
+- **PM2 app name**: `adult-hockey-agent`
+- **File paths**: `/path/to/adult-hockey-agent/`
+- **Git references**: `adult-hockey-agent`
+- **Droplet hostname**: `adult-hockey-agent`
+- **Firewall name**: `adult-hockey-agent-firewall`
+- **Nginx upstream**: `adult_hockey_agent` (underscores for variable names)
+- **Backup scripts**: `backup-adult-hockey-agent.sh`
+
+### System Usernames (no hyphens allowed)
+- **SSH/system user**: `adulthockey` (one word, no hyphens)
+- **File ownership**: `adulthockey:adulthockey`
+- **Home directory**: `/home/adulthockey`
+
+### External/Marketing References
+- **Public name**: "Adult Hockey Agent" (title case, spaces)
+- **Documentation titles**: "Adult Hockey Agent"
+- **README headers**: "# Adult Hockey Agent"
+
+### ❌ NEVER Use These
+- ~~`hockey-agent`~~ (missing "adult-")
+- ~~`hockey`~~ (too generic, ambiguous)
+- ~~`aha`~~ or ~~`AHA`~~ (unclear acronym)
+- ~~`user: hockey`~~ (should be `adulthockey`)
+
+### Why This Matters
+1. **Clarity**: "hockey-agent" is ambiguous (youth? league? standings?)
+2. **Searchability**: Full name ensures unique, unambiguous search results
+3. **Professionalism**: Consistent naming across codebase, docs, and infrastructure
+4. **Portability**: If project scope expands (youth hockey, league stats), naming remains clear
+
+**Rule of thumb**: When in doubt, use the full three-word name `adult-hockey-agent` with hyphens (or `adulthockey` for usernames where hyphens aren't allowed).
+
 ## Architecture Rules
 
 - TypeScript strict mode, no `any` types

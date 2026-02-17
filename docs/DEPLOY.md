@@ -29,9 +29,9 @@ This guide covers deploying the Adult Hockey Agent to a DigitalOcean VPS. The ag
      ```
    - Click **New SSH Key** and paste your public key
 7. **Finalize Details**:
-   - Hostname: `hockey-agent` (or your preference)
+   - Hostname: `adult-hockey-agent` (or your preference)
    - Enable **Monitoring** (free)
-   - Tags: `production`, `hockey` (optional)
+   - Tags: `production`, `adult-hockey-agent` (optional)
 8. Click **Create Droplet**
 
 Wait 60 seconds for the droplet to boot. Note the **IP address** displayed.
@@ -40,7 +40,7 @@ Wait 60 seconds for the droplet to boot. Note the **IP address** displayed.
 
 1. In DigitalOcean dashboard, go to **Networking** → **Firewalls**
 2. Click **Create Firewall**
-3. **Name**: `hockey-agent-firewall`
+3. **Name**: `adult-hockey-agent-firewall`
 4. **Inbound Rules**:
    - SSH: TCP 22 from All IPv4, All IPv6
    - HTTP: TCP 80 from All IPv4, All IPv6 (for future nginx/SSL)
@@ -48,7 +48,7 @@ Wait 60 seconds for the droplet to boot. Note the **IP address** displayed.
    - Custom: TCP 3000 from All IPv4, All IPv6 (health endpoint - lock down later)
 5. **Outbound Rules**:
    - All TCP, All UDP, ICMP to All IPv4, All IPv6
-6. **Apply to Droplets**: Select `hockey-agent`
+6. **Apply to Droplets**: Select `adult-hockey-agent`
 7. Click **Create Firewall**
 
 **Note**: For production, restrict port 3000 to Slack IP ranges only. See [Slack IP Ranges](https://api.slack.com/changelog/2018-08-14-slack-api-to-begin-publishing-ip-address-ranges) for the list.
@@ -73,18 +73,18 @@ If connection fails, verify:
 
 ```bash
 # Still SSH'd as root
-adduser hockey
+adduser adulthockey
 # Set a strong password when prompted
 # Accept defaults for other prompts (just press Enter)
 
 # Add to sudo group
-usermod -aG sudo hockey
+usermod -aG sudo adulthockey
 
 # Copy SSH keys to new user
-rsync --archive --chown=hockey:hockey ~/.ssh /home/hockey
+rsync --archive --chown=adulthockey:adulthockey ~/.ssh /home/adulthockey
 
 # Switch to new user
-su - hockey
+su - adulthockey
 
 # Test sudo access
 sudo apt update  # Should work without asking for password
@@ -202,7 +202,7 @@ curl http://YOUR_DROPLET_IP:3000/health
 sudo reboot
 
 # Wait 60 seconds, then SSH back in
-ssh hockey@YOUR_DROPLET_IP
+ssh adulthockey@YOUR_DROPLET_IP
 
 # Check if agent auto-started
 pm2 status
@@ -428,8 +428,8 @@ See `docs/nginx.conf` for a complete nginx configuration. This is useful for:
 **Installation**:
 ```bash
 sudo apt install nginx
-sudo cp docs/nginx.conf /etc/nginx/sites-available/hockey-agent
-sudo ln -s /etc/nginx/sites-available/hockey-agent /etc/nginx/sites-enabled/
+sudo cp docs/nginx.conf /etc/nginx/sites-available/adult-hockey-agent
+sudo ln -s /etc/nginx/sites-available/adult-hockey-agent /etc/nginx/sites-enabled/
 sudo nginx -t  # Test config
 sudo systemctl restart nginx
 ```
@@ -475,24 +475,24 @@ pm2 plus
 
 ```bash
 # Create backup script
-cat > ~/backup-hockey-agent.sh << 'EOF'
+cat > ~/backup-adult-hockey-agent.sh << 'EOF'
 #!/bin/bash
 BACKUP_DIR=~/backups
 mkdir -p $BACKUP_DIR
 DATE=$(date +%Y%m%d-%H%M%S)
-tar -czf $BACKUP_DIR/hockey-agent-$DATE.tar.gz \
+tar -czf $BACKUP_DIR/adult-hockey-agent-$DATE.tar.gz \
   ~/adult-hockey-agent/data \
   ~/adult-hockey-agent/.env
 # Keep only last 7 backups
-ls -t $BACKUP_DIR/hockey-agent-*.tar.gz | tail -n +8 | xargs rm -f
+ls -t $BACKUP_DIR/adult-hockey-agent-*.tar.gz | tail -n +8 | xargs rm -f
 EOF
 
-chmod +x ~/backup-hockey-agent.sh
+chmod +x ~/backup-adult-hockey-agent.sh
 
 # Add to crontab (daily at 2am)
 crontab -e
 # Add this line:
-# 0 2 * * * /home/hockey/backup-hockey-agent.sh
+# 0 2 * * * /home/adulthockey/backup-adult-hockey-agent.sh
 ```
 
 ## Part 7: Security Hardening
