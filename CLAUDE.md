@@ -194,31 +194,34 @@ Must handle gracefully:
 
 ## Session-End Protocol (mandatory before ending any session)
 
+**CRITICAL: Run quality checks first**
+
+```bash
+npm run check
+```
+
+This runs: typecheck + lint + format:check + test
+
 ### Code Quality
 
-1. Run all tests, lint, type-check — fix any failures
-2. Format all files with prettier
-3. Commit with descriptive message
-4. `git push` — work is NOT done until push succeeds
+1. ✅ `npm run check` — ALL must pass before commit
+2. ✅ Fix any failures
+3. ✅ Commit with descriptive message (conventional commits format)
+4. ✅ `git push` — work is NOT done until push succeeds
 
 ### Documentation
 
-5. Update spec.md if requirements changed or were clarified
-6. Update "Known Mistakes" section if Claude Code produced errors needing correction
-7. Add entries to docs/decisions.md for non-obvious architectural choices
-
-### Learning Extraction
-
-8. Update LEARNINGS.md:
-   - Patterns that worked or didn't
-   - Reusable code worth extracting (tag with // TODO: Extract to claude-mastery-agents/shared/)
-   - Prompt templates that proved effective
-   - Session token usage and estimated cost
-9. Tag content ideas inline with: [CONTENT: X-thread], [CONTENT: LinkedIn], [CONTENT: Technical], [CONTENT: Course]
+5. ✅ Update `docs/SPEC.md` if requirements changed
+6. ✅ Update CLAUDE.md "Known Mistakes" if errors occurred
+7. ✅ Add ADR to `docs/DECISIONS.md` for architectural choices
+8. ✅ Create `docs/sessions/YYYY-MM-DD-topic.md` for complex fixes
 
 ### Handoff
 
-10. Summarize what was accomplished and what remains for next session
+9. ✅ Summarize what was accomplished
+10. ✅ Note remaining work for next session
+
+**See docs/CONTRIBUTING.md for detailed protocols.**
 
 ## File Organization
 

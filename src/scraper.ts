@@ -92,7 +92,8 @@ export async function scrapeEvents(
     )
   }
 
-  const dateAvailabilitiesData = (await dateAvailabilitiesResponse.json()) as DateAvailabilitiesResponse
+  const dateAvailabilitiesData =
+    (await dateAvailabilitiesResponse.json()) as DateAvailabilitiesResponse
 
   // Step 3: Extract event IDs for target dates
   const eventIds = extractEventIds(dateAvailabilitiesData, targetDates)

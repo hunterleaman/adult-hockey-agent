@@ -20,7 +20,7 @@ export function loadState(filePath: string): SessionState[] {
 
     const state: unknown = JSON.parse(contents)
     return Array.isArray(state) ? (state as SessionState[]) : []
-  } catch (_error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+  } catch {
     // TODO: Use structured logger when available
     // Gracefully handle corrupted/invalid state files
     return []

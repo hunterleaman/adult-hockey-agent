@@ -85,7 +85,7 @@ export default [
   },
   {
     // Discovery scripts are throwaway tools (per CLAUDE.md)
-    files: ['src/api-discovery.ts', 'src/fetch-*.ts'],
+    files: ['src/api-discovery.ts', 'src/fetch-*.ts', 'src/fetch-events.ts', 'src/fetch-availabilities.ts'],
     rules: {
       'no-console': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',

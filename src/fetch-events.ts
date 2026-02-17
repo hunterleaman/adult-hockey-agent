@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { writeFile } from 'fs/promises'
 import { join } from 'path'
 

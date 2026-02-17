@@ -79,7 +79,7 @@ export async function poll(config: Config, statePath: string = DEFAULT_STATE_PAT
 
     // Step 6: Save state
     saveState(statePath, state)
-  } catch (_error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+  } catch {
     // TODO: Use structured logger when available
     // Gracefully handle errors - log but don't crash
     // The next poll cycle will retry
