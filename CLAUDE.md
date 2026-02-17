@@ -99,6 +99,16 @@ Monitoring agent that tracks adult pick-up hockey registration at Extreme Ice Ce
 
 2. **Fix: Hierarchy-aware suppression**: Updated `shouldAlertOpportunity()` and `shouldAlertFillingFast()` to block "downgrades" from higher-priority alerts. OPPORTUNITY now suppressed if previous alert was FILLING_FAST, NEWLY_AVAILABLE, or SOLD_OUT. FILLING_FAST now suppressed if previous alert was NEWLY_AVAILABLE or SOLD_OUT (unless session state changed). This enforces: once a higher-priority alert fires, lower-priority alerts cannot fire unless session meaningfully changes. Added 7 comprehensive tests covering all valid state transitions and blocking invalid downgrades. See `ALERT-HIERARCHY-FIX.md` for complete analysis.
 
+### Session 6 (2026-02-17) - DigitalOcean Production Deployment
+
+1. **Deployment scripts skipped TypeScript**: Both `scripts/setup-server.sh` and `scripts/deploy.sh` used `npm ci --omit=dev` and `npm install --omit=dev` to install dependencies. This skipped devDependencies including TypeScript. Build step (`npm run build`) then failed with `tsc: not found` error. Root cause: TypeScript is a devDependency but required for building. **Fix**: Removed `--omit=dev` flag from both scripts. Dev dependencies are needed for builds and consume minimal disk space (~25MB on 25GB droplet). This also simplifies future rebuilds and dependency management.
+
+2. **SSH key not loaded in agent**: First SSH attempt failed with "Permission denied (publickey)" even though SSH key was added to DigitalOcean. Root cause: SSH key wasn't loaded into local SSH agent. **Fix**: Run `ssh-add ~/.ssh/id_ed25519` before connecting. Verify with `ssh-add -l`. Added to docs/DEPLOY.md troubleshooting section.
+
+3. **Interactive apt prompts during setup**: Running `apt upgrade` presented interactive prompt about `sshd_config` modifications: "What do you want to do about modified configuration file sshd_config?" This blocks automated setup. **Workaround**: Select "install the package maintainer's version" (Option 1) during manual setup. **Future fix**: Add `DEBIAN_FRONTEND=noninteractive` to apt commands in setup script for fully unattended installation.
+
+4. **Repository visibility for cloning**: Attempted `git clone https://github.com/hunterleaman/adult-hockey-agent.git` failed with "Authentication failed" because repo was private. **Options**: (a) Make repo public (easiest for portfolio, all secrets in gitignored .env), or (b) Setup SSH keys on server and use `git clone git@github.com:...`. Made repo public since it's for portfolio and contains no secrets.
+
 ## API Architecture
 
 DASH exposes a JSON:API at `/dash/jsonapi/api/v1/`. Polling requires a **two-step fetch flow**:
@@ -230,6 +240,139 @@ Must handle gracefully:
 4. Verify against spec requirements
 5. Commit with descriptive message
 6. Push to remote
+
+## Git Branching Workflow
+
+**CRITICAL**: Always use feature branches for new work. Never commit directly to `main` except for trivial documentation fixes.
+
+### Branch Naming Convention
+
+- `feat/` - New features (e.g., `feat/email-notifications`, `feat/league-standings`)
+- `fix/` - Bug fixes (e.g., `fix/alert-oscillation`, `fix/parser-error`)
+- `docs/` - Documentation only (e.g., `docs/update-readme`, `docs/api-guide`)
+- `deploy/` - Deployment/infrastructure (e.g., `deploy/verify-digitalocean`, `deploy/nginx-ssl`)
+- `refactor/` - Code refactoring (e.g., `refactor/parser-types`, `refactor/state-management`)
+- `test/` - Test additions/fixes (e.g., `test/evaluator-coverage`)
+
+### Workflow for New Tasks
+
+**BEFORE starting any non-trivial work:**
+
+```bash
+# Create and switch to feature branch
+git checkout -b feat/descriptive-name
+
+# Push branch to remote immediately (sets upstream tracking)
+git push -u origin feat/descriptive-name
+```
+
+**DURING work:**
+
+```bash
+# Commit frequently with descriptive messages
+git add <files>
+git commit -m "feat: descriptive message"
+
+# Push to feature branch (not main!)
+git push origin feat/descriptive-name
+```
+
+**AFTER testing and verification:**
+
+```bash
+# Switch back to main
+git checkout main
+
+# Pull latest changes (in case main was updated)
+git pull origin main
+
+# Merge feature branch (--no-ff preserves branch history)
+git merge feat/descriptive-name --no-ff
+
+# Push to main
+git push origin main
+
+# Clean up local branch
+git branch -d feat/descriptive-name
+
+# Clean up remote branch
+git push origin --delete feat/descriptive-name
+```
+
+### When to Branch
+
+**ALWAYS use branches for:**
+- New features (any new functionality)
+- Bug fixes (fixing broken behavior)
+- Deployment changes (infrastructure, configs)
+- Refactoring (changing code structure)
+- Dependency updates (package.json changes)
+
+**MAY commit directly to `main` for:**
+- Typo fixes in documentation (1-2 word changes)
+- Formatting fixes (prettier, lint auto-fixes)
+- Comment clarifications
+
+**NEVER commit directly to `main` for:**
+- Code changes (src/)
+- Test changes (tests/)
+- Configuration changes (.env.example, ecosystem.config.cjs)
+- Build changes (package.json, tsconfig.json)
+
+### Pull Requests (Optional but Recommended)
+
+For significant features, consider creating a GitHub Pull Request instead of merging locally:
+
+```bash
+# After pushing branch to remote
+# Go to: https://github.com/hunterleaman/adult-hockey-agent/pulls
+# Click "New Pull Request"
+# Select: base: main <- compare: feat/your-branch
+# Add description, review changes, merge via GitHub UI
+```
+
+**Benefits of PRs:**
+- Visual diff review before merging
+- GitHub checks (if configured)
+- Conversation history for future reference
+- Better for portfolio (shows collaboration skills)
+
+### Emergency Hotfixes
+
+For critical production bugs:
+
+```bash
+# Create hotfix branch from main
+git checkout main
+git checkout -b fix/critical-issue
+
+# Fix, test, commit
+git commit -m "fix: critical issue description"
+
+# Merge immediately (no waiting for review)
+git checkout main
+git merge fix/critical-issue --no-ff
+git push origin main
+```
+
+### Current Branch Status
+
+**Active branch**: `deploy/verify-digitalocean`
+**Purpose**: Verify deployment infrastructure on DigitalOcean VPS, fix any deployment issues
+**Merge to main when**: Deployment verified working, all issues resolved
+
+### Verification Before Merging to Main
+
+Before merging any branch to `main`, ensure:
+
+1. ✅ All tests pass: `npm run check`
+2. ✅ Code builds successfully: `npm run build`
+3. ✅ No console.log statements in production code
+4. ✅ Documentation updated (README.md, CLAUDE.md if needed)
+5. ✅ Commit messages follow conventional commits format
+6. ✅ CLAUDE.md updated with any new Known Mistakes
+
+**Rule of thumb**: If you're uncertain whether to branch, branch. It's easier to merge a branch than to revert a bad commit to `main`.
 
 ## Session-End Protocol (mandatory before ending any session)
 

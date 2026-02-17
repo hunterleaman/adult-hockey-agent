@@ -98,9 +98,9 @@ echo ""
 info "Step 3/5: Installing/updating dependencies..."
 
 if [ -f "package-lock.json" ]; then
-    npm ci --omit=dev
+    npm ci
 else
-    npm install --omit=dev
+    npm install
 fi
 echo ""
 

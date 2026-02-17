@@ -123,14 +123,14 @@ echo ""
 # ============================================================================
 # 6. Install project dependencies
 # ============================================================================
-info "Step 6/10: Installing project dependencies (production only)..."
+info "Step 6/10: Installing project dependencies..."
 
 if [ -f "package-lock.json" ]; then
     info "Using npm ci (lockfile exists)..."
-    npm ci --omit=dev
+    npm ci
 else
     warn "No package-lock.json found, using npm install..."
-    npm install --omit=dev
+    npm install
 fi
 echo ""
 
