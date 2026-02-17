@@ -187,7 +187,7 @@ npm test
 
 ### Agent not polling
 
-- Check logs: `pm2 logs hockey-agent`
+- Check logs: `pm2 logs adult-hockey-agent`
 - Verify active hours in .env (POLL_START_HOUR, POLL_END_HOUR)
 - Check system time matches ET timezone
 
