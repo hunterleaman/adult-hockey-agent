@@ -62,14 +62,13 @@ export class SlackNotifier implements Notifier {
 
   private buildPayload(alert: Alert): SlackPayload {
     const emoji = this.getEmoji(alert.type)
-    const color = this.getColor(alert.type)
 
     const blocks: SlackBlock[] = [
       {
         type: 'header',
         text: {
           type: 'plain_text',
-          text: `${emoji} ${alert.type}`,
+          text: `${emoji} ${alert.type.replace('_', ' ')}`,
           emoji: true,
         },
       },
@@ -80,7 +79,11 @@ export class SlackNotifier implements Notifier {
           text: this.formatMessage(alert),
         },
       },
-      {
+    ]
+
+    // Only include action button for alerts where registration is possible
+    if (alert.type !== 'SOLD_OUT') {
+      blocks.push({
         type: 'actions',
         elements: [
           {
@@ -93,8 +96,8 @@ export class SlackNotifier implements Notifier {
             style: this.getButtonStyle(alert.type),
           },
         ],
-      },
-    ]
+      })
+    }
 
     return { blocks }
   }
@@ -119,14 +122,14 @@ export class SlackNotifier implements Notifier {
     return colorMap[type]
   }
 
-  private getButtonStyle(type: AlertType): string {
+  private getButtonStyle(type: AlertType): string | undefined {
     if (type === 'FILLING_FAST') {
       return 'danger' // red button for urgency
     }
     if (type === 'OPPORTUNITY' || type === 'NEWLY_AVAILABLE') {
       return 'primary' // green button
     }
-    return 'default'
+    return undefined // omit style field for default styling
   }
 
   private formatMessage(alert: Alert): string {

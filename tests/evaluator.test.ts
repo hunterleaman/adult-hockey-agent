@@ -350,7 +350,7 @@ describe('evaluator', () => {
       expect(newlyAvailableAlerts).toHaveLength(0)
     })
 
-    it('re-evaluates OPPORTUNITY and FILLING_FAST after NEWLY_AVAILABLE', () => {
+    it('fires only NEWLY_AVAILABLE when session opens up (priority system)', () => {
       const session = createSession({
         playersRegistered: 20,
         playersMax: 24, // 4 spots remaining
@@ -369,14 +369,10 @@ describe('evaluator', () => {
 
       const alerts = evaluate([session], state, defaultConfig)
 
-      // Should get NEWLY_AVAILABLE + OPPORTUNITY + FILLING_FAST
-      expect(alerts.length).toBeGreaterThanOrEqual(1)
-      const types = alerts.map((a) => a.type)
-      expect(types).toContain('NEWLY_AVAILABLE')
-      // OPPORTUNITY: 20 players registered >= 10, 1 goalie >= 1 ✓
-      // FILLING_FAST: 4 spots remaining <= 4 ✓
-      expect(types).toContain('OPPORTUNITY')
-      expect(types).toContain('FILLING_FAST')
+      // Should get ONLY NEWLY_AVAILABLE (priority system: one alert per session)
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].type).toBe('NEWLY_AVAILABLE')
+      // OPPORTUNITY and FILLING_FAST are suppressed by priority system
     })
   })
 
@@ -397,6 +393,26 @@ describe('evaluator', () => {
       expect(alerts[0]).toHaveProperty('message')
       expect(alerts[0]).toHaveProperty('registrationUrl')
       expect(alerts[0].registrationUrl).toContain('2026-02-20')
+    })
+
+    it('fires only FILLING_FAST when both FILLING_FAST and OPPORTUNITY conditions are met', () => {
+      // Scenario: 20/24 players (4 spots left), 2/3 goalies
+      // - FILLING_FAST: 4 spots <= 4 (playerSpotsUrgent) ✓
+      // - OPPORTUNITY: 20 players >= 10, 2 goalies >= 1 ✓
+      // Expected: Only FILLING_FAST fires (higher priority)
+      const session = createSession({
+        playersRegistered: 20,
+        playersMax: 24,
+        goaliesRegistered: 2,
+        goaliesMax: 3,
+        isFull: false,
+      })
+      const state: SessionState[] = []
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].type).toBe('FILLING_FAST')
     })
   })
 

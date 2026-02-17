@@ -35,27 +35,27 @@ export function evaluate(
 
     const prevState = findPreviousState(session, previousState)
 
-    // Check for state transitions first (SOLD_OUT, NEWLY_AVAILABLE)
-    if (prevState) {
-      // SOLD_OUT: transitioned from available to full
-      if (session.isFull && !prevState.session.isFull) {
-        alerts.push(createAlert('SOLD_OUT', session))
-        continue // Don't check other rules after SOLD_OUT
-      }
+    // Alert priority hierarchy - only ONE alert per session
+    // Priority: SOLD_OUT > NEWLY_AVAILABLE > FILLING_FAST > OPPORTUNITY
 
-      // NEWLY_AVAILABLE: transitioned from full to available
-      if (!session.isFull && prevState.session.isFull) {
-        alerts.push(createAlert('NEWLY_AVAILABLE', session))
-        // Re-evaluate other rules below (don't continue)
-      }
+    // Priority 1: SOLD_OUT - transitioned from available to full
+    if (prevState && session.isFull && !prevState.session.isFull) {
+      alerts.push(createAlert('SOLD_OUT', session))
+      continue
     }
 
-    // Skip OPPORTUNITY and FILLING_FAST for registered sessions
+    // Priority 2: NEWLY_AVAILABLE - transitioned from full to available
+    if (prevState && !session.isFull && prevState.session.isFull) {
+      alerts.push(createAlert('NEWLY_AVAILABLE', session))
+      continue
+    }
+
+    // Skip remaining alert types for registered sessions
     if (prevState?.isRegistered) {
       continue
     }
 
-    // Skip if session is full (no action needed)
+    // Skip remaining alert types if session is full
     if (session.isFull) {
       continue
     }
@@ -63,20 +63,22 @@ export function evaluate(
     // Calculate player spots remaining
     const spotsRemaining = session.playersMax - session.playersRegistered
 
-    // FILLING_FAST: player spots <= playerSpotsUrgent
+    // Priority 3: FILLING_FAST - urgency alert when spots are running out
     if (spotsRemaining <= config.playerSpotsUrgent) {
       if (shouldAlertFillingFast(session, prevState)) {
         alerts.push(createAlert('FILLING_FAST', session))
+        continue
       }
     }
 
-    // OPPORTUNITY: goalies >= minGoalies AND players registered >= minPlayersRegistered
+    // Priority 4: OPPORTUNITY - general interest alert
     if (
       session.goaliesRegistered >= config.minGoalies &&
       session.playersRegistered >= config.minPlayersRegistered
     ) {
       if (shouldAlertOpportunity(session, prevState)) {
         alerts.push(createAlert('OPPORTUNITY', session))
+        continue
       }
     }
   }

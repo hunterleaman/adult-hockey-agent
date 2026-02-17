@@ -1,6 +1,5 @@
 import type { Config } from './config'
 import type { Notifier } from './notifiers/interface'
-import type { SessionState } from './evaluator'
 import { scrapeEvents } from './scraper.js'
 import { evaluate } from './evaluator.js'
 import { loadState, saveState, pruneOldSessions, updateSessionState } from './state.js'
@@ -80,7 +79,7 @@ export async function poll(config: Config, statePath: string = DEFAULT_STATE_PAT
 
     // Step 6: Save state
     saveState(statePath, state)
-  } catch (error) {
+  } catch (_error) {
     // TODO: Use structured logger when available
     // Gracefully handle errors - log but don't crash
     // The next poll cycle will retry

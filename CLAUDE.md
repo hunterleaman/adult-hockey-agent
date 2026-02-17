@@ -49,6 +49,11 @@ Monitoring agent that tracks adult pick-up hockey registration at Extreme Ice Ce
 1. **Missing .js extensions in ES module imports**: With `"type": "module"` in package.json, Node.js requires explicit `.js` extensions for relative imports. Updated scheduler.ts, index.ts, and scraper.ts to add `.js` extensions to all runtime imports (type-only imports don't need extensions).
 2. **OPPORTUNITY alert logic changed**: Updated from `player_spots_remaining <= 10` to `players_registered >= 10`. This better reflects when a session has critical mass (enough committed players) rather than urgency (few spots left). Config variable renamed from `PLAYER_SPOTS_ALERT` to `MIN_PLAYERS_REGISTERED`.
 
+### Session 4 (2026-02-17) - Alert Priority System & Slack Button Fix
+
+1. **Slack 400 Bad Request on SOLD_OUT alerts**: SlackNotifier used `style: 'default'` for buttons, but Slack's Block Kit only accepts `'primary'`, `'danger'`, or omitting the field. Invalid `'default'` value caused 400 errors. Fixed by returning `undefined` for default styling and omitting action button entirely for SOLD_OUT alerts (since registration isn't possible).
+2. **Multiple alerts firing for same session**: Evaluator allowed both FILLING_FAST and OPPORTUNITY to fire for the same session. For example, a session with 19/24 players would trigger both alerts with redundant information. Implemented priority hierarchy (SOLD_OUT > NEWLY_AVAILABLE > FILLING_FAST > OPPORTUNITY) with `continue` statements to ensure only one alert per session fires based on highest priority condition met.
+
 ## API Architecture
 
 DASH exposes a JSON:API at `/dash/jsonapi/api/v1/`. Polling requires a **two-step fetch flow**:
