@@ -1,0 +1,5 @@
+{
+  "setup": "ln -s \"$CONDUCTOR_ROOT_PATH/.env\" .env && npm install && npm run build",
+  "run": "npm run check",
+  "archive": "echo \"Archived $CONDUCTOR_WORKSPACE_NAME at $(date)\""
+}
