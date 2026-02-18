@@ -374,6 +374,12 @@ Before merging any branch to `main`, ensure:
 
 **Rule of thumb**: If you're uncertain whether to branch, branch. It's easier to merge a branch than to revert a bad commit to `main`.
 
+## Session-Start Protocol (mandatory at the beginning of every session)
+
+1. ✅ `gh issue list --repo hunterleaman/adult-hockey-agent`
+2. ✅ Review what's in progress, what's next
+3. ✅ State session goal in first message to Claude
+
 ## Session-End Protocol (mandatory before ending any session)
 
 **CRITICAL: Run quality checks first**
@@ -402,6 +408,8 @@ This runs: typecheck + lint + format:check + test
 
 9. ✅ Summarize what was accomplished
 10. ✅ Note remaining work for next session
+11. ✅ Update issue comments with progress if work is incomplete
+12. ✅ `gh issue list` to confirm issue state matches reality
 
 **See docs/CONTRIBUTING.md for detailed protocols.**
 
