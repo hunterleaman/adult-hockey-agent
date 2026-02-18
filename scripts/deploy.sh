@@ -53,7 +53,7 @@ echo ""
 # ============================================================================
 # 1. Check current git status
 # ============================================================================
-info "Step 1/5: Checking git status..."
+info "Step 1/6: Checking git status..."
 
 if [ -n "$(git status --porcelain)" ]; then
     warn "Working directory has uncommitted changes:"
@@ -75,7 +75,7 @@ echo ""
 # ============================================================================
 # 2. Pull latest code from GitHub
 # ============================================================================
-info "Step 2/5: Pulling latest code from GitHub..."
+info "Step 2/6: Pulling latest code from GitHub..."
 
 git fetch origin
 git pull origin "$CURRENT_BRANCH"
@@ -95,7 +95,7 @@ echo ""
 # ============================================================================
 # 3. Install/update dependencies
 # ============================================================================
-info "Step 3/5: Installing/updating dependencies..."
+info "Step 3/6: Installing/updating dependencies..."
 
 if [ -f "package-lock.json" ]; then
     npm ci
@@ -107,7 +107,7 @@ echo ""
 # ============================================================================
 # 4. Build TypeScript
 # ============================================================================
-info "Step 4/5: Building TypeScript..."
+info "Step 4/6: Building TypeScript..."
 npm run build
 
 if [ ! -d "dist" ]; then
@@ -121,7 +121,7 @@ echo ""
 # ============================================================================
 # 5. Restart PM2 process
 # ============================================================================
-info "Step 5/5: Restarting PM2 process..."
+info "Step 5/6: Restarting PM2 process..."
 
 if pm2 list | grep -q "adult-hockey-agent"; then
     pm2 restart adult-hockey-agent
@@ -134,20 +134,29 @@ else
 fi
 
 echo ""
+
+# ============================================================================
+# 6. Post-deploy health check
+# ============================================================================
+info "Verifying health..."
+sleep 5
+if curl -sf http://localhost:3000/health > /dev/null; then
+    info "Health check passed ✅"
+else
+    error "Health check FAILED - check logs with: pm2 logs adult-hockey-agent"
+    exit 1
+fi
+
+echo ""
 echo "============================================"
 echo -e "${GREEN}✅ Deployment complete!${NC}"
 echo "============================================"
 echo ""
 echo "Deployed: $CURRENT_BRANCH @ $NEW_COMMIT"
 echo ""
-echo "Next steps:"
+echo "Useful commands:"
 echo ""
-echo "1. Check status:"
-echo "   pm2 status"
-echo ""
-echo "2. Monitor logs:"
-echo "   pm2 logs adult-hockey-agent"
-echo ""
-echo "3. Test health endpoint:"
-echo "   curl http://localhost:3000/health"
+echo "  pm2 status                        # Check process status"
+echo "  pm2 logs adult-hockey-agent       # Monitor logs"
+echo "  curl http://localhost:3000/health  # Manual health check"
 echo ""
