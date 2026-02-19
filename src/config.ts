@@ -9,6 +9,9 @@ export interface Config {
   playerSpotsUrgent: number
   port: number
   slackWebhookUrl?: string
+  slackSigningSecret?: string
+  slackBotToken?: string
+  remindIntervalHours: number
 }
 
 /**
@@ -29,6 +32,9 @@ export function loadConfig(): Config {
     playerSpotsUrgent: parseIntOrDefault(process.env.PLAYER_SPOTS_URGENT, 4),
     port: parseIntOrDefault(process.env.PORT, 3000),
     slackWebhookUrl: process.env.SLACK_WEBHOOK_URL || undefined,
+    slackSigningSecret: process.env.SLACK_SIGNING_SECRET || undefined,
+    slackBotToken: process.env.SLACK_BOT_TOKEN || undefined,
+    remindIntervalHours: parseIntOrDefault(process.env.REMIND_INTERVAL_HOURS, 2),
   }
 }
 
@@ -83,6 +89,10 @@ export function validateConfig(config: Config): void {
     } catch {
       throw new Error('slackWebhookUrl must be a valid URL')
     }
+  }
+
+  if (config.remindIntervalHours <= 0) {
+    throw new Error('remindIntervalHours must be > 0')
   }
 }
 
