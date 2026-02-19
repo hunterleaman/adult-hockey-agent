@@ -61,7 +61,9 @@ export function createInteractionHandler(
     // Fire-and-forget: send ephemeral confirmation via response_url
     if (result) {
       const text = buildConfirmationText(result, deps.remindIntervalHours)
-      void sendConfirmation(result.responseUrl, text).catch(() => {})
+      void sendConfirmation(result.responseUrl, text).catch((error) => {
+        console.error('Failed to send Slack confirmation:', error)
+      })
     }
   }
 }

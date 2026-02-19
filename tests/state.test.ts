@@ -8,6 +8,7 @@ import {
   updateRegistrationStatus,
   updateSessionState,
   updateUserResponse,
+  mergeUserResponses,
 } from '../src/state'
 import type { SessionState } from '../src/evaluator'
 import type { Session } from '../src/parser'
@@ -428,6 +429,92 @@ describe('state', () => {
       expect(updated[0].userResponse).toBe('registered')
       expect(updated[0].isRegistered).toBe(true)
       expect(updated[0].remindAfter).toBeNull()
+    })
+  })
+
+  describe('mergeUserResponses', () => {
+    it('preserves user response from fresh state when poll state has none', () => {
+      const session = createSession()
+      const pollState = [createState(session)]
+      const freshState = [
+        createState(session, {
+          userResponse: 'not_interested',
+          userRespondedAt: '2026-02-20T12:00:00Z',
+        }),
+      ]
+
+      const merged = mergeUserResponses(pollState, freshState)
+
+      expect(merged[0].userResponse).toBe('not_interested')
+      expect(merged[0].userRespondedAt).toBe('2026-02-20T12:00:00Z')
+    })
+
+    it('preserves more recent fresh response over stale poll response', () => {
+      const session = createSession()
+      const pollState = [
+        createState(session, {
+          userResponse: 'remind_later',
+          userRespondedAt: '2026-02-20T10:00:00Z',
+          remindAfter: '2026-02-20T12:00:00Z',
+        }),
+      ]
+      const freshState = [
+        createState(session, {
+          userResponse: 'registered',
+          userRespondedAt: '2026-02-20T11:00:00Z',
+          isRegistered: true,
+        }),
+      ]
+
+      const merged = mergeUserResponses(pollState, freshState)
+
+      expect(merged[0].userResponse).toBe('registered')
+      expect(merged[0].isRegistered).toBe(true)
+      expect(merged[0].remindAfter).toBeNull()
+    })
+
+    it('keeps poll state when fresh state has no user response', () => {
+      const session = createSession()
+      const pollState = [
+        createState(session, {
+          userResponse: 'remind_later',
+          userRespondedAt: '2026-02-20T10:00:00Z',
+          remindAfter: '2026-02-20T12:00:00Z',
+        }),
+      ]
+      const freshState = [createState(session)]
+
+      const merged = mergeUserResponses(pollState, freshState)
+
+      expect(merged[0].userResponse).toBe('remind_later')
+      expect(merged[0].remindAfter).toBe('2026-02-20T12:00:00Z')
+    })
+
+    it('handles sessions not present in fresh state', () => {
+      const session = createSession()
+      const pollState = [createState(session)]
+      const freshState: SessionState[] = []
+
+      const merged = mergeUserResponses(pollState, freshState)
+
+      expect(merged[0].userResponse).toBeNull()
+    })
+
+    it('merges isRegistered with OR logic', () => {
+      const session = createSession()
+      const pollState = [createState(session, { isRegistered: true })]
+      const freshState = [
+        createState(session, {
+          userResponse: 'not_interested',
+          userRespondedAt: '2026-02-20T12:00:00Z',
+          isRegistered: false,
+        }),
+      ]
+
+      const merged = mergeUserResponses(pollState, freshState)
+
+      expect(merged[0].isRegistered).toBe(true)
+      expect(merged[0].userResponse).toBe('not_interested')
     })
   })
 

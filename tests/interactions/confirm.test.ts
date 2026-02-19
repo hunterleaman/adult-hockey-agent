@@ -93,22 +93,61 @@ describe('sendConfirmation', () => {
     })
   })
 
-  it('throws on non-ok response', async () => {
-    ;(global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
-      ok: false,
-      status: 500,
-    })
+  it('retries once after failure then succeeds', async () => {
+    vi.useFakeTimers()
+    const mockFetch = global.fetch as ReturnType<typeof vi.fn>
+    mockFetch.mockResolvedValueOnce({ ok: false, status: 500 }).mockResolvedValueOnce({ ok: true })
 
-    await expect(sendConfirmation('https://hooks.slack.com/actions/test', 'msg')).rejects.toThrow(
-      'Confirmation POST failed: 500'
-    )
+    const promise = sendConfirmation('https://hooks.slack.com/actions/test', 'msg')
+    await vi.advanceTimersByTimeAsync(2000)
+    await promise
+
+    expect(mockFetch).toHaveBeenCalledTimes(2)
+    vi.useRealTimers()
   })
 
-  it('propagates network errors', async () => {
-    ;(global.fetch as ReturnType<typeof vi.fn>).mockRejectedValueOnce(new Error('Network error'))
+  it('throws on non-ok response after retry exhausted', async () => {
+    vi.useFakeTimers()
+    const mockFetch = global.fetch as ReturnType<typeof vi.fn>
+    mockFetch
+      .mockResolvedValueOnce({ ok: false, status: 500 })
+      .mockResolvedValueOnce({ ok: false, status: 500 })
 
-    await expect(sendConfirmation('https://hooks.slack.com/actions/test', 'msg')).rejects.toThrow(
-      'Network error'
-    )
+    const promise = sendConfirmation('https://hooks.slack.com/actions/test', 'msg')
+    const assertion = expect(promise).rejects.toThrow('Confirmation POST failed: 500')
+    await vi.advanceTimersByTimeAsync(2000)
+
+    await assertion
+    expect(mockFetch).toHaveBeenCalledTimes(2)
+    vi.useRealTimers()
+  })
+
+  it('retries once after network error then succeeds', async () => {
+    vi.useFakeTimers()
+    const mockFetch = global.fetch as ReturnType<typeof vi.fn>
+    mockFetch.mockRejectedValueOnce(new Error('Network error')).mockResolvedValueOnce({ ok: true })
+
+    const promise = sendConfirmation('https://hooks.slack.com/actions/test', 'msg')
+    await vi.advanceTimersByTimeAsync(2000)
+    await promise
+
+    expect(mockFetch).toHaveBeenCalledTimes(2)
+    vi.useRealTimers()
+  })
+
+  it('propagates network errors after retry exhausted', async () => {
+    vi.useFakeTimers()
+    const mockFetch = global.fetch as ReturnType<typeof vi.fn>
+    mockFetch
+      .mockRejectedValueOnce(new Error('Network error'))
+      .mockRejectedValueOnce(new Error('Network error'))
+
+    const promise = sendConfirmation('https://hooks.slack.com/actions/test', 'msg')
+    const assertion = expect(promise).rejects.toThrow('Network error')
+    await vi.advanceTimersByTimeAsync(2000)
+
+    await assertion
+    expect(mockFetch).toHaveBeenCalledTimes(2)
+    vi.useRealTimers()
   })
 })

@@ -167,6 +167,39 @@ export function updateUserResponse(
 }
 
 /**
+ * Merge user-response fields from fresh disk state into poll-computed state.
+ * Prevents the poll cycle from overwriting interaction responses that arrived
+ * during the async poll window (scraping + notification I/O).
+ */
+export function mergeUserResponses(
+  pollState: SessionState[],
+  freshState: SessionState[]
+): SessionState[] {
+  return pollState.map((entry) => {
+    const fresh = freshState.find(
+      (s) => s.session.date === entry.session.date && s.session.time === entry.session.time
+    )
+    if (!fresh || fresh.userRespondedAt === null) return entry
+
+    // Use fresh state's user-response fields if poll state has none,
+    // or if fresh state has a more recent response
+    if (
+      entry.userRespondedAt === null ||
+      new Date(fresh.userRespondedAt) > new Date(entry.userRespondedAt)
+    ) {
+      return {
+        ...entry,
+        userResponse: fresh.userResponse,
+        userRespondedAt: fresh.userRespondedAt,
+        remindAfter: fresh.remindAfter,
+        isRegistered: fresh.isRegistered || entry.isRegistered,
+      }
+    }
+    return entry
+  })
+}
+
+/**
  * Normalize a SessionState entry for backward compatibility.
  * Old state files may lack userResponse/userRespondedAt/remindAfter fields.
  */

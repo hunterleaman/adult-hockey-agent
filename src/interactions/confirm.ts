@@ -19,22 +19,32 @@ export function buildConfirmationText(result: ActionResult, remindIntervalHours:
 
 /**
  * POST an ephemeral confirmation to Slack's response_url.
- * Best-effort delivery — errors are silently ignored since the user
- * already received visual feedback when we responded 200.
+ * Best-effort delivery with a single retry after 2 seconds.
  */
 export async function sendConfirmation(responseUrl: string, text: string): Promise<void> {
-  const response = await fetch(responseUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      response_type: 'ephemeral',
-      replace_original: false,
-      text,
-    }),
+  const body = JSON.stringify({
+    response_type: 'ephemeral',
+    replace_original: false,
+    text,
   })
 
-  if (!response.ok) {
-    throw new Error(`Confirmation POST failed: ${response.status}`)
+  const attempt = async (): Promise<void> => {
+    const response = await fetch(responseUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    })
+
+    if (!response.ok) {
+      throw new Error(`Confirmation POST failed: ${response.status}`)
+    }
+  }
+
+  try {
+    await attempt()
+  } catch {
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+    await attempt()
   }
 }
 
