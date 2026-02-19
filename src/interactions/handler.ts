@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express'
 import { verifySlackSignature } from './verify.js'
 import { processInteraction } from './actions.js'
+import { buildConfirmationText, sendConfirmation } from './confirm.js'
 
 export interface InteractionHandlerDeps {
   signingSecret: string
@@ -52,10 +53,15 @@ export function createInteractionHandler(
     }
 
     // Process the interaction (parse action, update state)
-    processInteraction(deps.statePath, payload, deps.remindIntervalHours)
+    const result = processInteraction(deps.statePath, payload, deps.remindIntervalHours)
 
     // Respond 200 immediately (Slack requires <3s response)
-    // TODO: Send ephemeral confirmation via response_url (Step 7)
     res.status(200).send()
+
+    // Fire-and-forget: send ephemeral confirmation via response_url
+    if (result) {
+      const text = buildConfirmationText(result, deps.remindIntervalHours)
+      void sendConfirmation(result.responseUrl, text).catch(() => {})
+    }
   }
 }
