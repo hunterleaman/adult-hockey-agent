@@ -3,12 +3,17 @@ import type { Config } from './config'
 
 export type AlertType = 'OPPORTUNITY' | 'FILLING_FAST' | 'SOLD_OUT' | 'NEWLY_AVAILABLE'
 
+export type UserResponse = 'registered' | 'not_interested' | 'remind_later'
+
 export interface SessionState {
   session: Session
   lastAlertType: AlertType | null
   lastAlertAt: string | null // ISO timestamp
   lastPlayerCount: number | null
   isRegistered: boolean
+  userResponse: UserResponse | null
+  userRespondedAt: string | null // ISO timestamp
+  remindAfter: string | null // ISO timestamp (only set for remind_later)
 }
 
 export interface Alert {
@@ -50,8 +55,17 @@ export function evaluate(
       continue
     }
 
-    // Skip remaining alert types for registered sessions
-    if (prevState?.isRegistered) {
+    // Skip remaining alert types for registered or dismissed sessions
+    if (prevState?.isRegistered || prevState?.userResponse === 'not_interested') {
+      continue
+    }
+
+    // Skip remaining alert types during remind_later snooze period
+    if (
+      prevState?.userResponse === 'remind_later' &&
+      prevState.remindAfter &&
+      new Date(prevState.remindAfter) > now
+    ) {
       continue
     }
 

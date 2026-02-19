@@ -14,7 +14,9 @@ describe('evaluator', () => {
     minGoalies: 1,
     minPlayersRegistered: 10,
     playerSpotsUrgent: 4,
+    port: 3000,
     slackWebhookUrl: undefined,
+    remindIntervalHours: 2,
   }
 
   const createSession = (overrides: Partial<Session> = {}): Session => ({
@@ -41,6 +43,9 @@ describe('evaluator', () => {
     lastAlertAt: null,
     lastPlayerCount: null,
     isRegistered: false,
+    userResponse: null,
+    userRespondedAt: null,
+    remindAfter: null,
     ...overrides,
   })
 
@@ -458,6 +463,9 @@ describe('evaluator', () => {
           lastAlertAt: new Date(Date.now() - 60000).toISOString(),
           lastPlayerCount: 21,
           isRegistered: false,
+          userResponse: null,
+          userRespondedAt: null,
+          remindAfter: null,
         },
       ]
 
@@ -483,6 +491,9 @@ describe('evaluator', () => {
           lastAlertAt: new Date(Date.now() - 60000).toISOString(),
           lastPlayerCount: 14,
           isRegistered: false,
+          userResponse: null,
+          userRespondedAt: null,
+          remindAfter: null,
         },
       ]
 
@@ -509,6 +520,9 @@ describe('evaluator', () => {
           lastAlertAt: new Date(Date.now() - 60000).toISOString(),
           lastPlayerCount: 20,
           isRegistered: false,
+          userResponse: null,
+          userRespondedAt: null,
+          remindAfter: null,
         },
       ]
 
@@ -534,6 +548,9 @@ describe('evaluator', () => {
           lastAlertAt: new Date(Date.now() - 60000).toISOString(),
           lastPlayerCount: 20,
           isRegistered: false,
+          userResponse: null,
+          userRespondedAt: null,
+          remindAfter: null,
         },
       ]
 
@@ -559,6 +576,9 @@ describe('evaluator', () => {
           lastAlertAt: new Date(Date.now() - 60000).toISOString(),
           lastPlayerCount: 24,
           isRegistered: false,
+          userResponse: null,
+          userRespondedAt: null,
+          remindAfter: null,
         },
       ]
 
@@ -584,6 +604,9 @@ describe('evaluator', () => {
           lastAlertAt: new Date(Date.now() - 60000).toISOString(),
           lastPlayerCount: 20,
           isRegistered: false,
+          userResponse: null,
+          userRespondedAt: null,
+          remindAfter: null,
         },
       ]
 
@@ -610,6 +633,9 @@ describe('evaluator', () => {
           lastAlertAt: new Date(Date.now() - 60000).toISOString(),
           lastPlayerCount: 14,
           isRegistered: false,
+          userResponse: null,
+          userRespondedAt: null,
+          remindAfter: null,
         },
       ]
 
@@ -617,6 +643,142 @@ describe('evaluator', () => {
 
       // Should NOT fire OPPORTUNITY (only 1 player increase, need >= 2)
       expect(alerts).toHaveLength(0)
+    })
+  })
+
+  describe('userResponse suppression', () => {
+    it('suppresses OPPORTUNITY when userResponse is not_interested', () => {
+      const session = createSession({
+        playersRegistered: 14,
+        playersMax: 24,
+        goaliesRegistered: 2,
+      })
+      const state: SessionState[] = [
+        createState(session, {
+          userResponse: 'not_interested',
+          userRespondedAt: new Date().toISOString(),
+        }),
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('suppresses FILLING_FAST when userResponse is not_interested', () => {
+      const session = createSession({
+        playersRegistered: 21,
+        playersMax: 24,
+        goaliesRegistered: 0,
+        isFull: false,
+      })
+      const state: SessionState[] = [
+        createState(session, {
+          userResponse: 'not_interested',
+          userRespondedAt: new Date().toISOString(),
+        }),
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('does NOT suppress SOLD_OUT when userResponse is not_interested', () => {
+      const session = createSession({
+        playersRegistered: 24,
+        playersMax: 24,
+        isFull: true,
+      })
+      const state: SessionState[] = [
+        createState(createSession({ playersRegistered: 23, playersMax: 24, isFull: false }), {
+          userResponse: 'not_interested',
+          userRespondedAt: new Date().toISOString(),
+        }),
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].type).toBe('SOLD_OUT')
+    })
+
+    it('does NOT suppress NEWLY_AVAILABLE when userResponse is not_interested', () => {
+      const session = createSession({
+        playersRegistered: 20,
+        playersMax: 24,
+        isFull: false,
+      })
+      const state: SessionState[] = [
+        createState(createSession({ playersRegistered: 24, playersMax: 24, isFull: true }), {
+          userResponse: 'not_interested',
+          userRespondedAt: new Date().toISOString(),
+        }),
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].type).toBe('NEWLY_AVAILABLE')
+    })
+
+    it('suppresses alerts during remind_later snooze period', () => {
+      const session = createSession({
+        playersRegistered: 14,
+        playersMax: 24,
+        goaliesRegistered: 2,
+      })
+      const state: SessionState[] = [
+        createState(session, {
+          userResponse: 'remind_later',
+          userRespondedAt: new Date().toISOString(),
+          remindAfter: new Date(Date.now() + 7200000).toISOString(), // 2 hours from now
+        }),
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('resumes alerts after remind_later snooze expires', () => {
+      const session = createSession({
+        playersRegistered: 14,
+        playersMax: 24,
+        goaliesRegistered: 2,
+      })
+      const state: SessionState[] = [
+        createState(session, {
+          userResponse: 'remind_later',
+          userRespondedAt: new Date(Date.now() - 7200000).toISOString(),
+          remindAfter: new Date(Date.now() - 1000).toISOString(), // 1 second ago (expired)
+        }),
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].type).toBe('OPPORTUNITY')
+    })
+
+    it('does NOT suppress SOLD_OUT during remind_later snooze', () => {
+      const session = createSession({
+        playersRegistered: 24,
+        playersMax: 24,
+        isFull: true,
+      })
+      const state: SessionState[] = [
+        createState(createSession({ playersRegistered: 23, playersMax: 24, isFull: false }), {
+          userResponse: 'remind_later',
+          userRespondedAt: new Date().toISOString(),
+          remindAfter: new Date(Date.now() + 7200000).toISOString(),
+        }),
+      ]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].type).toBe('SOLD_OUT')
     })
   })
 
