@@ -116,23 +116,51 @@ curl http://localhost:3000/health
 - **uptime**: Process uptime in seconds
 - **lastPoll**: Timestamp of last poll (from state file modification time), or `null` if never polled
 
-## Development
+## Development Workflow
+
+Development uses [Conductor](https://conductor.build) for parallel feature branches with Claude Code (Opus). Each workspace is an isolated git worktree with its own branch, dependencies, and build.
+
+### Conductor Workflow Cycle
+
+1. **⌘N** — Create workspace (auto-creates branch from origin/main, runs setup script)
+2. **Prompt Claude** with the task, referencing spec docs and CLAUDE.md
+3. **⌘D** — Review diffs before committing
+4. **⌘R** — Run quality checks (`npm run check`)
+5. **⌘⇧P** — Create Pull Request
+6. **Merge PR** on GitHub, then archive the workspace
+
+Multiple workspaces run simultaneously for independent features.
+
+### Small Changes (docs, config, formatting)
+
+Use Claude Code CLI directly on main. Conductor workspaces are for feature branches that deserve PRs.
+
+### Session Protocol
+
+Every session starts and ends with:
 
 ```bash
-# Run tests
-npm test
+gh issue list --repo hunterleaman/adult-hockey-agent
+```
 
-# Run tests with UI
-npm run test:ui
+Review open issues, state a session goal, and update issue comments before ending. See [CLAUDE.md](./CLAUDE.md) for full conventions, branching rules, and session protocols.
 
-# Type checking
-npm run typecheck
+### Deploy
 
-# Format code
-npm run format
+```bash
+ssh adulthockey@<droplet-ip>
+cd /home/adulthockey/adult-hockey-agent
+./scripts/deploy.sh
+```
 
-# Build TypeScript
-npm run build
+### Commands
+
+```bash
+npm run check         # Full quality gate (typecheck + lint + format + test)
+npm test              # Run tests
+npm run build         # Build TypeScript
+npm start             # Start the agent
+npm run format        # Format code
 ```
 
 ## Project Structure
@@ -248,32 +276,6 @@ npm run check
 - **[docs/DECISIONS.md](./docs/DECISIONS.md)** - Architecture decision records (ADRs)
 - **[docs/CONTRIBUTING.md](./docs/CONTRIBUTING.md)** - Development protocols and session-end checklist
 - **[docs/nginx.conf](./docs/nginx.conf)** - Nginx reverse proxy configuration (optional)
-
-## Recent Improvements
-
-### Session 6 (2026-02-17): Production Deployment Infrastructure
-- ✅ Health check endpoint (`GET /health`)
-- ✅ PM2 ecosystem configuration with auto-restart
-- ✅ Automated server setup and deployment scripts
-- ✅ Comprehensive deployment documentation (docs/DEPLOY.md)
-- ✅ Nginx reverse proxy configuration
-- ✅ Test suite expanded to 172 tests (up from 141)
-
-### Session 5 (2026-02-17): Alert Oscillation Fix
-- ✅ Fixed alert oscillation bug (FILLING_FAST ↔ OPPORTUNITY loop)
-- ✅ Implemented hierarchy-aware suppression logic
-- ✅ Added 7 comprehensive state transition tests
-- ✅ Documented fix in `docs/sessions/2026-02-17-alert-oscillation-fix.md`
-
-### Session 4 (2026-02-17): Alert Priority System
-- ✅ Implemented alert priority hierarchy (prevents redundant alerts)
-- ✅ Fixed Slack button validation (400 error on `style: 'default'`)
-- ✅ Ensured only one alert per session fires (highest priority wins)
-
-### Session 3 (2026-02-16): OPPORTUNITY Alert Logic Update
-- ✅ Changed OPPORTUNITY trigger from "spots remaining ≤ 10" to "players registered ≥ 10"
-- ✅ Better reflects session viability (critical mass vs urgency)
-- ✅ Renamed `PLAYER_SPOTS_ALERT` → `MIN_PLAYERS_REGISTERED`
 
 ## Troubleshooting
 
