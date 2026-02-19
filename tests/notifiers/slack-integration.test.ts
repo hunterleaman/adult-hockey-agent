@@ -108,8 +108,76 @@ describe('SlackNotifier - Block Kit Integration', () => {
         // Verify actions block exists and is correctly structured
         const actionsBlock = payload.blocks[2]
         expect(actionsBlock.type).toBe('actions')
-        expect(actionsBlock.elements).toHaveLength(1)
+        expect(actionsBlock.block_id).toBe('actions_block')
+        // 4 buttons: Register Now + Registered + Not Interested + Remind Later
+        expect(actionsBlock.elements).toHaveLength(4)
       }
+    })
+  })
+
+  describe('Interactive Button Validation', () => {
+    it('includes three interactive buttons with correct action_ids', () => {
+      const notifier = new SlackNotifier('https://hooks.slack.com/test')
+      const alert = createAlert('OPPORTUNITY')
+      const payload = getPayload(notifier, alert)
+
+      const elements = payload.blocks[2].elements
+
+      // First button is the link button (Register Now)
+      expect(elements[0].url).toBeTruthy()
+      expect(elements[0].action_id).toBeUndefined()
+
+      // Interactive buttons
+      expect(elements[1].action_id).toBe('session_registered')
+      expect(elements[1].text.text).toBe('✅ Registered')
+
+      expect(elements[2].action_id).toBe('session_not_interested')
+      expect(elements[2].text.text).toBe('❌ Not Interested')
+
+      expect(elements[3].action_id).toBe('session_remind_later')
+      expect(elements[3].text.text).toBe('⏰ Remind Later')
+    })
+
+    it('encodes session identity in button values as pipe-delimited string', () => {
+      const notifier = new SlackNotifier('https://hooks.slack.com/test')
+      const alert = createAlert('OPPORTUNITY')
+      const payload = getPayload(notifier, alert)
+
+      const expectedValue = '2026-02-20|06:00|(PLAYERS) ADULT Pick Up MORNINGS'
+      const elements = payload.blocks[2].elements
+
+      // All interactive buttons share the same session value
+      expect(elements[1].value).toBe(expectedValue)
+      expect(elements[2].value).toBe(expectedValue)
+      expect(elements[3].value).toBe(expectedValue)
+
+      // Link button has no value
+      expect(elements[0].value).toBeUndefined()
+    })
+
+    it('interactive buttons have no url (they are not link buttons)', () => {
+      const notifier = new SlackNotifier('https://hooks.slack.com/test')
+      const alert = createAlert('FILLING_FAST')
+      const payload = getPayload(notifier, alert)
+
+      const elements = payload.blocks[2].elements
+
+      expect(elements[1].url).toBeUndefined()
+      expect(elements[2].url).toBeUndefined()
+      expect(elements[3].url).toBeUndefined()
+    })
+
+    it('interactive buttons have no style (use default appearance)', () => {
+      const notifier = new SlackNotifier('https://hooks.slack.com/test')
+      const alert = createAlert('OPPORTUNITY')
+      const payload = getPayload(notifier, alert)
+
+      const elements = payload.blocks[2].elements
+
+      // Interactive buttons should not have style set
+      expect(elements[1].style).toBeUndefined()
+      expect(elements[2].style).toBeUndefined()
+      expect(elements[3].style).toBeUndefined()
     })
   })
 
