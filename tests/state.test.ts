@@ -7,6 +7,7 @@ import {
   pruneOldSessions,
   updateRegistrationStatus,
   updateSessionState,
+  updateUserResponse,
 } from '../src/state'
 import type { SessionState } from '../src/evaluator'
 import type { Session } from '../src/parser'
@@ -39,6 +40,9 @@ describe('state', () => {
     lastAlertAt: null,
     lastPlayerCount: null,
     isRegistered: false,
+    userResponse: null,
+    userRespondedAt: null,
+    remindAfter: null,
     ...overrides,
   })
 
@@ -343,6 +347,114 @@ describe('state', () => {
       expect(updated[0].lastPlayerCount).toBe(14)
       expect(updated[1].lastAlertType).toBe(null) // unchanged
       expect(updated[1].lastPlayerCount).toBe(null)
+    })
+  })
+
+  describe('updateUserResponse', () => {
+    it('sets userResponse to registered and marks isRegistered true', () => {
+      const session = createSession()
+      const state = [createState(session)]
+
+      const updated = updateUserResponse(state, '2026-02-20', '06:00', 'registered', 2)
+
+      expect(updated).toHaveLength(1)
+      expect(updated[0].isRegistered).toBe(true)
+      expect(updated[0].userResponse).toBe('registered')
+      expect(updated[0].userRespondedAt).toBeDefined()
+      expect(updated[0].remindAfter).toBeNull()
+    })
+
+    it('sets userResponse to not_interested without changing isRegistered', () => {
+      const session = createSession()
+      const state = [createState(session)]
+
+      const updated = updateUserResponse(state, '2026-02-20', '06:00', 'not_interested', 2)
+
+      expect(updated[0].isRegistered).toBe(false)
+      expect(updated[0].userResponse).toBe('not_interested')
+      expect(updated[0].userRespondedAt).toBeDefined()
+      expect(updated[0].remindAfter).toBeNull()
+    })
+
+    it('sets userResponse to remind_later with remindAfter timestamp', () => {
+      const session = createSession()
+      const state = [createState(session)]
+
+      const before = Date.now()
+      const updated = updateUserResponse(state, '2026-02-20', '06:00', 'remind_later', 2)
+      const after = Date.now()
+
+      expect(updated[0].userResponse).toBe('remind_later')
+      expect(updated[0].remindAfter).toBeDefined()
+
+      const remindAfter = new Date(updated[0].remindAfter!).getTime()
+      // remindAfter should be ~2 hours from now
+      expect(remindAfter).toBeGreaterThanOrEqual(before + 2 * 60 * 60 * 1000)
+      expect(remindAfter).toBeLessThanOrEqual(after + 2 * 60 * 60 * 1000)
+    })
+
+    it('returns unchanged state when session not found', () => {
+      const session = createSession({ date: '2026-02-20', time: '06:00' })
+      const state = [createState(session)]
+
+      const updated = updateUserResponse(state, '2026-02-21', '06:00', 'registered', 2)
+
+      expect(updated).toEqual(state)
+    })
+
+    it('only updates matching session when multiple exist', () => {
+      const session1 = createSession({ date: '2026-02-20', time: '06:00' })
+      const session2 = createSession({ date: '2026-02-20', time: '18:30' })
+      const state = [createState(session1), createState(session2)]
+
+      const updated = updateUserResponse(state, '2026-02-20', '18:30', 'not_interested', 2)
+
+      expect(updated[0].userResponse).toBeNull()
+      expect(updated[1].userResponse).toBe('not_interested')
+    })
+
+    it('clears remindAfter when changing from remind_later to registered', () => {
+      const session = createSession()
+      const state = [
+        createState(session, {
+          userResponse: 'remind_later',
+          userRespondedAt: new Date().toISOString(),
+          remindAfter: new Date(Date.now() + 7200000).toISOString(),
+        }),
+      ]
+
+      const updated = updateUserResponse(state, '2026-02-20', '06:00', 'registered', 2)
+
+      expect(updated[0].userResponse).toBe('registered')
+      expect(updated[0].isRegistered).toBe(true)
+      expect(updated[0].remindAfter).toBeNull()
+    })
+  })
+
+  describe('backward compatibility', () => {
+    it('loads state without new fields and defaults them to null', () => {
+      // Simulate old state format without userResponse fields
+      const oldFormatState = [
+        {
+          session: createSession(),
+          lastAlertType: 'OPPORTUNITY',
+          lastAlertAt: '2026-02-19T10:00:00Z',
+          lastPlayerCount: 14,
+          isRegistered: false,
+        },
+      ]
+
+      fs.writeFileSync(testStatePath, JSON.stringify(oldFormatState, null, 2))
+
+      const state = loadState(testStatePath)
+
+      expect(state).toHaveLength(1)
+      expect(state[0].userResponse).toBeNull()
+      expect(state[0].userRespondedAt).toBeNull()
+      expect(state[0].remindAfter).toBeNull()
+      // Original fields preserved
+      expect(state[0].lastAlertType).toBe('OPPORTUNITY')
+      expect(state[0].isRegistered).toBe(false)
     })
   })
 

@@ -106,6 +106,7 @@ async function main(): Promise<void> {
     httpServer = startServer(config.port, {
       statePath: STATE_PATH,
       slackSigningSecret: config.slackSigningSecret,
+      remindIntervalHours: config.remindIntervalHours,
     })
     console.log(`🌐 Health endpoint available at http://localhost:${config.port}/health`)
     if (config.slackSigningSecret) {

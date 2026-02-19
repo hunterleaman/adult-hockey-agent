@@ -1,13 +1,16 @@
 import type { Request, Response } from 'express'
 import { verifySlackSignature } from './verify.js'
+import { processInteraction } from './actions.js'
 
 export interface InteractionHandlerDeps {
   signingSecret: string
+  statePath: string
+  remindIntervalHours: number
 }
 
 /**
  * Express route handler for POST /slack/interactions.
- * Step 1 skeleton: verifies signature, logs payload, returns 200.
+ * Verifies signature, processes action, updates state, returns 200.
  */
 export function createInteractionHandler(
   deps: InteractionHandlerDeps
@@ -48,11 +51,11 @@ export function createInteractionHandler(
       return
     }
 
-    // Step 1 skeleton: log and acknowledge
-    // TODO: Process actions in subsequent steps
-    console.warn('[slack-interactions] Received interaction:', JSON.stringify(payload))
+    // Process the interaction (parse action, update state)
+    processInteraction(deps.statePath, payload, deps.remindIntervalHours)
 
     // Respond 200 immediately (Slack requires <3s response)
+    // TODO: Send ephemeral confirmation via response_url (Step 7)
     res.status(200).send()
   }
 }

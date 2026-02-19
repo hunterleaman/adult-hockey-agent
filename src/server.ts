@@ -28,6 +28,7 @@ function getLastPollTimestamp(statePath: string): string | null {
 export interface ServerOptions {
   statePath: string
   slackSigningSecret?: string
+  remindIntervalHours?: number
 }
 
 /**
@@ -62,7 +63,11 @@ export function createServer(options: ServerOptions): Express {
   if (options.slackSigningSecret) {
     app.post(
       '/slack/interactions',
-      createInteractionHandler({ signingSecret: options.slackSigningSecret })
+      createInteractionHandler({
+        signingSecret: options.slackSigningSecret,
+        statePath: options.statePath,
+        remindIntervalHours: options.remindIntervalHours ?? 2,
+      })
     )
   }
 
