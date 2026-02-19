@@ -1,6 +1,7 @@
-import express, { type Express } from 'express'
+import express, { type Express, type Request } from 'express'
 import type { Server } from 'http'
 import fs from 'fs'
+import { createInteractionHandler } from './interactions/handler.js'
 
 /**
  * Get the most recent poll timestamp from state file modification time
@@ -24,15 +25,32 @@ function getLastPollTimestamp(statePath: string): string | null {
   }
 }
 
+export interface ServerOptions {
+  statePath: string
+  slackSigningSecret?: string
+  remindIntervalHours?: number
+}
+
 /**
- * Create Express server with health endpoint
+ * Create Express server with health endpoint and Slack interaction route
  */
-export function createServer(statePath: string): Express {
+export function createServer(options: ServerOptions): Express {
   const app = express()
+
+  // Parse URL-encoded bodies (Slack sends application/x-www-form-urlencoded)
+  // Capture raw body for signature verification
+  app.use(
+    express.urlencoded({
+      extended: false,
+      verify: (req: Request, _res, buf) => {
+        ;(req as Request & { rawBody?: string }).rawBody = buf.toString()
+      },
+    })
+  )
 
   // Health check endpoint
   app.get('/health', (_req, res) => {
-    const lastPoll = getLastPollTimestamp(statePath)
+    const lastPoll = getLastPollTimestamp(options.statePath)
 
     res.json({
       status: 'ok',
@@ -41,14 +59,26 @@ export function createServer(statePath: string): Express {
     })
   })
 
+  // Slack interaction endpoint
+  if (options.slackSigningSecret) {
+    app.post(
+      '/slack/interactions',
+      createInteractionHandler({
+        signingSecret: options.slackSigningSecret,
+        statePath: options.statePath,
+        remindIntervalHours: options.remindIntervalHours ?? 2,
+      })
+    )
+  }
+
   return app
 }
 
 /**
  * Start the Express server on the configured port
  */
-export function startServer(port: number, statePath: string): Server {
-  const app = createServer(statePath)
+export function startServer(port: number, options: ServerOptions): Server {
+  const app = createServer(options)
 
   const server = app.listen(port, () => {
     // Server started successfully

@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import type { SessionState, AlertType } from './evaluator'
+import type { SessionState, AlertType, UserResponse } from './evaluator'
 import type { Session } from './parser'
 
 // Re-export types for external use
@@ -22,7 +22,9 @@ export function loadState(filePath: string): SessionState[] {
     }
 
     const state: unknown = JSON.parse(contents)
-    return Array.isArray(state) ? (state as SessionState[]) : []
+    if (!Array.isArray(state)) return []
+    // Normalize entries for backward compatibility (old state files may lack new fields)
+    return (state as SessionState[]).map(normalizeSessionState)
   } catch {
     // TODO: Use structured logger when available
     // Gracefully handle corrupted/invalid state files
@@ -121,6 +123,9 @@ export function updateSessionState(
     lastPlayerCount:
       alertType !== null ? session.playersRegistered : (existingState?.lastPlayerCount ?? null),
     isRegistered: existingState?.isRegistered ?? false,
+    userResponse: existingState?.userResponse ?? null,
+    userRespondedAt: existingState?.userRespondedAt ?? null,
+    remindAfter: existingState?.remindAfter ?? null,
   }
 
   if (existingIndex >= 0) {
@@ -129,5 +134,80 @@ export function updateSessionState(
   } else {
     // Add new entry
     return [...state, newState]
+  }
+}
+
+/**
+ * Update user response for a specific session (from Slack interaction).
+ * Returns new state array (immutable update).
+ */
+export function updateUserResponse(
+  state: SessionState[],
+  date: string,
+  time: string,
+  userResponse: UserResponse,
+  remindIntervalHours: number
+): SessionState[] {
+  const now = new Date()
+  return state.map((s) => {
+    if (s.session.date === date && s.session.time === time) {
+      return {
+        ...s,
+        isRegistered: userResponse === 'registered' ? true : s.isRegistered,
+        userResponse,
+        userRespondedAt: now.toISOString(),
+        remindAfter:
+          userResponse === 'remind_later'
+            ? new Date(now.getTime() + remindIntervalHours * 60 * 60 * 1000).toISOString()
+            : null,
+      }
+    }
+    return s
+  })
+}
+
+/**
+ * Merge user-response fields from fresh disk state into poll-computed state.
+ * Prevents the poll cycle from overwriting interaction responses that arrived
+ * during the async poll window (scraping + notification I/O).
+ */
+export function mergeUserResponses(
+  pollState: SessionState[],
+  freshState: SessionState[]
+): SessionState[] {
+  return pollState.map((entry) => {
+    const fresh = freshState.find(
+      (s) => s.session.date === entry.session.date && s.session.time === entry.session.time
+    )
+    if (!fresh || fresh.userRespondedAt === null) return entry
+
+    // Use fresh state's user-response fields if poll state has none,
+    // or if fresh state has a more recent response
+    if (
+      entry.userRespondedAt === null ||
+      new Date(fresh.userRespondedAt) > new Date(entry.userRespondedAt)
+    ) {
+      return {
+        ...entry,
+        userResponse: fresh.userResponse,
+        userRespondedAt: fresh.userRespondedAt,
+        remindAfter: fresh.remindAfter,
+        isRegistered: fresh.isRegistered || entry.isRegistered,
+      }
+    }
+    return entry
+  })
+}
+
+/**
+ * Normalize a SessionState entry for backward compatibility.
+ * Old state files may lack userResponse/userRespondedAt/remindAfter fields.
+ */
+function normalizeSessionState(entry: SessionState): SessionState {
+  return {
+    ...entry,
+    userResponse: entry.userResponse ?? null,
+    userRespondedAt: entry.userRespondedAt ?? null,
+    remindAfter: entry.remindAfter ?? null,
   }
 }

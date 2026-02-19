@@ -2,7 +2,13 @@ import type { Config } from './config'
 import type { Notifier } from './notifiers/interface'
 import { scrapeEvents } from './scraper.js'
 import { evaluate } from './evaluator.js'
-import { loadState, saveState, pruneOldSessions, updateSessionState } from './state.js'
+import {
+  loadState,
+  saveState,
+  pruneOldSessions,
+  updateSessionState,
+  mergeUserResponses,
+} from './state.js'
 import { ConsoleNotifier } from './notifiers/console.js'
 import { SlackNotifier } from './notifiers/slack.js'
 
@@ -77,7 +83,12 @@ export async function poll(config: Config, statePath: string = DEFAULT_STATE_PAT
       state = updateSessionState(state, session, alertInfo?.type || null, alertInfo?.at || null)
     }
 
-    // Step 6: Save state
+    // Step 6: Re-read fresh state to preserve user responses from Slack interactions
+    // that may have arrived during the async poll window
+    const freshState = loadState(statePath)
+    state = mergeUserResponses(state, freshState)
+
+    // Step 7: Save state
     saveState(statePath, state)
   } catch {
     // TODO: Use structured logger when available

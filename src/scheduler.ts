@@ -102,9 +102,16 @@ async function main(): Promise<void> {
     console.log(`   Slack: ${config.slackWebhookUrl ? 'configured ✓' : 'not configured'}`)
     console.log()
 
-    // Start HTTP server for health endpoint
-    httpServer = startServer(config.port, STATE_PATH)
+    // Start HTTP server for health endpoint and Slack interactions
+    httpServer = startServer(config.port, {
+      statePath: STATE_PATH,
+      slackSigningSecret: config.slackSigningSecret,
+      remindIntervalHours: config.remindIntervalHours,
+    })
     console.log(`🌐 Health endpoint available at http://localhost:${config.port}/health`)
+    if (config.slackSigningSecret) {
+      console.log(`🔗 Slack interactions at http://localhost:${config.port}/slack/interactions`)
+    }
     console.log()
 
     // Run initial poll immediately

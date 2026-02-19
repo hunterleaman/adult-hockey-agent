@@ -38,7 +38,7 @@ describe('Health Endpoint', () => {
   )
 
   async function startTestServer(): Promise<void> {
-    app = createServer(TEST_STATE_PATH)
+    app = createServer({ statePath: TEST_STATE_PATH })
     return new Promise((resolve) => {
       server = app.listen(TEST_PORT, () => {
         resolve()

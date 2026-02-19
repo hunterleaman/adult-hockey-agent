@@ -1,0 +1,14 @@
+{
+  "type": "block_actions",
+  "user": { "id": "U12345", "name": "hunter" },
+  "trigger_id": "123456.791",
+  "actions": [
+    {
+      "action_id": "session_remind_later",
+      "block_id": "actions_block",
+      "value": "2026-02-20|05:50|(PLAYERS) ADULT Pick Up MORNINGS",
+      "type": "button"
+    }
+  ],
+  "response_url": "https://hooks.slack.com/actions/T00/B00/test"
+}

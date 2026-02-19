@@ -3,6 +3,7 @@ import type { Alert, AlertType } from '../evaluator'
 
 interface SlackBlock {
   type: string
+  block_id?: string
   text?: {
     type: string
     text: string
@@ -16,6 +17,8 @@ interface SlackBlock {
     }
     url?: string
     style?: string
+    action_id?: string
+    value?: string
   }>
 }
 
@@ -81,10 +84,13 @@ export class SlackNotifier implements Notifier {
       },
     ]
 
-    // Only include action button for alerts where registration is possible
+    // Only include action buttons for alerts where registration is possible
     if (alert.type !== 'SOLD_OUT') {
+      const sessionValue = `${alert.session.date}|${alert.session.time}|${alert.session.eventName}`
+
       blocks.push({
         type: 'actions',
+        block_id: 'actions_block',
         elements: [
           {
             type: 'button',
@@ -94,6 +100,33 @@ export class SlackNotifier implements Notifier {
             },
             url: alert.registrationUrl,
             style: this.getButtonStyle(alert.type),
+          },
+          {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: '✅ Registered',
+            },
+            action_id: 'session_registered',
+            value: sessionValue,
+          },
+          {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: '❌ Not Interested',
+            },
+            action_id: 'session_not_interested',
+            value: sessionValue,
+          },
+          {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: '⏰ Remind Later',
+            },
+            action_id: 'session_remind_later',
+            value: sessionValue,
           },
         ],
       })
