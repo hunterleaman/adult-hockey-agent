@@ -109,6 +109,14 @@ Monitoring agent that tracks adult pick-up hockey registration at Extreme Ice Ce
 
 4. **Repository visibility for cloning**: Attempted `git clone https://github.com/hunterleaman/adult-hockey-agent.git` failed with "Authentication failed" because repo was private. **Options**: (a) Make repo public (easiest for portfolio, all secrets in gitignored .env), or (b) Setup SSH keys on server and use `git clone git@github.com:...`. Made repo public since it's for portfolio and contains no secrets.
 
+### Session 7 (2026-02-19) - Deployment Debugging & Config Edge Cases
+
+1. **`npm ci` skips TypeScript on droplet after stale lockfile**: `npm ci` installs exactly what's in the lockfile. If a previous install used `--omit=dev`, the server-side lockfile state is stale and `npm ci` reproduces the broken state. `npm install` (full) fixes it. Lesson: after any dependency install flag change, run `npm install` once to reset lockfile state, then `npm ci` works correctly going forward.
+
+2. **Config validator rejects MIN_PLAYERS_REGISTERED=0**: Setting `MIN_PLAYERS_REGISTERED=0` for testing crashes the agent because `validateConfig()` requires `> 0`. Use `MIN_PLAYERS_REGISTERED=1` for low-threshold testing. Consider whether the validator should allow 0 for testing or if 1 is the correct minimum.
+
+3. **No structured logger exists yet**: `console.error` is the current pattern for error logging. CLAUDE.md says "no console.log in production code — use a structured logger" but no structured logger has been implemented. `console.error` is acceptable until one exists. Track as tech debt, not a violation.
+
 ## API Architecture
 
 DASH exposes a JSON:API at `/dash/jsonapi/api/v1/`. Polling requires a **two-step fetch flow**:
