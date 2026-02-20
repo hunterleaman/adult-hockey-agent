@@ -24,6 +24,8 @@ describe('config', () => {
       expect(config.pollStartHour).toBe(6)
       expect(config.pollEndHour).toBe(23)
       expect(config.forwardWindowDays).toBe(5)
+      expect(config.approachWindowHours).toBe(96)
+      expect(config.maxSleepHours).toBe(12)
       expect(config.minGoalies).toBe(1)
       expect(config.minPlayersRegistered).toBe(10)
       expect(config.playerSpotsUrgent).toBe(4)
@@ -64,6 +66,16 @@ describe('config', () => {
       const config = loadConfig()
 
       expect(config.forwardWindowDays).toBe(7)
+    })
+
+    it('loads custom smart polling config from env', () => {
+      process.env.APPROACH_WINDOW_HOURS = '72'
+      process.env.MAX_SLEEP_HOURS = '8'
+
+      const config = loadConfig()
+
+      expect(config.approachWindowHours).toBe(72)
+      expect(config.maxSleepHours).toBe(8)
     })
 
     it('loads custom alert thresholds from env', () => {
@@ -109,33 +121,14 @@ describe('config', () => {
 
   describe('validateConfig', () => {
     it('accepts valid config with all defaults', () => {
-      const config: Config = {
-        pollIntervalMinutes: 60,
-        pollIntervalAcceleratedMinutes: 30,
-        pollStartHour: 6,
-        pollEndHour: 23,
-        forwardWindowDays: 5,
-        minGoalies: 1,
-        minPlayersRegistered: 10,
-        playerSpotsUrgent: 4,
-        slackWebhookUrl: undefined,
-      }
+      const config = loadConfig()
 
       expect(() => validateConfig(config)).not.toThrow()
     })
 
     it('accepts valid config with Slack webhook', () => {
-      const config: Config = {
-        pollIntervalMinutes: 60,
-        pollIntervalAcceleratedMinutes: 30,
-        pollStartHour: 6,
-        pollEndHour: 23,
-        forwardWindowDays: 5,
-        minGoalies: 1,
-        minPlayersRegistered: 10,
-        playerSpotsUrgent: 4,
-        slackWebhookUrl: 'https://hooks.slack.com/test',
-      }
+      const config = loadConfig()
+      config.slackWebhookUrl = 'https://hooks.slack.com/test'
 
       expect(() => validateConfig(config)).not.toThrow()
     })
@@ -188,6 +181,20 @@ describe('config', () => {
       config.forwardWindowDays = 0
 
       expect(() => validateConfig(config)).toThrow('forwardWindowDays must be > 0')
+    })
+
+    it('throws when approachWindowHours is zero', () => {
+      const config = loadConfig()
+      config.approachWindowHours = 0
+
+      expect(() => validateConfig(config)).toThrow('approachWindowHours must be > 0')
+    })
+
+    it('throws when maxSleepHours is zero', () => {
+      const config = loadConfig()
+      config.maxSleepHours = 0
+
+      expect(() => validateConfig(config)).toThrow('maxSleepHours must be > 0')
     })
 
     it('throws when minGoalies is negative', () => {

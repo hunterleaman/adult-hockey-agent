@@ -11,6 +11,8 @@ describe('evaluator', () => {
     pollStartHour: 6,
     pollEndHour: 23,
     forwardWindowDays: 5,
+    approachWindowHours: 96,
+    maxSleepHours: 12,
     minGoalies: 1,
     minPlayersRegistered: 10,
     playerSpotsUrgent: 4,
@@ -20,8 +22,8 @@ describe('evaluator', () => {
   }
 
   const createSession = (overrides: Partial<Session> = {}): Session => ({
-    date: '2026-02-20',
-    dayOfWeek: 'Friday',
+    date: '2026-02-25',
+    dayOfWeek: 'Wednesday',
     time: '06:00',
     timeLabel: '6:00am - 7:10am',
     eventName: '(PLAYERS) ADULT Pick Up MORNINGS',
@@ -397,7 +399,7 @@ describe('evaluator', () => {
       expect(alerts[0]).toHaveProperty('session')
       expect(alerts[0]).toHaveProperty('message')
       expect(alerts[0]).toHaveProperty('registrationUrl')
-      expect(alerts[0].registrationUrl).toContain('2026-02-20')
+      expect(alerts[0].registrationUrl).toContain('2026-02-25')
     })
 
     it('fires only FILLING_FAST when both FILLING_FAST and OPPORTUNITY conditions are met', () => {
@@ -812,7 +814,7 @@ describe('evaluator', () => {
 
     it('handles state for different session (date/time mismatch)', () => {
       const session = createSession({
-        date: '2026-02-20',
+        date: '2026-02-25',
         time: '06:00',
         playersRegistered: 10,
         playersMax: 24,

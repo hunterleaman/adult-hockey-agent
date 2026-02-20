@@ -4,6 +4,8 @@ export interface Config {
   pollStartHour: number
   pollEndHour: number
   forwardWindowDays: number
+  approachWindowHours: number
+  maxSleepHours: number
   minGoalies: number
   minPlayersRegistered: number
   playerSpotsUrgent: number
@@ -27,6 +29,8 @@ export function loadConfig(): Config {
     pollStartHour: parseIntOrDefault(process.env.POLL_START_HOUR, 6),
     pollEndHour: parseIntOrDefault(process.env.POLL_END_HOUR, 23),
     forwardWindowDays: parseIntOrDefault(process.env.FORWARD_WINDOW_DAYS, 5),
+    approachWindowHours: parseIntOrDefault(process.env.APPROACH_WINDOW_HOURS, 96),
+    maxSleepHours: parseIntOrDefault(process.env.MAX_SLEEP_HOURS, 12),
     minGoalies: parseIntOrDefault(process.env.MIN_GOALIES, 1),
     minPlayersRegistered: parseIntOrDefault(process.env.MIN_PLAYERS_REGISTERED, 10),
     playerSpotsUrgent: parseIntOrDefault(process.env.PLAYER_SPOTS_URGENT, 4),
@@ -65,6 +69,14 @@ export function validateConfig(config: Config): void {
 
   if (config.forwardWindowDays <= 0) {
     throw new Error('forwardWindowDays must be > 0')
+  }
+
+  if (config.approachWindowHours <= 0) {
+    throw new Error('approachWindowHours must be > 0')
+  }
+
+  if (config.maxSleepHours <= 0) {
+    throw new Error('maxSleepHours must be > 0')
   }
 
   if (config.minGoalies < 0) {
