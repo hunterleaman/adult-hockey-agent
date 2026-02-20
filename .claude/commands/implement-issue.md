@@ -1,0 +1,1 @@
+Fetch the GitHub issue assigned to this branch: run gh issue view and find the issue number from the branch name or most recent commit message. Read CLAUDE.md. Implement per the spec in the issue body. Write tests first, then implement.
