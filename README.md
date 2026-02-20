@@ -91,7 +91,8 @@ For complete deployment instructions including DigitalOcean droplet setup, serve
 The agent includes:
 - PM2 process management (auto-restart on crashes with exponential backoff)
 - Survives server reboots (PM2 startup integration)
-- Health check endpoint at `http://localhost:3000/health`
+- Nginx reverse proxy with SSL (https://adult-hockey-agent.lx-labs.com)
+- Health check endpoint at `https://adult-hockey-agent.lx-labs.com/health`
 - Automated deployment scripts (`setup-server.sh`, `deploy.sh`)
 - Graceful shutdown handling (SIGINT/SIGTERM)
 
@@ -100,6 +101,10 @@ The agent includes:
 The agent exposes a health check endpoint for monitoring:
 
 ```bash
+# Production (via domain)
+curl https://adult-hockey-agent.lx-labs.com/health
+
+# Local development
 curl http://localhost:3000/health
 ```
 
@@ -148,7 +153,7 @@ Review open issues, state a session goal, and update issue comments before endin
 ### Deploy
 
 ```bash
-ssh adulthockey@<droplet-ip>
+ssh adulthockey@adult-hockey-agent.lx-labs.com
 cd /home/adulthockey/adult-hockey-agent
 ./scripts/deploy.sh
 ```
@@ -277,7 +282,7 @@ npm run check
 - **[CLAUDE.md](./CLAUDE.md)** - Development guidelines, naming conventions, and known mistakes
 - **[docs/DECISIONS.md](./docs/DECISIONS.md)** - Architecture decision records (ADRs)
 - **[docs/CONTRIBUTING.md](./docs/CONTRIBUTING.md)** - Development protocols and session-end checklist
-- **[docs/nginx.conf](./docs/nginx.conf)** - Nginx reverse proxy configuration (optional)
+- **[docs/nginx.conf](./docs/nginx.conf)** - Nginx reverse proxy configuration (production SSL)
 
 ## Troubleshooting
 
@@ -287,7 +292,10 @@ npm run check
 # Check if agent is running
 pm2 status
 
-# Test health endpoint
+# Test health endpoint (production)
+curl https://adult-hockey-agent.lx-labs.com/health
+
+# Test health endpoint (local)
 curl http://localhost:3000/health
 
 # View logs

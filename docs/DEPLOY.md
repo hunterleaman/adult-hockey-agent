@@ -2,6 +2,8 @@
 
 This guide covers deploying the Adult Hockey Agent to a DigitalOcean VPS. The agent runs 24/7 with PM2 process management and survives server reboots.
 
+**Production URL**: https://adult-hockey-agent.lx-labs.com
+
 ## Infrastructure Requirements
 
 - **Droplet**: Basic $6/month (1 vCPU, 1GB RAM, 25GB SSD)
@@ -45,13 +47,13 @@ Wait 60 seconds for the droplet to boot. Note the **IP address** displayed.
    - SSH: TCP 22 from All IPv4, All IPv6
    - HTTP: TCP 80 from All IPv4, All IPv6 (for future nginx/SSL)
    - HTTPS: TCP 443 from All IPv4, All IPv6 (for future nginx/SSL)
-   - Custom: TCP 3000 from All IPv4, All IPv6 (health endpoint - lock down later)
+   - Custom: TCP 3000 from localhost only (proxied via nginx; not exposed externally)
 5. **Outbound Rules**:
    - All TCP, All UDP, ICMP to All IPv4, All IPv6
 6. **Apply to Droplets**: Select `adult-hockey-agent`
 7. Click **Create Firewall**
 
-**Note**: For production, restrict port 3000 to Slack IP ranges only. See [Slack IP Ranges](https://api.slack.com/changelog/2018-08-14-slack-api-to-begin-publishing-ip-address-ranges) for the list.
+**Note**: Port 3000 is not exposed externally — all traffic goes through nginx on ports 80/443. For additional security, restrict nginx to Slack IP ranges. See [Slack IP Ranges](https://api.slack.com/changelog/2018-08-14-slack-api-to-begin-publishing-ip-address-ranges) for the list.
 
 ### 1.3 SSH Key Persistence (macOS)
 
@@ -197,7 +199,7 @@ pm2 logs adult-hockey-agent --lines 50
 # 📋 Config:
 #    Poll interval: 60 minutes
 #    ...
-# 🌐 Health endpoint available at http://localhost:3000/health
+# 🌐 Health endpoint available at https://adult-hockey-agent.lx-labs.com/health
 # ⏰ Running initial poll at ...
 # ✓ Initial poll complete
 # ✅ Agent running. Press Ctrl+C to stop.
@@ -206,14 +208,14 @@ pm2 logs adult-hockey-agent --lines 50
 ### 3.2 Test Health Endpoint
 
 ```bash
-# On the server
+# On the server (direct)
 curl http://localhost:3000/health
+
+# Via domain (from anywhere)
+curl https://adult-hockey-agent.lx-labs.com/health
 
 # Should return:
 # {"status":"ok","uptime":123.456,"lastPoll":"2026-02-17T12:00:00.000Z"}
-
-# From your local machine
-curl http://YOUR_DROPLET_IP:3000/health
 ```
 
 ### 3.3 Test Reboot Persistence
@@ -253,7 +255,7 @@ curl -X POST -H 'Content-Type: application/json' \
 
 ```bash
 # SSH into server
-ssh hockey@YOUR_DROPLET_IP
+ssh adulthockey@adult-hockey-agent.lx-labs.com
 cd ~/adult-hockey-agent
 
 # Make deploy script executable (first time only)
@@ -424,7 +426,7 @@ pm2 monit
 
 ```bash
 # From local machine, check SSH connection
-ssh -v hockey@YOUR_DROPLET_IP
+ssh -v adulthockey@adult-hockey-agent.lx-labs.com
 
 # If connection refused:
 # - Check droplet is running in DigitalOcean dashboard
@@ -433,20 +435,24 @@ ssh -v hockey@YOUR_DROPLET_IP
 
 # If authentication fails:
 # - Verify SSH key: ssh-add -l
-# - Try root user: ssh root@YOUR_DROPLET_IP
+# - Try root user: ssh root@adult-hockey-agent.lx-labs.com
 # - Use DigitalOcean console access from dashboard
 ```
 
-## Part 6: Optional Enhancements
+## Part 6: Nginx & SSL (Production)
 
-### 6.1 Setup Nginx Reverse Proxy
+The agent runs behind nginx with SSL at https://adult-hockey-agent.lx-labs.com.
 
-See `docs/nginx.conf` for a complete nginx configuration. This is useful for:
-- SSL/HTTPS support (Let's Encrypt)
-- Multiple services on same server
-- Better logging and rate limiting
+### 6.1 Nginx Reverse Proxy
 
-**Installation**:
+See `docs/nginx.conf` for the production configuration. Nginx handles:
+- SSL termination (HTTPS on port 443)
+- HTTP → HTTPS redirect (port 80)
+- Rate limiting (10 req/s per IP, burst of 20)
+- Security headers
+- Proxying to the Node.js server on 127.0.0.1:3000
+
+**Installation** (already done on production):
 ```bash
 sudo apt install nginx
 sudo cp docs/nginx.conf /etc/nginx/sites-available/adult-hockey-agent
@@ -455,20 +461,42 @@ sudo nginx -t  # Test config
 sudo systemctl restart nginx
 ```
 
-### 6.2 Setup SSL with Let's Encrypt
+### 6.2 SSL with Let's Encrypt
+
+SSL certificates are managed by certbot with automatic renewal.
 
 ```bash
-# Install certbot
+# Install certbot (already done on production)
 sudo apt install certbot python3-certbot-nginx
 
-# Get certificate (requires domain name pointing to droplet)
-sudo certbot --nginx -d yourdomain.com
+# Get certificate
+sudo certbot --nginx -d adult-hockey-agent.lx-labs.com
 
-# Auto-renewal is configured automatically
-sudo certbot renew --dry-run  # Test renewal
+# Verify auto-renewal
+sudo certbot renew --dry-run
+
+# Check certificate expiry
+sudo certbot certificates
 ```
 
-### 6.3 Setup Log Rotation
+Certbot installs a systemd timer that renews certificates automatically before expiry.
+
+### 6.3 Slack HTTPS Requirement
+
+Slack **requires HTTPS** for:
+- **Slash command** request URLs
+- **Interactivity & shortcuts** request URLs
+- **Event subscriptions** request URLs
+
+All Slack app endpoints must use `https://adult-hockey-agent.lx-labs.com/...` — Slack will reject plain HTTP URLs. The Let's Encrypt certificate and nginx configuration handle this automatically.
+
+If the certificate expires (certbot renewal fails), Slack endpoints will stop working. Monitor with:
+```bash
+sudo certbot certificates  # Check expiry dates
+sudo systemctl status certbot.timer  # Verify renewal timer is active
+```
+
+### 6.4 Setup Log Rotation
 
 PM2 has built-in log rotation, but for more control:
 
@@ -482,7 +510,7 @@ pm2 set pm2-logrotate:retain 7
 pm2 set pm2-logrotate:compress true
 ```
 
-### 6.4 Setup Monitoring Alerts
+### 6.5 Setup Monitoring Alerts
 
 ```bash
 # Install PM2 Plus (free for 1 server)
@@ -492,7 +520,7 @@ pm2 plus
 # You'll get email alerts for crashes, high CPU, etc.
 ```
 
-### 6.5 Setup Automated Backups
+### 6.6 Setup Automated Backups
 
 ```bash
 # Create backup script
@@ -554,7 +582,7 @@ sudo ufw default allow outgoing
 sudo ufw allow ssh
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
-sudo ufw allow 3000/tcp  # Or restrict to Slack IPs
+sudo ufw allow 3000/tcp  # Only needed if accessing directly; nginx proxies via localhost
 sudo ufw enable
 
 # Check status
@@ -583,7 +611,7 @@ sudo dpkg-reconfigure --priority=low unattended-upgrades
 - [ ] Edit `.env` and add `SLACK_WEBHOOK_URL`
 - [ ] Restart agent: `pm2 restart adult-hockey-agent`
 - [ ] Verify status: `pm2 status`
-- [ ] Test health endpoint: `curl http://localhost:3000/health`
+- [ ] Test health endpoint: `curl https://adult-hockey-agent.lx-labs.com/health`
 - [ ] Test reboot: `sudo reboot` and verify auto-start
 - [ ] Test Slack notifications (wait for next poll)
 
@@ -594,8 +622,6 @@ sudo dpkg-reconfigure --priority=low unattended-upgrades
 - [ ] View state: `cat data/state.json | jq .`
 
 ### Optional
-- [ ] Setup nginx reverse proxy
-- [ ] Setup SSL with Let's Encrypt
 - [ ] Install pm2-logrotate
 - [ ] Setup PM2 Plus monitoring
 - [ ] Setup automated backups
