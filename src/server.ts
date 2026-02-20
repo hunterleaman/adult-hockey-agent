@@ -2,6 +2,7 @@ import express, { type Express, type Request } from 'express'
 import type { Server } from 'http'
 import fs from 'fs'
 import { createInteractionHandler } from './interactions/handler.js'
+import { createCommandHandler } from './commands/sessions.js'
 
 /**
  * Get the most recent poll timestamp from state file modification time
@@ -67,6 +68,15 @@ export function createServer(options: ServerOptions): Express {
         signingSecret: options.slackSigningSecret,
         statePath: options.statePath,
         remindIntervalHours: options.remindIntervalHours ?? 2,
+      })
+    )
+
+    // Slack slash command endpoint
+    app.post(
+      '/slack/commands',
+      createCommandHandler({
+        signingSecret: options.slackSigningSecret,
+        statePath: options.statePath,
       })
     )
   }
