@@ -117,6 +117,14 @@ Monitoring agent that tracks adult pick-up hockey registration at Extreme Ice Ce
 
 3. **No structured logger exists yet**: `console.error` is the current pattern for error logging. CLAUDE.md says "no console.log in production code — use a structured logger" but no structured logger has been implemented. `console.error` is acceptable until one exists. Track as tech debt, not a violation.
 
+### Session 8 (2026-02-20) - SSL & Domain Setup
+
+1. **Certbot deploys SSL cert to default nginx config, not app config**: `certbot --nginx` added SSL directives to `/etc/nginx/sites-enabled/default` which serves static files, not the Express proxy. Had to manually add `proxy_pass` and related directives to the correct SSL server block in the adult-hockey-agent site config.
+
+2. **Slack slash commands require HTTPS**: Slack will not send requests to HTTP endpoints. The `dispatch_failed` error gives no useful diagnostic. Required setting up a domain (`adult-hockey-agent.lx-labs.com`) and Let's Encrypt SSL before Slack slash commands and interactivity endpoints would work.
+
+3. **Deploy script does not rebuild TypeScript**: `deploy.sh` pulls code but the build step may use cached output. Always run `npm run build` and `pm2 restart adult-hockey-agent` after deploy to ensure new code is active.
+
 ## API Architecture
 
 DASH exposes a JSON:API at `/dash/jsonapi/api/v1/`. Polling requires a **two-step fetch flow**:
