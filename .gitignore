@@ -30,4 +30,5 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
-.claude/
+.claude/*
+!.claude/commands/

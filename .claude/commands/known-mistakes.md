@@ -1,0 +1,1 @@
+Review the current session for errors or unexpected behavior. If any occurred, draft a Known Mistakes entry for CLAUDE.md following the existing session format (see Session 1-7 entries for examples). Do not commit — just show me the draft.

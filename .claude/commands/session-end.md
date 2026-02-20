@@ -1,0 +1,1 @@
+Run the session-end protocol from CLAUDE.md: 1) Run npm run check — all must pass. 2) Fix any failures. 3) Check if docs need updating (SPEC.md, CLAUDE.md, DECISIONS.md). 4) Commit with conventional commit format. 5) git push. 6) Run gh issue list and confirm issue state matches reality.
