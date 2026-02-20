@@ -153,6 +153,8 @@ cd /home/adulthockey/adult-hockey-agent
 ./scripts/deploy.sh
 ```
 
+> **SSH fails with "Permission denied"?** macOS doesn't persist SSH keys across Terminal restarts. Run `ssh-add --apple-use-keychain ~/.ssh/id_ed25519` to add your key to Keychain, and add `AddKeysToAgent yes` + `UseKeychain yes` under `Host *` in `~/.ssh/config` for persistence.
+
 ### Commands
 
 ```bash

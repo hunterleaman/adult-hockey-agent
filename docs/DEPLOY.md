@@ -53,7 +53,28 @@ Wait 60 seconds for the droplet to boot. Note the **IP address** displayed.
 
 **Note**: For production, restrict port 3000 to Slack IP ranges only. See [Slack IP Ranges](https://api.slack.com/changelog/2018-08-14-slack-api-to-begin-publishing-ip-address-ranges) for the list.
 
-### 1.3 Initial SSH Connection
+### 1.3 SSH Key Persistence (macOS)
+
+macOS does not persist SSH keys across Terminal restarts. Without this setup, you'll need to run `ssh-add` every time you open a new terminal.
+
+**One-time fix:**
+
+```bash
+# Add key to macOS Keychain (persists across restarts)
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+```
+
+**Add to `~/.ssh/config`** (create file if it doesn't exist):
+
+```
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+```
+
+This ensures SSH keys are automatically loaded from Keychain on every terminal session.
+
+### 1.4 Initial SSH Connection
 
 ```bash
 # Test SSH connection

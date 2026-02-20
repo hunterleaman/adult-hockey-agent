@@ -249,6 +249,22 @@ Must handle gracefully:
 5. Commit with descriptive message
 6. Push to remote
 
+### Conductor Workflow (Feature Branches)
+
+Development uses [Conductor](https://conductor.build) for parallel feature branches with Claude Code (Opus). Each workspace is an isolated git worktree with its own branch, dependencies, and build.
+
+**Cycle:**
+1. **⌘N** — Create workspace (auto-creates branch from origin/main, runs setup script)
+2. Prompt Claude with the task, referencing spec docs and CLAUDE.md
+3. **⌘D** — Review diffs before committing
+4. **⌘R** — Run quality checks (`npm run check`)
+5. **⌘⇧P** — Create Pull Request
+6. Merge PR on GitHub, then archive the workspace
+
+Multiple workspaces run simultaneously for independent features.
+
+**Small changes** (docs, config, formatting): Use Claude Code CLI directly on main. Conductor workspaces are for feature branches that deserve PRs.
+
 ## Git Branching Workflow
 
 **CRITICAL**: Always use feature branches for new work. Never commit directly to `main` except for trivial documentation fixes.
