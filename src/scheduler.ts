@@ -5,6 +5,7 @@ import { loadConfig, validateConfig } from './config.js'
 import { poll } from './index.js'
 import { loadState } from './state.js'
 import { startServer } from './server.js'
+import { calculateNextPollDelay, getNextSessionTime } from './poll-schedule.js'
 
 const STATE_PATH = './data/state.json'
 
@@ -32,56 +33,30 @@ function shouldAccelerate(config: ReturnType<typeof loadConfig>): boolean {
 }
 
 /**
- * Get current ET hour for active hours check
- */
-function getCurrentETHour(): number {
-  const now = new Date()
-  return parseInt(
-    now.toLocaleString('en-US', {
-      timeZone: 'America/New_York',
-      hour: '2-digit',
-      hour12: false,
-    })
-  )
-}
-
-/**
- * Schedule the next poll with dynamic interval based on session state
+ * Schedule the next poll using smart timing based on session proximity.
+ * Sleeps until the approach window opens when no sessions are imminent,
+ * then uses normal/accelerated intervals during active polling.
  */
 function scheduleNextPoll(config: ReturnType<typeof loadConfig>): void {
-  // Determine interval based on session state
-  const accelerate = shouldAccelerate(config)
-  const intervalMinutes = accelerate
-    ? config.pollIntervalAcceleratedMinutes
-    : config.pollIntervalMinutes
-  const intervalMs = intervalMinutes * 60 * 1000
+  const now = new Date()
+  const state = loadState(STATE_PATH)
+  const nextSession = getNextSessionTime(state, now)
+  const accelerated = shouldAccelerate(config)
 
-  console.log(
-    `📅 Next poll in ${intervalMinutes} minutes ${accelerate ? '(accelerated - FILLING_FAST detected)' : '(normal)'}`
-  )
+  const schedule = calculateNextPollDelay(now, nextSession, config, accelerated)
+
+  console.log(schedule.scheduleLog)
 
   scheduledTimeout = setTimeout(() => {
     void (async () => {
-      const etHour = getCurrentETHour()
+      console.log(schedule.wakeLog)
+      await poll(config, STATE_PATH)
+      console.log('✓ Poll complete\n')
 
-      // Check if within active hours
-      if (etHour >= config.pollStartHour && etHour <= config.pollEndHour) {
-        console.log(
-          `⏰ Polling at ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })}`
-        )
-        await poll(config, STATE_PATH)
-        console.log('✓ Poll complete\n')
-
-        // Schedule next poll (recursive)
-        scheduleNextPoll(config)
-      } else {
-        console.log(`⏸  Outside active hours (${etHour}:00 ET) - skipping poll\n`)
-
-        // Still schedule next poll to check again later
-        scheduleNextPoll(config)
-      }
+      // Schedule next poll (recursive)
+      scheduleNextPoll(config)
     })()
-  }, intervalMs)
+  }, schedule.delayMs)
 }
 
 /**
@@ -99,6 +74,8 @@ async function main(): Promise<void> {
     console.log(`   Accelerated interval: ${config.pollIntervalAcceleratedMinutes} minutes`)
     console.log(`   Active hours: ${config.pollStartHour}:00 - ${config.pollEndHour}:00 ET`)
     console.log(`   Forward window: ${config.forwardWindowDays} days`)
+    console.log(`   Approach window: ${config.approachWindowHours} hours`)
+    console.log(`   Max sleep: ${config.maxSleepHours} hours`)
     console.log(`   Slack: ${config.slackWebhookUrl ? 'configured ✓' : 'not configured'}`)
     console.log()
 
@@ -121,7 +98,7 @@ async function main(): Promise<void> {
     await poll(config, STATE_PATH)
     console.log('✓ Initial poll complete\n')
 
-    // Start dynamic polling
+    // Start smart polling
     scheduleNextPoll(config)
 
     console.log('✅ Agent running. Press Ctrl+C to stop.\n')
