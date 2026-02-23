@@ -125,6 +125,8 @@ Monitoring agent that tracks adult pick-up hockey registration at Extreme Ice Ce
 
 3. **Deploy script does not rebuild TypeScript**: `deploy.sh` pulls code but the build step may use cached output. Always run `npm run build` and `pm2 restart adult-hockey-agent` after deploy to ensure new code is active.
 
+4. **Slack interactivity URL must not include port**: The interactivity request URL was set to `https://domain:3000/slack/interactions` which bypasses the nginx reverse proxy. Slack endpoints should use `https://adult-hockey-agent.lx-labs.com/slack/interactions` without a port since nginx proxies 443 to 3000 internally. Same applies to slash command URLs.
+
 ## API Architecture
 
 DASH exposes a JSON:API at `/dash/jsonapi/api/v1/`. Polling requires a **two-step fetch flow**:
