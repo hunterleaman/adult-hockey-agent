@@ -127,6 +127,14 @@ Monitoring agent that tracks adult pick-up hockey registration at Extreme Ice Ce
 
 4. **Slack interactivity URL must not include port**: The interactivity request URL was set to `https://domain:3000/slack/interactions` which bypasses the nginx reverse proxy. Slack endpoints should use `https://adult-hockey-agent.lx-labs.com/slack/interactions` without a port since nginx proxies 443 to 3000 internally. Same applies to slash command URLs.
 
+### Session 9 (2026-06-04) - DASH Team Rename Broke Parser (Silent Alert Outage)
+
+1. **DASH renamed pickup teams, parser silently dropped every session**: Slack alerts went quiet for ~a week. The agent kept polling normally (health endpoint healthy, `lastPoll` current), but DASH renamed the home teams from `(PLAYERS) ADULT Pick Up` → `Adult Pickup Skater` and `(GOALIES) ...` → `Adult Pickup Goalie`. `parser.ts` filtered on the literal substring `'adult pick up'` (with a space) and classified player/goalie entries by the `(PLAYERS)`/`(GOALIES)` tags — none of which match the new names. Result: every session was discarded, `evaluate()` saw an empty list, and no alerts fired. **Fix**: match both `'adult pickup'` and `'adult pick up'` in the filter, and detect player/goalie by `Skater`/`Goalie` as well as the old `(PLAYERS)`/`(GOALIES)` tags. Added `fixtures/dash-api/events-pickup-rename.json` (live snapshot) + TDD tests. **Lesson**: parser filters keyed on human-facing strings are fragile to upstream renames; the silent empty-`catch` in `poll()` (`index.ts`) and per-notifier `catch` mean a parsing/data regression produces zero signal. Consider a heartbeat/"0 sessions found N polls in a row" warning.
+
+2. **Diagnosis without SSH**: SSH was independently broken (local `id_ed25519` regenerated 2026-03-23 no longer matched the droplet's `authorized_keys`). Root cause was still confirmed remotely by (a) hitting `/health` (proved the agent was alive and polling), and (b) replaying the scraper's two-step DASH fetch with `curl` to see the live team names. Lesson: the public health endpoint + a manual API replay are enough to localize a data-layer bug without server access.
+
+3. **Pre-existing date-brittle evaluator tests**: 19 tests in `evaluator.test.ts` fail because they hardcode Feb 2026 session dates and `evaluator.ts` skips sessions where `datetime < now`. Fails on `main` regardless of this fix; no production impact (production only evaluates near-future sessions). Tracked separately — make these tests compute relative future dates.
+
 ## API Architecture
 
 DASH exposes a JSON:API at `/dash/jsonapi/api/v1/`. Polling requires a **two-step fetch flow**:
