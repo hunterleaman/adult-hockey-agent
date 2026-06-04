@@ -141,6 +141,7 @@ export class SlackNotifier implements Notifier {
       FILLING_FAST: '⚡',
       SOLD_OUT: '🚫',
       NEWLY_AVAILABLE: '✅',
+      MORNING_PICKUP: '🌅',
     }
     return emojiMap[type]
   }
@@ -151,6 +152,7 @@ export class SlackNotifier implements Notifier {
       FILLING_FAST: '#ff9900', // orange
       SOLD_OUT: '#ff0000', // red
       NEWLY_AVAILABLE: '#2eb886', // teal
+      MORNING_PICKUP: '#1e90ff', // blue
     }
     return colorMap[type]
   }
@@ -159,7 +161,7 @@ export class SlackNotifier implements Notifier {
     if (type === 'FILLING_FAST') {
       return 'danger' // red button for urgency
     }
-    if (type === 'OPPORTUNITY' || type === 'NEWLY_AVAILABLE') {
+    if (type === 'OPPORTUNITY' || type === 'NEWLY_AVAILABLE' || type === 'MORNING_PICKUP') {
       return 'primary' // green button
     }
     return undefined // omit style field for default styling
@@ -175,6 +177,8 @@ export class SlackNotifier implements Notifier {
       message += 'Session is now full.'
     } else if (alert.type === 'NEWLY_AVAILABLE') {
       message += `Spots opened up! *${spotsRemaining}* spot${spotsRemaining === 1 ? '' : 's'} available.`
+    } else if (alert.type === 'MORNING_PICKUP') {
+      message += `Morning pickup is back on the schedule!\n\n*Players:* ${session.playersRegistered}/${session.playersMax}\n*Goalies:* ${session.goaliesRegistered}/${session.goaliesMax}\n\n_Grab a spot!_`
     } else {
       message += `*Players:* ${session.playersRegistered}/${session.playersMax} (${spotsRemaining} spot${spotsRemaining === 1 ? '' : 's'} left)\n`
       message += `*Goalies:* ${session.goaliesRegistered}/${session.goaliesMax}\n`

@@ -9,6 +9,7 @@ export interface Config {
   minGoalies: number
   minPlayersRegistered: number
   playerSpotsUrgent: number
+  morningPickupMaxHour: number
   port: number
   slackWebhookUrl?: string
   slackSigningSecret?: string
@@ -34,6 +35,7 @@ export function loadConfig(): Config {
     minGoalies: parseIntOrDefault(process.env.MIN_GOALIES, 1),
     minPlayersRegistered: parseIntOrDefault(process.env.MIN_PLAYERS_REGISTERED, 10),
     playerSpotsUrgent: parseIntOrDefault(process.env.PLAYER_SPOTS_URGENT, 4),
+    morningPickupMaxHour: parseIntOrDefault(process.env.MORNING_PICKUP_MAX_HOUR, 9),
     port: parseIntOrDefault(process.env.PORT, 3000),
     slackWebhookUrl: process.env.SLACK_WEBHOOK_URL || undefined,
     slackSigningSecret: process.env.SLACK_SIGNING_SECRET || undefined,
@@ -89,6 +91,10 @@ export function validateConfig(config: Config): void {
 
   if (config.playerSpotsUrgent <= 0) {
     throw new Error('playerSpotsUrgent must be > 0')
+  }
+
+  if (config.morningPickupMaxHour < 0 || config.morningPickupMaxHour > 23) {
+    throw new Error('morningPickupMaxHour must be 0-23')
   }
 
   if (config.port <= 0 || config.port > 65535) {

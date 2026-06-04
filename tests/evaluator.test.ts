@@ -16,6 +16,7 @@ describe('evaluator', () => {
     minGoalies: 1,
     minPlayersRegistered: 10,
     playerSpotsUrgent: 4,
+    morningPickupMaxHour: 9,
     port: 3000,
     slackWebhookUrl: undefined,
     remindIntervalHours: 2,
@@ -834,6 +835,57 @@ describe('evaluator', () => {
       // Treats as new session (no matching state)
       expect(alerts).toHaveLength(1)
       expect(alerts[0].type).toBe('OPPORTUNITY')
+    })
+  })
+
+  describe('MORNING_PICKUP alerts', () => {
+    // Notify when an early-morning pickup session (re)appears on the schedule.
+    // Gated to start times before config.morningPickupMaxHour (default 9am),
+    // which excludes the 11:30am "Open Hockey" sessions.
+    const futureDate = (): string => {
+      const d = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+      return d.toISOString().slice(0, 10)
+    }
+
+    it('fires once for a newly-seen morning session (no previous state)', () => {
+      const session = createSession({
+        date: futureDate(),
+        time: '06:00',
+        playersRegistered: 0,
+        goaliesRegistered: 0,
+      })
+
+      const alerts = evaluate([session], [], defaultConfig)
+
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].type).toBe('MORNING_PICKUP')
+    })
+
+    it('does not re-fire once the session has been seen before', () => {
+      const session = createSession({
+        date: futureDate(),
+        time: '06:00',
+        playersRegistered: 0,
+        goaliesRegistered: 0,
+      })
+      const state: SessionState[] = [createState(session)]
+
+      const alerts = evaluate([session], state, defaultConfig)
+
+      expect(alerts.some((a) => a.type === 'MORNING_PICKUP')).toBe(false)
+    })
+
+    it('does not fire for late-morning (11:30) sessions', () => {
+      const session = createSession({
+        date: futureDate(),
+        time: '11:30',
+        playersRegistered: 0,
+        goaliesRegistered: 0,
+      })
+
+      const alerts = evaluate([session], [], defaultConfig)
+
+      expect(alerts.some((a) => a.type === 'MORNING_PICKUP')).toBe(false)
     })
   })
 })
