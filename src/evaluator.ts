@@ -1,7 +1,12 @@
 import type { Session } from './parser'
 import type { Config } from './config'
 
-export type AlertType = 'OPPORTUNITY' | 'FILLING_FAST' | 'SOLD_OUT' | 'NEWLY_AVAILABLE'
+export type AlertType =
+  | 'OPPORTUNITY'
+  | 'FILLING_FAST'
+  | 'SOLD_OUT'
+  | 'NEWLY_AVAILABLE'
+  | 'MORNING_PICKUP'
 
 export type UserResponse = 'registered' | 'not_interested' | 'remind_later'
 
@@ -39,6 +44,15 @@ export function evaluate(
     }
 
     const prevState = findPreviousState(session, previousState)
+
+    // Priority 0: MORNING_PICKUP - an early-morning pickup session has appeared
+    // on the schedule for the first time. Fires once (only when never seen
+    // before), independent of registration counts, since the morning format
+    // is what the user wants to know has returned.
+    if (!prevState && isMorningPickup(session, config)) {
+      alerts.push(createAlert('MORNING_PICKUP', session))
+      continue
+    }
 
     // Alert priority hierarchy - only ONE alert per session
     // Priority: SOLD_OUT > NEWLY_AVAILABLE > FILLING_FAST > OPPORTUNITY
@@ -114,6 +128,11 @@ function findPreviousState(
   )
 }
 
+function isMorningPickup(session: Session, config: Config): boolean {
+  const startHour = parseInt(session.time.split(':')[0], 10)
+  return startHour < config.morningPickupMaxHour
+}
+
 function shouldAlertOpportunity(session: Session, prevState: SessionState | undefined): boolean {
   // CRITICAL: Don't downgrade from higher-priority alerts
   // If previous alert was FILLING_FAST, NEWLY_AVAILABLE, or SOLD_OUT,
@@ -167,6 +186,7 @@ function createAlert(type: AlertType, session: Session): Alert {
     FILLING_FAST: `⚡ FILLING FAST: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}\nPlayers: ${session.playersRegistered}/${session.playersMax} (${spotsRemaining} spots left)\nGoalies: ${session.goaliesRegistered}/${session.goaliesMax}\nStatus: Act now!`,
     SOLD_OUT: `🚫 SOLD OUT: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}\nSession is now full.`,
     NEWLY_AVAILABLE: `✅ NEWLY AVAILABLE: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}\nSpots opened up! ${spotsRemaining} spot${spotsRemaining === 1 ? '' : 's'} available.`,
+    MORNING_PICKUP: `🌅 MORNING PICKUP: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}\nMorning pickup is back on the schedule!\nPlayers: ${session.playersRegistered}/${session.playersMax}\nGoalies: ${session.goaliesRegistered}/${session.goaliesMax}\nStatus: Grab a spot!`,
   }
 
   return {

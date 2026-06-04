@@ -175,6 +175,7 @@ function formatAlertType(type: AlertType): string {
     FILLING_FAST: 'FILLING FAST',
     SOLD_OUT: 'SOLD OUT',
     NEWLY_AVAILABLE: 'Newly Available',
+    MORNING_PICKUP: 'Morning Pickup',
   }
   return labels[type]
 }
