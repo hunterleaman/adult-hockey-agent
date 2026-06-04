@@ -77,8 +77,11 @@ export function parseEvents(apiResponse: JsonApiResponse): Session[] {
     const teamName = homeTeam.attributes?.name || ''
     const teamNameLower = teamName.toLowerCase()
 
-    // Filter for ADULT Pick Up only (exclude Broomball, leagues, etc.)
-    if (!teamNameLower.includes('adult pick up')) continue
+    // Filter for Adult Pickup only (exclude Broomball, leagues, etc.)
+    // DASH renamed these teams mid-2026 from "ADULT Pick Up" to "Adult Pickup",
+    // so match both spellings.
+    if (!teamNameLower.includes('adult pickup') && !teamNameLower.includes('adult pick up'))
+      continue
     if (teamNameLower.includes('broomball')) continue
 
     // Get summary data for registration counts
@@ -140,11 +143,17 @@ export function parseEvents(apiResponse: JsonApiResponse): Session[] {
 
     const session = sessionMap.get(sessionKey)!
 
-    if (event.teamName.includes('(PLAYERS)')) {
+    // Classify as player or goalie entry. Old DASH naming used "(PLAYERS)" /
+    // "(GOALIES)" tags; the mid-2026 rename uses "Skater" / "Goalie".
+    const nameLower = event.teamName.toLowerCase()
+    const isGoalie = nameLower.includes('(goalies)') || nameLower.includes('goalie')
+    const isPlayer = nameLower.includes('(players)') || nameLower.includes('skater')
+
+    if (isPlayer) {
       session.playersRegistered = event.registered
       session.playersMax = event.capacity
       session.eventName = event.teamName
-    } else if (event.teamName.includes('(GOALIES)')) {
+    } else if (isGoalie) {
       session.goaliesRegistered = event.registered
       session.goaliesMax = event.capacity
       // If eventName not set yet, use this (shouldn't happen in practice)

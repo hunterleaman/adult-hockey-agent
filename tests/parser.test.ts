@@ -156,3 +156,39 @@ describe('Parser', () => {
     expect(uniqueTimes.size).toBeGreaterThan(1)
   })
 })
+
+describe('Parser - renamed DASH teams (Adult Pickup Skater/Goalie)', () => {
+  // In ~mid-2026 DASH renamed the pickup teams from "(PLAYERS) ADULT Pick Up"
+  // to "Adult Pickup Skater" / "Adult Pickup Goalie", which broke the old
+  // "adult pick up" filter and "(PLAYERS)"/"(GOALIES)" classification.
+  async function loadRenameFixture(): Promise<Session[]> {
+    const fixturePath = join(process.cwd(), 'fixtures', 'dash-api', 'events-pickup-rename.json')
+    const fixtureData = await readFile(fixturePath, 'utf-8')
+    return parseEvents(JSON.parse(fixtureData))
+  }
+
+  it('should parse Adult Pickup sessions despite the team rename', async () => {
+    const sessions = await loadRenameFixture()
+    expect(sessions.length).toBe(1)
+  })
+
+  it('should pair Skater (players) with Goalie at the same time slot', async () => {
+    const sessions = await loadRenameFixture()
+    const session = sessions[0]
+
+    expect(session.date).toBe('2026-06-08')
+    expect(session.time).toBe('11:30')
+    expect(session.playersMax).toBe(22)
+    expect(session.playersRegistered).toBe(0)
+    expect(session.goaliesMax).toBe(3)
+    expect(session.goaliesRegistered).toBe(0)
+  })
+
+  it('should exclude non-pickup events (Private Hockey Lessons)', async () => {
+    const sessions = await loadRenameFixture()
+    sessions.forEach((session) => {
+      expect(session.eventName.toLowerCase()).not.toContain('private')
+      expect(session.eventName.toLowerCase()).not.toContain('lesson')
+    })
+  })
+})
