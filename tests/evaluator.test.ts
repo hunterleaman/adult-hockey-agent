@@ -22,11 +22,20 @@ describe('evaluator', () => {
     remindIntervalHours: 2,
   }
 
+  // Sessions must be in the FUTURE: evaluate() skips any session whose datetime
+  // is already past (evaluator.ts), so hardcoded calendar dates silently disable
+  // every alert assertion the moment that date passes.
+  const futureDate = (daysAhead = 7): string =>
+    new Date(Date.now() + daysAhead * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+
   const createSession = (overrides: Partial<Session> = {}): Session => ({
-    date: '2026-02-25',
+    date: futureDate(),
     dayOfWeek: 'Wednesday',
-    time: '06:00',
-    timeLabel: '6:00am - 7:10am',
+    // Default to a non-morning time so MORNING_PICKUP (priority 0, fires for
+    // unseen pre-9am sessions) doesn't pre-empt the alert under test. The
+    // MORNING_PICKUP tests set their own 06:00 time explicitly.
+    time: '18:30',
+    timeLabel: '6:30pm - 7:40pm',
     eventName: '(PLAYERS) ADULT Pick Up MORNINGS',
     playersRegistered: 14,
     playersMax: 24,
@@ -400,7 +409,7 @@ describe('evaluator', () => {
       expect(alerts[0]).toHaveProperty('session')
       expect(alerts[0]).toHaveProperty('message')
       expect(alerts[0]).toHaveProperty('registrationUrl')
-      expect(alerts[0].registrationUrl).toContain('2026-02-25')
+      expect(alerts[0].registrationUrl).toContain(session.date)
     })
 
     it('fires only FILLING_FAST when both FILLING_FAST and OPPORTUNITY conditions are met', () => {
@@ -815,8 +824,7 @@ describe('evaluator', () => {
 
     it('handles state for different session (date/time mismatch)', () => {
       const session = createSession({
-        date: '2026-02-25',
-        time: '06:00',
+        date: futureDate(3),
         playersRegistered: 10,
         playersMax: 24,
         goaliesRegistered: 2,
@@ -824,8 +832,7 @@ describe('evaluator', () => {
       const state: SessionState[] = [
         createState(
           createSession({
-            date: '2026-02-18', // different date
-            time: '06:00',
+            date: futureDate(10), // different (future) date — no matching prev state
           })
         ),
       ]
@@ -841,11 +848,8 @@ describe('evaluator', () => {
   describe('MORNING_PICKUP alerts', () => {
     // Notify when an early-morning pickup session (re)appears on the schedule.
     // Gated to start times before config.morningPickupMaxHour (default 9am),
-    // which excludes the 11:30am "Open Hockey" sessions.
-    const futureDate = (): string => {
-      const d = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-      return d.toISOString().slice(0, 10)
-    }
+    // which excludes the 11:30am "Open Hockey" sessions. Uses the shared
+    // futureDate() helper defined at the top of the suite.
 
     it('fires once for a newly-seen morning session (no previous state)', () => {
       const session = createSession({
