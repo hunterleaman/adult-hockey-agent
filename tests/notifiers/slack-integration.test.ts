@@ -36,7 +36,7 @@ describe('SlackNotifier - Block Kit Integration', () => {
       type,
       session,
       message: `Test ${type} message`,
-      registrationUrl: `https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registration?date=${session.date}&facility_ids=1`,
+      registrationUrl: `https://apps.daysmartrecreation.com/dash/x/#/online/charlotteice/event-registration?date=${session.date}&facility_ids=1`,
     }
   }
 
@@ -253,7 +253,7 @@ describe('SlackNotifier - Block Kit Integration', () => {
 
       // Verify URL contains date parameter
       expect(button.url).toContain('date=2026-02-20')
-      expect(button.url).toContain('extremeice')
+      expect(button.url).toContain('charlotteice')
     })
   })
 

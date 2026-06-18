@@ -135,6 +135,14 @@ Monitoring agent that tracks adult pick-up hockey registration at Extreme Ice Ce
 
 3. **Pre-existing date-brittle evaluator tests**: 19 tests in `evaluator.test.ts` fail because they hardcode Feb 2026 session dates and `evaluator.ts` skips sessions where `datetime < now`. Fails on `main` regardless of this fix; no production impact (production only evaluates near-future sessions). Tracked separately — make these tests compute relative future dates.
 
+### Session 10 (2026-06-18) - DASH Tenant Migration (Second Silent Outage) + Canary
+
+1. **Rink rebranded and migrated DASH tenants; scraper kept polling the dead one**: Extreme Ice Center became "Charlotte Ice" and moved to a new DASH tenant slug `charlotteice`. The old `extremeice` tenant still responds `200` but is a **stale mirror**: it omits the 6 AM Wed/Fri morning pickup entirely and reports `registered_count = 0` for every event. Production had `company` hardcoded to `extremeice` (`scraper.ts`), so the agent was blind again — `/health` green, polling on schedule, zero useful alerts. Same failure class as Session 9 (a value keyed to upstream identity changed). **Fix**: slug is now `config.company` (env `DASH_COMPANY`, default `charlotteice`), threaded into the scraper and both registration-URL builders (`evaluator.ts`, `commands/sessions.ts`). Confirmed by curl replay + running the compiled scraper: under `charlotteice` the Fri 6:10 AM pickup returns with real counts (19/22).
+
+2. **This corrects the `dash-pickup-state` memory**: its conclusions "registered_count is dead for this format" and "6 AM pickup gone for summer" were **wrong** — both were artifacts of reading the stale `extremeice` tenant. The 6 AM Wed/Fri morning pickup is alive and counts are real on `charlotteice`.
+
+3. **Added a canary (silent-outage watchdog)**: `src/health.ts` + `data/health.json` track consecutive "suspect" polls (0 sessions, or sessions with all-zero registrations). After `CANARY_THRESHOLD_POLLS` (env, default 3) it fires one Slack diagnostic via the new `Notifier.sendDiagnostic()`, suppresses until a healthy poll recovers. `poll()` was restructured so the canary runs even when a scrape throws. This is the durable fix for the "healthy but blind" failure mode that bit us in Sessions 9 and 10.
+
 ## API Architecture
 
 DASH exposes a JSON:API at `/dash/jsonapi/api/v1/`. Polling requires a **two-step fetch flow**:
@@ -142,7 +150,7 @@ DASH exposes a JSON:API at `/dash/jsonapi/api/v1/`. Polling requires a **two-ste
 ### Step 1: Get Event IDs for Date Range
 
 ```
-GET /dash/jsonapi/api/v1/date-availabilities?cache[save]=false&page[size]=365&sort=id&filter[date__gte]={YYYY-MM-DD}&company=extremeice
+GET /dash/jsonapi/api/v1/date-availabilities?cache[save]=false&page[size]=365&sort=id&filter[date__gte]={YYYY-MM-DD}&company=charlotteice
 ```
 
 Returns:
@@ -167,7 +175,7 @@ Returns:
 ### Step 2: Fetch Events by IDs
 
 ```
-GET /dash/jsonapi/api/v1/events?cache[save]=false&filter[id__in]={comma-separated-ids}&filter[unconstrained]=1&company=extremeice&include=summary,homeTeam,resource
+GET /dash/jsonapi/api/v1/events?cache[save]=false&filter[id__in]={comma-separated-ids}&filter[unconstrained]=1&company=charlotteice&include=summary,homeTeam,resource
 ```
 
 Returns events with **JSON:API relationships** in `included[]` array.

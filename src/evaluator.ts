@@ -50,7 +50,7 @@ export function evaluate(
     // before), independent of registration counts, since the morning format
     // is what the user wants to know has returned.
     if (!prevState && isMorningPickup(session, config)) {
-      alerts.push(createAlert('MORNING_PICKUP', session))
+      alerts.push(createAlert('MORNING_PICKUP', session, config.company))
       continue
     }
 
@@ -59,13 +59,13 @@ export function evaluate(
 
     // Priority 1: SOLD_OUT - transitioned from available to full
     if (prevState && session.isFull && !prevState.session.isFull) {
-      alerts.push(createAlert('SOLD_OUT', session))
+      alerts.push(createAlert('SOLD_OUT', session, config.company))
       continue
     }
 
     // Priority 2: NEWLY_AVAILABLE - transitioned from full to available
     if (prevState && !session.isFull && prevState.session.isFull) {
-      alerts.push(createAlert('NEWLY_AVAILABLE', session))
+      alerts.push(createAlert('NEWLY_AVAILABLE', session, config.company))
       continue
     }
 
@@ -94,7 +94,7 @@ export function evaluate(
     // Priority 3: FILLING_FAST - urgency alert when spots are running out
     if (spotsRemaining <= config.playerSpotsUrgent) {
       if (shouldAlertFillingFast(session, prevState)) {
-        alerts.push(createAlert('FILLING_FAST', session))
+        alerts.push(createAlert('FILLING_FAST', session, config.company))
         continue
       }
     }
@@ -105,7 +105,7 @@ export function evaluate(
       session.playersRegistered >= config.minPlayersRegistered
     ) {
       if (shouldAlertOpportunity(session, prevState)) {
-        alerts.push(createAlert('OPPORTUNITY', session))
+        alerts.push(createAlert('OPPORTUNITY', session, config.company))
         continue
       }
     }
@@ -178,7 +178,7 @@ function shouldAlertFillingFast(session: Session, prevState: SessionState | unde
   return session.playersRegistered > prevPlayerCount
 }
 
-function createAlert(type: AlertType, session: Session): Alert {
+function createAlert(type: AlertType, session: Session, company: string = 'charlotteice'): Alert {
   const spotsRemaining = session.playersMax - session.playersRegistered
 
   const messages: Record<AlertType, string> = {
@@ -193,7 +193,7 @@ function createAlert(type: AlertType, session: Session): Alert {
     type,
     session,
     message: messages[type],
-    registrationUrl: buildRegistrationUrl(session.date),
+    registrationUrl: buildRegistrationUrl(session.date, company),
   }
 }
 
@@ -211,6 +211,6 @@ function formatTime(time: string): string {
   return `${displayHours}:${minutes.toString().padStart(2, '0')}${period}`
 }
 
-function buildRegistrationUrl(date: string): string {
-  return `https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registration?date=${date}&facility_ids=1`
+function buildRegistrationUrl(date: string, company: string = 'charlotteice'): string {
+  return `https://apps.daysmartrecreation.com/dash/x/#/online/${company}/event-registration?date=${date}&facility_ids=1`
 }

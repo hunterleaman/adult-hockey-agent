@@ -90,6 +90,23 @@ describe('config', () => {
       expect(config.playerSpotsUrgent).toBe(3)
     })
 
+    it('defaults company to charlotteice and canary threshold to 3', () => {
+      const config = loadConfig()
+
+      expect(config.company).toBe('charlotteice')
+      expect(config.canaryThresholdPolls).toBe(3)
+    })
+
+    it('loads DASH_COMPANY and CANARY_THRESHOLD_POLLS from env', () => {
+      process.env.DASH_COMPANY = 'extremeice'
+      process.env.CANARY_THRESHOLD_POLLS = '5'
+
+      const config = loadConfig()
+
+      expect(config.company).toBe('extremeice')
+      expect(config.canaryThresholdPolls).toBe(5)
+    })
+
     it('ignores invalid numeric values and uses defaults', () => {
       process.env.POLL_INTERVAL_MINUTES = 'invalid'
       process.env.POLL_START_HOUR = 'not-a-number'
@@ -216,6 +233,20 @@ describe('config', () => {
       config.playerSpotsUrgent = 0
 
       expect(() => validateConfig(config)).toThrow('playerSpotsUrgent must be > 0')
+    })
+
+    it('throws when company is empty', () => {
+      const config = loadConfig()
+      config.company = ''
+
+      expect(() => validateConfig(config)).toThrow('company must not be empty')
+    })
+
+    it('throws when canaryThresholdPolls is zero', () => {
+      const config = loadConfig()
+      config.canaryThresholdPolls = 0
+
+      expect(() => validateConfig(config)).toThrow('canaryThresholdPolls must be > 0')
     })
 
     it('throws when Slack webhook URL is invalid', () => {

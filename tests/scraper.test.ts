@@ -365,7 +365,7 @@ describe('scraper', () => {
       expect(url).toContain('page[size]=365')
       expect(url).toContain('sort=id')
       expect(url).toContain('filter[date__gte]=2026-02-20')
-      expect(url).toContain('company=extremeice')
+      expect(url).toContain('company=charlotteice')
     })
 
     it('builds correct events URL with event IDs', async () => {
@@ -400,7 +400,7 @@ describe('scraper', () => {
       expect(url).toContain('cache[save]=false')
       expect(url).toContain('filter[id__in]=213364,213376')
       expect(url).toContain('filter[unconstrained]=1')
-      expect(url).toContain('company=extremeice')
+      expect(url).toContain('company=charlotteice')
       expect(url).toContain('include=summary,homeTeam,resource')
     })
 

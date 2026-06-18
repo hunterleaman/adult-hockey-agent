@@ -25,6 +25,7 @@ interface SlackCommandResponse {
 export interface CommandHandlerDeps {
   signingSecret: string
   statePath: string
+  company: string
 }
 
 /**
@@ -64,7 +65,7 @@ export function createCommandHandler(
 
     const state = loadState(deps.statePath)
     const lastPoll = getLastPollTimestamp(deps.statePath)
-    const response = buildSessionsResponse(state, lastPoll)
+    const response = buildSessionsResponse(state, lastPoll, deps.company)
 
     res.status(200).json(response)
   }
@@ -76,7 +77,8 @@ export function createCommandHandler(
  */
 export function buildSessionsResponse(
   state: SessionState[],
-  lastPoll: string | null
+  lastPoll: string | null,
+  company: string = 'charlotteice'
 ): SlackCommandResponse {
   if (state.length === 0) {
     return {
@@ -116,7 +118,7 @@ export function buildSessionsResponse(
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: formatSessionBlock(entry),
+        text: formatSessionBlock(entry, company),
       },
     })
     blocks.push({ type: 'divider' })
@@ -144,13 +146,13 @@ export function buildSessionsResponse(
   }
 }
 
-function formatSessionBlock(entry: SessionState): string {
+function formatSessionBlock(entry: SessionState, company: string): string {
   const { session } = entry
   const spotsRemaining = session.playersMax - session.playersRegistered
   const status = session.isFull
     ? ':no_entry: *FULL*'
     : `:white_check_mark: *Open* (${spotsRemaining} spot${spotsRemaining === 1 ? '' : 's'} left)`
-  const regUrl = `https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registration?date=${session.date}&facility_ids=1`
+  const regUrl = `https://apps.daysmartrecreation.com/dash/x/#/online/${company}/event-registration?date=${session.date}&facility_ids=1`
 
   let text = `*${session.dayOfWeek}, ${formatDate(session.date)}* at *${formatTime(session.time)}*\n`
   text += `Players: *${session.playersRegistered}/${session.playersMax}* | Goalies: *${session.goaliesRegistered}/${session.goaliesMax}*\n`

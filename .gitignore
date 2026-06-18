@@ -6,6 +6,7 @@ node_modules/
 
 # State
 data/state.json
+data/health.json
 
 # Build output
 dist/
@@ -32,3 +33,4 @@ Thumbs.db
 *.swo
 .claude/*
 !.claude/commands/
+.claude-context/

@@ -2,7 +2,7 @@ import { parseEvents } from './parser.js'
 import type { Session } from './parser'
 
 const BASE_URL = 'https://apps.daysmartrecreation.com'
-const COMPANY = 'extremeice'
+const DEFAULT_COMPANY = 'charlotteice'
 
 interface DateAvailabilitiesResponse {
   data: Array<{
@@ -68,11 +68,13 @@ export function extractEventIds(
 
 /**
  * Scrape events from DASH API for Mon/Wed/Fri dates within forward window.
- * Returns parsed Session[] via two-step fetch: date-availabilities → events
+ * Returns parsed Session[] via two-step fetch: date-availabilities → events.
+ * `company` is the DASH tenant slug (default `charlotteice`).
  */
 export async function scrapeEvents(
   today: Date = new Date(),
-  forwardDays: number = 5
+  forwardDays: number = 5,
+  company: string = DEFAULT_COMPANY
 ): Promise<Session[]> {
   // Step 1: Calculate target dates (Mon/Wed/Fri only)
   const targetDates = calculateTargetDates(today, forwardDays)
@@ -83,7 +85,7 @@ export async function scrapeEvents(
 
   // Step 2: Fetch date-availabilities to get event IDs
   const startDate = targetDates[0]
-  const dateAvailabilitiesUrl = `${BASE_URL}/dash/jsonapi/api/v1/date-availabilities?cache[save]=false&page[size]=365&sort=id&filter[date__gte]=${startDate}&company=${COMPANY}`
+  const dateAvailabilitiesUrl = `${BASE_URL}/dash/jsonapi/api/v1/date-availabilities?cache[save]=false&page[size]=365&sort=id&filter[date__gte]=${startDate}&company=${company}`
 
   const dateAvailabilitiesResponse = await fetch(dateAvailabilitiesUrl)
   if (!dateAvailabilitiesResponse.ok) {
@@ -103,7 +105,7 @@ export async function scrapeEvents(
   }
 
   // Step 4: Fetch events by IDs
-  const eventsUrl = `${BASE_URL}/dash/jsonapi/api/v1/events?cache[save]=false&filter[id__in]=${eventIds.join(',')}&filter[unconstrained]=1&company=${COMPANY}&include=summary,homeTeam,resource`
+  const eventsUrl = `${BASE_URL}/dash/jsonapi/api/v1/events?cache[save]=false&filter[id__in]=${eventIds.join(',')}&filter[unconstrained]=1&company=${company}&include=summary,homeTeam,resource`
 
   const eventsResponse = await fetch(eventsUrl)
   if (!eventsResponse.ok) {
