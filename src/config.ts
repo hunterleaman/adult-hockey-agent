@@ -4,12 +4,14 @@ export interface Config {
   pollStartHour: number
   pollEndHour: number
   forwardWindowDays: number
+  company: string
   approachWindowHours: number
   maxSleepHours: number
   minGoalies: number
   minPlayersRegistered: number
   playerSpotsUrgent: number
   morningPickupMaxHour: number
+  canaryThresholdPolls: number
   port: number
   slackWebhookUrl?: string
   slackSigningSecret?: string
@@ -30,12 +32,20 @@ export function loadConfig(): Config {
     pollStartHour: parseIntOrDefault(process.env.POLL_START_HOUR, 6),
     pollEndHour: parseIntOrDefault(process.env.POLL_END_HOUR, 23),
     forwardWindowDays: parseIntOrDefault(process.env.FORWARD_WINDOW_DAYS, 5),
+    // DASH tenant slug. The rink rebranded Extreme Ice -> Charlotte Ice and moved
+    // to the `charlotteice` tenant; the old `extremeice` tenant is now a stale
+    // mirror (missing the 6am pickup, zeroed registration counts). Env-overridable
+    // so the next rename is a config change, not a deploy.
+    company: process.env.DASH_COMPANY?.trim() || 'charlotteice',
     approachWindowHours: parseIntOrDefault(process.env.APPROACH_WINDOW_HOURS, 96),
     maxSleepHours: parseIntOrDefault(process.env.MAX_SLEEP_HOURS, 12),
     minGoalies: parseIntOrDefault(process.env.MIN_GOALIES, 1),
     minPlayersRegistered: parseIntOrDefault(process.env.MIN_PLAYERS_REGISTERED, 10),
     playerSpotsUrgent: parseIntOrDefault(process.env.PLAYER_SPOTS_URGENT, 4),
     morningPickupMaxHour: parseIntOrDefault(process.env.MORNING_PICKUP_MAX_HOUR, 9),
+    // Canary: number of consecutive polls that find no usable pickup data before
+    // the agent warns that it has likely gone blind (tenant/parser regression).
+    canaryThresholdPolls: parseIntOrDefault(process.env.CANARY_THRESHOLD_POLLS, 3),
     port: parseIntOrDefault(process.env.PORT, 3000),
     slackWebhookUrl: process.env.SLACK_WEBHOOK_URL || undefined,
     slackSigningSecret: process.env.SLACK_SIGNING_SECRET || undefined,
@@ -73,6 +83,10 @@ export function validateConfig(config: Config): void {
     throw new Error('forwardWindowDays must be > 0')
   }
 
+  if (!config.company || config.company.trim() === '') {
+    throw new Error('company must not be empty')
+  }
+
   if (config.approachWindowHours <= 0) {
     throw new Error('approachWindowHours must be > 0')
   }
@@ -95,6 +109,10 @@ export function validateConfig(config: Config): void {
 
   if (config.morningPickupMaxHour < 0 || config.morningPickupMaxHour > 23) {
     throw new Error('morningPickupMaxHour must be 0-23')
+  }
+
+  if (config.canaryThresholdPolls <= 0) {
+    throw new Error('canaryThresholdPolls must be > 0')
   }
 
   if (config.port <= 0 || config.port > 65535) {

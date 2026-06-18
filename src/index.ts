@@ -1,5 +1,7 @@
+import * as path from 'path'
 import type { Config } from './config'
 import type { Notifier } from './notifiers/interface'
+import type { Session } from './parser'
 import { scrapeEvents } from './scraper.js'
 import { evaluate } from './evaluator.js'
 import {
@@ -9,6 +11,7 @@ import {
   updateSessionState,
   mergeUserResponses,
 } from './state.js'
+import { loadHealth, saveHealth, evaluateHealth } from './health.js'
 import { ConsoleNotifier } from './notifiers/console.js'
 import { SlackNotifier } from './notifiers/slack.js'
 
@@ -42,11 +45,15 @@ export function createNotifiers(config: Config): Notifier[] {
  * 4. Evaluate alerts
  * 5. Send notifications
  * 6. Update and save state
+ * 7. Canary: warn if the agent has seen no usable pickup data for N polls
  */
 export async function poll(config: Config, statePath: string = DEFAULT_STATE_PATH): Promise<void> {
+  const notifiers = createNotifiers(config)
+  let sessions: Session[] = []
+
   try {
     // Step 1: Scrape current events
-    const sessions = await scrapeEvents(new Date(), config.forwardWindowDays)
+    sessions = await scrapeEvents(new Date(), config.forwardWindowDays, config.company)
 
     // Step 2: Load and prune state
     let state = loadState(statePath)
@@ -56,7 +63,6 @@ export async function poll(config: Config, statePath: string = DEFAULT_STATE_PAT
     const alerts = evaluate(sessions, state, config)
 
     // Step 4: Send notifications
-    const notifiers = createNotifiers(config)
     for (const alert of alerts) {
       for (const notifier of notifiers) {
         try {
@@ -90,9 +96,41 @@ export async function poll(config: Config, statePath: string = DEFAULT_STATE_PAT
 
     // Step 7: Save state
     saveState(statePath, state)
-  } catch {
+  } catch (error) {
+    // Gracefully handle errors - log but don't crash. The next poll cycle retries.
+    // A thrown scrape leaves `sessions` empty, which the canary below correctly
+    // counts as a suspect poll, so hard API failures also trip the warning.
     // TODO: Use structured logger when available
-    // Gracefully handle errors - log but don't crash
-    // The next poll cycle will retry
+    console.error('Poll cycle error:', error)
+  }
+
+  // Step 8: Canary — detect silent data outages. Runs regardless of whether the
+  // poll above succeeded so that scrape failures and zeroed/empty data both count.
+  try {
+    const healthPath = path.join(path.dirname(statePath), 'health.json')
+    const prevHealth = loadHealth(healthPath)
+    const hasRegistrations = sessions.some((s) => s.playersRegistered > 0)
+    const { health, notification } = evaluateHealth(
+      sessions.length,
+      hasRegistrations,
+      prevHealth,
+      config.canaryThresholdPolls,
+      new Date().toISOString()
+    )
+
+    if (notification) {
+      for (const notifier of notifiers) {
+        try {
+          await notifier.sendDiagnostic(notification)
+        } catch (error) {
+          console.error(`Failed to send canary via ${notifier.name}:`, error)
+        }
+      }
+    }
+
+    saveHealth(healthPath, health)
+  } catch (error) {
+    // TODO: Use structured logger when available
+    console.error('Canary error:', error)
   }
 }

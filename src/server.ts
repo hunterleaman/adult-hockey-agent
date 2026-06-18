@@ -30,6 +30,7 @@ export interface ServerOptions {
   statePath: string
   slackSigningSecret?: string
   remindIntervalHours?: number
+  company?: string
 }
 
 /**
@@ -77,6 +78,7 @@ export function createServer(options: ServerOptions): Express {
       createCommandHandler({
         signingSecret: options.slackSigningSecret,
         statePath: options.statePath,
+        company: options.company ?? 'charlotteice',
       })
     )
   }

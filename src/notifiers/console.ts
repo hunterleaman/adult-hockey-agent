@@ -24,4 +24,15 @@ export class ConsoleNotifier implements Notifier {
       // Don't throw - console notifier should never block
     }
   }
+
+  async sendDiagnostic(text: string): Promise<void> {
+    try {
+      const separator = '='.repeat(60)
+      console.log(separator)
+      console.log(text)
+      console.log(separator)
+    } catch {
+      // Don't throw - console notifier should never block
+    }
+  }
 }

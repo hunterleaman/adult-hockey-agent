@@ -63,6 +63,36 @@ export class SlackNotifier implements Notifier {
     }
   }
 
+  async sendDiagnostic(text: string): Promise<void> {
+    if (!this.isConfigured()) {
+      throw new Error('Slack notifier not configured')
+    }
+
+    const payload: SlackPayload = {
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text,
+          },
+        },
+      ],
+    }
+
+    const response = await fetch(this.webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Slack webhook failed: ${response.status} ${response.statusText}`)
+    }
+  }
+
   private buildPayload(alert: Alert): SlackPayload {
     const emoji = this.getEmoji(alert.type)
 
