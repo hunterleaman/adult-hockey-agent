@@ -53,14 +53,26 @@ collapses volume (mornings are rare → ~0-2 msgs/day).
 
 ## Design
 
-### 1. Data model (`parser.ts`)
+### 1. Data model (`parser.ts`, `session-identity.ts`)
 
-`Session` gains two fields:
+`Session` gains three fields, all **optional** — sessions loaded from legacy
+`state.json` genuinely lack them, so optional typing tells the truth (and keeps
+the ~300 existing test Session literals compiling):
 
 ```ts
-facilityId: number   // from resource relationship; 0 if unresolvable
-location: string     // display label: 'XIC' | 'PIH' | resource-name fallback
+facilityId?: number  // from resource relationship; 0 if unresolvable
+location?: string    // display label: 'XIC' | 'PIH' | resource-name fallback
+rinkName?: string    // rink surface from resource: 'MAIN RINK', 'TRAINING RINK', 'Pineville Rink'
 ```
+
+`rinkName` was added during planning: XIC runs morning pickup on MAIN RINK and
+noon pickup on TRAINING RINK — the surface name is genuinely useful in alerts.
+
+A new tiny module `src/session-identity.ts` owns session identity:
+`sessionKey()` (map keys) and `sessionMatches()` (equality with legacy
+fallback: entries lacking `facilityId` match on date+time alone). Parser,
+evaluator, state, interactions, and index all use it — one definition of
+"same session" instead of five hand-rolled date+time comparisons.
 
 - Resolve `event.relationships.resource.data.id` → `included[]` where
   `type="resources"` → `attributes.facility_id` + `attributes.name`.
