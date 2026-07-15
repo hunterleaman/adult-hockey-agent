@@ -157,6 +157,16 @@ Monitoring agent that tracks adult pick-up hockey registration at Extreme Ice Ce
 
 6. **DASH team names reverted AGAIN upstream** (carried from Session 10 wind-down): Wed 6:10 is back to `(PLAYERS) Adult Pick Up Hockey (Mornings)` while PIH uses `PIH Adult Pickup Skater/Goalie`. The parser's dual-spelling filter already handles both; `facility_id` (never names) drives all location logic.
 
+### Session 12 (2026-07-15) - Task 11 Deploy + Production Verification
+
+1. **`/clear` truncated the wind-down handoff mid-write**: the previous session's `.remember/remember.md` Write was interrupted by `/clear`, leaving a 0-byte file. The SessionStart hook's captured `=== LAST HANDOFF ===` block preserved the content. Lesson: finish the wind-down (see "Saved.") before `/clear`; on wind-up, verify the handoff file is non-empty and rebuild it from the hook block if not.
+
+2. **AskUserQuestion approval doesn't authorize production writes in auto mode**: the permission classifier denied `npm run clear-state` + `pm2 restart` on the droplet even though the user picked a "Controlled test now" option whose description named those actions. The user must explicitly name the destructive action in their own message ("go ahead, clear droplet state and restart") for auto mode to allow it. Design confirmations accordingly.
+
+3. **MORNING_PICKUP in pre-deploy state is not an anomaly**: nearly misdiagnosed old droplet state containing `MORNING_PICKUP`-typed alerts as impossible for pre-PR-#15 code. `git log -S MORNING_PICKUP` showed the type shipped 2026-06-04 (7540b3c); PR #15 added the morning-only *gate* and facility/location, not the alert type. Check a symbol's introduction commit before reasoning about which deploy could have produced data.
+
+4. **Controlled production verification pattern worked well**: `npm run clear-state` + restart forces the initial poll to re-evaluate all sessions as new — alerts fired for morning XIC sessions only (correct labels/URLs), silence for sold-out PIH 11:30s and afternoons, proving the morning gate end-to-end with one command. State was confirmed safe to clear first (`isRegistered` false, `userResponse` null everywhere).
+
 ## API Architecture
 
 DASH exposes a JSON:API at `/dash/jsonapi/api/v1/`. Polling requires a **two-step fetch flow**:
