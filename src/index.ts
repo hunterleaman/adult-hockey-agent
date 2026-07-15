@@ -14,6 +14,7 @@ import {
 import { loadHealth, saveHealth, evaluateHealth } from './health.js'
 import { ConsoleNotifier } from './notifiers/console.js'
 import { SlackNotifier } from './notifiers/slack.js'
+import { sessionKey } from './session-identity.js'
 
 const DEFAULT_STATE_PATH = './data/state.json'
 
@@ -53,7 +54,12 @@ export async function poll(config: Config, statePath: string = DEFAULT_STATE_PAT
 
   try {
     // Step 1: Scrape current events
-    sessions = await scrapeEvents(new Date(), config.forwardWindowDays, config.company)
+    sessions = await scrapeEvents(
+      new Date(),
+      config.forwardWindowDays,
+      config.company,
+      config.facilityLabels
+    )
 
     // Step 2: Load and prune state
     let state = loadState(statePath)
@@ -76,15 +82,11 @@ export async function poll(config: Config, statePath: string = DEFAULT_STATE_PAT
     // Step 5: Update state for each session
     // Track which sessions had alerts
     const alertedSessions = new Map(
-      alerts.map((a) => [
-        `${a.session.date}:${a.session.time}`,
-        { type: a.type, at: new Date().toISOString() },
-      ])
+      alerts.map((a) => [sessionKey(a.session), { type: a.type, at: new Date().toISOString() }])
     )
 
     for (const session of sessions) {
-      const key = `${session.date}:${session.time}`
-      const alertInfo = alertedSessions.get(key)
+      const alertInfo = alertedSessions.get(sessionKey(session))
 
       state = updateSessionState(state, session, alertInfo?.type || null, alertInfo?.at || null)
     }
