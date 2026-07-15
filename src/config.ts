@@ -1,3 +1,5 @@
+import { DEFAULT_FACILITY_LABELS } from './parser.js'
+
 export interface Config {
   pollIntervalMinutes: number
   pollIntervalAcceleratedMinutes: number
@@ -11,6 +13,8 @@ export interface Config {
   minPlayersRegistered: number
   playerSpotsUrgent: number
   morningPickupMaxHour: number
+  alertMorningsOnly: boolean
+  facilityLabels: Record<number, string>
   canaryThresholdPolls: number
   port: number
   slackWebhookUrl?: string
@@ -42,7 +46,12 @@ export function loadConfig(): Config {
     minGoalies: parseIntOrDefault(process.env.MIN_GOALIES, 1),
     minPlayersRegistered: parseIntOrDefault(process.env.MIN_PLAYERS_REGISTERED, 10),
     playerSpotsUrgent: parseIntOrDefault(process.env.PLAYER_SPOTS_URGENT, 4),
-    morningPickupMaxHour: parseIntOrDefault(process.env.MORNING_PICKUP_MAX_HOUR, 9),
+    morningPickupMaxHour: parseIntOrDefault(process.env.MORNING_PICKUP_MAX_HOUR, 8),
+    // Post-merger (XIC + PIH), the mission is early-morning pickup at either
+    // rink. When true, sessions starting at/after morningPickupMaxHour never
+    // alert (any type) but are still tracked in state and /sessions.
+    alertMorningsOnly: parseBoolOrDefault(process.env.ALERT_MORNINGS_ONLY, true),
+    facilityLabels: parseFacilityLabels(process.env.FACILITY_LABELS),
     // Canary: number of consecutive polls that find no usable pickup data before
     // the agent warns that it has likely gone blind (tenant/parser regression).
     canaryThresholdPolls: parseIntOrDefault(process.env.CANARY_THRESHOLD_POLLS, 3),
@@ -143,4 +152,33 @@ function parseIntOrDefault(value: string | undefined, defaultValue: number): num
   }
 
   return parsed
+}
+
+function parseBoolOrDefault(value: string | undefined, defaultValue: boolean): boolean {
+  if (!value || value.trim() === '') {
+    return defaultValue
+  }
+  const normalized = value.trim().toLowerCase()
+  if (normalized === 'true' || normalized === '1' || normalized === 'yes') return true
+  if (normalized === 'false' || normalized === '0' || normalized === 'no') return false
+  return defaultValue
+}
+
+function parseFacilityLabels(value: string | undefined): Record<number, string> {
+  if (!value || value.trim() === '') {
+    return { ...DEFAULT_FACILITY_LABELS }
+  }
+  const labels: Record<number, string> = {}
+  for (const pair of value.split(',')) {
+    const [idStr, ...labelParts] = pair.split(':')
+    const id = parseInt(idStr, 10)
+    const label = labelParts.join(':').trim()
+    if (isNaN(id) || id <= 0 || !label) {
+      throw new Error(
+        `FACILITY_LABELS must be comma-separated "id:label" pairs (e.g. "1:XIC,2:PIH"), got: "${value}"`
+      )
+    }
+    labels[id] = label
+  }
+  return labels
 }

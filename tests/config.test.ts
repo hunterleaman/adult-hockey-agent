@@ -264,6 +264,42 @@ describe('config', () => {
     })
   })
 
+  describe('morning gate + facility labels', () => {
+    it('defaults morningPickupMaxHour to 8', () => {
+      delete process.env.MORNING_PICKUP_MAX_HOUR
+      expect(loadConfig().morningPickupMaxHour).toBe(8)
+    })
+
+    it('defaults alertMorningsOnly to true', () => {
+      delete process.env.ALERT_MORNINGS_ONLY
+      expect(loadConfig().alertMorningsOnly).toBe(true)
+    })
+
+    it('parses ALERT_MORNINGS_ONLY=false', () => {
+      process.env.ALERT_MORNINGS_ONLY = 'false'
+      expect(loadConfig().alertMorningsOnly).toBe(false)
+    })
+
+    it('defaults facilityLabels to 1:XIC,2:PIH', () => {
+      delete process.env.FACILITY_LABELS
+      expect(loadConfig().facilityLabels).toEqual({ 1: 'XIC', 2: 'PIH' })
+    })
+
+    it('parses FACILITY_LABELS override', () => {
+      process.env.FACILITY_LABELS = '1:Charlotte,2:Pineville,3:NewRink'
+      expect(loadConfig().facilityLabels).toEqual({
+        1: 'Charlotte',
+        2: 'Pineville',
+        3: 'NewRink',
+      })
+    })
+
+    it('throws a clear error on malformed FACILITY_LABELS', () => {
+      process.env.FACILITY_LABELS = 'garbage'
+      expect(() => loadConfig()).toThrow(/FACILITY_LABELS/)
+    })
+  })
+
   describe('integration', () => {
     it('loadConfig returns validated config', () => {
       process.env.POLL_INTERVAL_MINUTES = '120'
