@@ -974,5 +974,11 @@ describe('evaluator', () => {
       expect(alerts).toHaveLength(1)
       expect(alerts[0].type).toBe('MORNING_PICKUP')
     })
+
+    it('falls back to facility_ids=1 when facilityId is 0 (unresolved resource)', () => {
+      const session = createSession({ playersRegistered: 10, goaliesRegistered: 1, facilityId: 0 })
+      const alerts = evaluate([session], [createState(session)], defaultConfig)
+      expect(alerts[0].registrationUrl).toContain('facility_ids=1')
+    })
   })
 })

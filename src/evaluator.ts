@@ -223,5 +223,5 @@ function buildRegistrationUrl(
   company: string = 'charlotteice',
   facilityId?: number
 ): string {
-  return `https://apps.daysmartrecreation.com/dash/x/#/online/${company}/event-registration?date=${date}&facility_ids=${facilityId ?? 1}`
+  return `https://apps.daysmartrecreation.com/dash/x/#/online/${company}/event-registration?date=${date}&facility_ids=${facilityId || 1}`
 }

@@ -266,6 +266,15 @@ describe('location display', () => {
 
     expect(JSON.stringify(response.blocks)).toContain('facility_ids=1')
   })
+
+  it('falls back to facility_ids=1 when facilityId is 0 (unresolved resource)', () => {
+    const session = createSession({ facilityId: 0 })
+    const state = [createState(session)]
+
+    const response = buildSessionsResponse(state, null, 'charlotteice')
+
+    expect(JSON.stringify(response.blocks)).toContain('facility_ids=1')
+  })
 })
 
 // --- Integration tests: POST /slack/commands ---
