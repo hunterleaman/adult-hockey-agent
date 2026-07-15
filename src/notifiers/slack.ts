@@ -101,7 +101,7 @@ export class SlackNotifier implements Notifier {
         type: 'header',
         text: {
           type: 'plain_text',
-          text: `${emoji} ${alert.type.replace('_', ' ')}`,
+          text: `${emoji} ${alert.type.replace('_', ' ')}${alert.session.location ? ` — ${alert.session.location}` : ''}`,
           emoji: true,
         },
       },
@@ -116,7 +116,7 @@ export class SlackNotifier implements Notifier {
 
     // Only include action buttons for alerts where registration is possible
     if (alert.type !== 'SOLD_OUT') {
-      const sessionValue = `${alert.session.date}|${alert.session.time}|${alert.session.eventName}`
+      const sessionValue = `${alert.session.date}|${alert.session.time}|${alert.session.facilityId ?? 0}|${alert.session.eventName}`
 
       blocks.push({
         type: 'actions',
@@ -201,7 +201,11 @@ export class SlackNotifier implements Notifier {
     const session = alert.session
     const spotsRemaining = session.playersMax - session.playersRegistered
 
-    let message = `*${session.dayOfWeek}, ${this.formatDate(session.date)}* at *${this.formatTime(session.time)}*\n\n`
+    let message = `*${session.dayOfWeek}, ${this.formatDate(session.date)}* at *${this.formatTime(session.time)}*\n`
+    if (session.location) {
+      message += `*Where:* ${session.location}${session.rinkName ? ` (${session.rinkName})` : ''}\n`
+    }
+    message += '\n'
 
     if (alert.type === 'SOLD_OUT') {
       message += 'Session is now full.'

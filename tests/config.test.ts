@@ -249,6 +249,36 @@ describe('config', () => {
       expect(() => validateConfig(config)).toThrow('canaryThresholdPolls must be > 0')
     })
 
+    it('throws when morningPickupMaxHour is negative', () => {
+      const config = loadConfig()
+      config.morningPickupMaxHour = -1
+
+      expect(() => validateConfig(config)).toThrow(/MORNING_PICKUP_MAX_HOUR/)
+    })
+
+    it('throws when morningPickupMaxHour is 24 (out of 0-23 range)', () => {
+      const config = loadConfig()
+      config.morningPickupMaxHour = 24
+
+      expect(() => validateConfig(config)).toThrow(/MORNING_PICKUP_MAX_HOUR/)
+    })
+
+    it('throws when morningPickupMaxHour is not an integer', () => {
+      const config = loadConfig()
+      config.morningPickupMaxHour = 8.5
+
+      expect(() => validateConfig(config)).toThrow(/MORNING_PICKUP_MAX_HOUR/)
+    })
+
+    it('accepts morningPickupMaxHour at the valid boundaries and mid-range', () => {
+      const config = loadConfig()
+
+      for (const hour of [0, 8, 23]) {
+        config.morningPickupMaxHour = hour
+        expect(() => validateConfig(config)).not.toThrow()
+      }
+    })
+
     it('throws when Slack webhook URL is invalid', () => {
       const config = loadConfig()
       config.slackWebhookUrl = 'not-a-url'
@@ -261,6 +291,52 @@ describe('config', () => {
       config.slackWebhookUrl = 'https://hooks.slack.com/services/T00/B00/XXX'
 
       expect(() => validateConfig(config)).not.toThrow()
+    })
+  })
+
+  describe('morning gate + facility labels', () => {
+    it('defaults morningPickupMaxHour to 8', () => {
+      delete process.env.MORNING_PICKUP_MAX_HOUR
+      expect(loadConfig().morningPickupMaxHour).toBe(8)
+    })
+
+    it('defaults alertMorningsOnly to true', () => {
+      delete process.env.ALERT_MORNINGS_ONLY
+      expect(loadConfig().alertMorningsOnly).toBe(true)
+    })
+
+    it('parses ALERT_MORNINGS_ONLY=false', () => {
+      process.env.ALERT_MORNINGS_ONLY = 'false'
+      expect(loadConfig().alertMorningsOnly).toBe(false)
+    })
+
+    it('defaults facilityLabels to 1:XIC,2:PIH', () => {
+      delete process.env.FACILITY_LABELS
+      expect(loadConfig().facilityLabels).toEqual({ 1: 'XIC', 2: 'PIH' })
+    })
+
+    it('parses FACILITY_LABELS override', () => {
+      process.env.FACILITY_LABELS = '1:Charlotte,2:Pineville,3:NewRink'
+      expect(loadConfig().facilityLabels).toEqual({
+        1: 'Charlotte',
+        2: 'Pineville',
+        3: 'NewRink',
+      })
+    })
+
+    it('throws a clear error on malformed FACILITY_LABELS', () => {
+      process.env.FACILITY_LABELS = 'garbage'
+      expect(() => loadConfig()).toThrow(/FACILITY_LABELS/)
+    })
+
+    it('throws when an id token has trailing non-digit characters', () => {
+      process.env.FACILITY_LABELS = '1abc:XIC'
+      expect(() => loadConfig()).toThrow(/FACILITY_LABELS/)
+    })
+
+    it('throws a clear duplicate-id error when the same id is repeated', () => {
+      process.env.FACILITY_LABELS = '1:XIC,1:Other'
+      expect(() => loadConfig()).toThrow(/duplicate/i)
     })
   })
 

@@ -1,5 +1,6 @@
 import type { UserResponse } from '../evaluator.js'
 import { loadState, saveState, updateUserResponse } from '../state.js'
+import { sessionMatches, countSlotMatches } from '../session-identity.js'
 
 export interface ParsedAction {
   actionId: string
@@ -10,6 +11,7 @@ export interface ParsedAction {
 export interface SessionIdentity {
   date: string
   time: string
+  facilityId?: number
   eventName: string
 }
 
@@ -54,17 +56,24 @@ export function parseInteractionPayload(payload: unknown): ParsedAction | null {
 
 /**
  * Parse the pipe-delimited session identity from a button value.
- * Format: {date}|{time}|{eventName}
+ * New format: {date}|{time}|{facilityId}|{eventName}
+ * Legacy format (buttons sent before facility awareness): {date}|{time}|{eventName}
+ * Detect new format by a purely numeric 3rd part with >= 4 segments.
  */
 export function parseActionValue(value: string): SessionIdentity | null {
   const parts = value.split('|')
   if (parts.length < 3) return null
 
+  if (parts.length >= 4 && /^\d+$/.test(parts[2])) {
+    const [date, time, facilityStr, ...rest] = parts
+    const eventName = rest.join('|')
+    if (!date || !time || !eventName) return null
+    return { date, time, facilityId: parseInt(facilityStr, 10), eventName }
+  }
+
   const [date, time, ...rest] = parts
   const eventName = rest.join('|')
-
   if (!date || !time || !eventName) return null
-
   return { date, time, eventName }
 }
 
@@ -87,9 +96,17 @@ export function processInteraction(
   if (!sessionId) return null
 
   const state = loadState(statePath)
-  const found = state.some(
-    (s) => s.session.date === sessionId.date && s.session.time === sessionId.time
-  )
+
+  // Ambiguity guard: a legacy (facility-unknown) button value can match both
+  // rinks' same-slot entries. Refuse to write and report not-found so the
+  // existing not-found response path handles messaging.
+  const ambiguous =
+    !sessionId.facilityId &&
+    countSlotMatches(
+      state.map((s) => s.session),
+      sessionId
+    ) > 1
+  const found = !ambiguous && state.some((s) => sessionMatches(sessionId, s.session))
 
   if (found) {
     const updatedState = updateUserResponse(
@@ -97,7 +114,8 @@ export function processInteraction(
       sessionId.date,
       sessionId.time,
       userResponse,
-      remindIntervalHours
+      remindIntervalHours,
+      sessionId.facilityId
     )
     saveState(statePath, updatedState)
   }

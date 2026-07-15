@@ -1,5 +1,6 @@
 import type { Session } from './parser'
 import type { Config } from './config'
+import { sessionMatches, countSlotMatches } from './session-identity.js'
 
 export type AlertType =
   | 'OPPORTUNITY'
@@ -43,7 +44,18 @@ export function evaluate(
       continue
     }
 
-    const prevState = findPreviousState(session, previousState)
+    // Morning gate: post-merger the mission is early-morning pickup at either
+    // rink. Non-morning sessions stay tracked in state (visibility via
+    // /sessions) but never alert — any type, including SOLD_OUT.
+    if (config.alertMorningsOnly && !isMorningPickup(session, config)) {
+      continue
+    }
+
+    // When more than one CURRENT session shares this date+time slot (both rinks
+    // running pickup at once), a legacy facility-less prev-state entry is
+    // ambiguous — match strictly so neither rink inherits the other's history.
+    const ambiguousSlot = countSlotMatches(sessions, session) > 1
+    const prevState = findPreviousState(session, previousState, ambiguousSlot)
 
     // Priority 0: MORNING_PICKUP - an early-morning pickup session has appeared
     // on the schedule for the first time. Fires once (only when never seen
@@ -121,11 +133,22 @@ export function evaluate(
 
 function findPreviousState(
   session: Session,
-  previousState: SessionState[]
+  previousState: SessionState[],
+  strict: boolean
 ): SessionState | undefined {
-  return previousState.find(
-    (state) => state.session.date === session.date && state.session.time === session.time
-  )
+  if (strict) {
+    // Ambiguous slot: require exact concrete-facility equality (no unknown
+    // wildcard) so a legacy facility-less entry can't serve as prev-state for
+    // both rinks at the same date+time.
+    return previousState.find(
+      (state) =>
+        !!session.facilityId &&
+        state.session.date === session.date &&
+        state.session.time === session.time &&
+        state.session.facilityId === session.facilityId
+    )
+  }
+  return previousState.find((state) => sessionMatches(session, state.session))
 }
 
 function isMorningPickup(session: Session, config: Config): boolean {
@@ -180,20 +203,21 @@ function shouldAlertFillingFast(session: Session, prevState: SessionState | unde
 
 function createAlert(type: AlertType, session: Session, company: string = 'charlotteice'): Alert {
   const spotsRemaining = session.playersMax - session.playersRegistered
+  const where = session.location ? ` @ ${session.location}` : ''
 
   const messages: Record<AlertType, string> = {
-    OPPORTUNITY: `🏒 OPPORTUNITY: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}\nPlayers: ${session.playersRegistered}/${session.playersMax} (${spotsRemaining} spots left)\nGoalies: ${session.goaliesRegistered}/${session.goaliesMax}\nStatus: Worth signing up!`,
-    FILLING_FAST: `⚡ FILLING FAST: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}\nPlayers: ${session.playersRegistered}/${session.playersMax} (${spotsRemaining} spots left)\nGoalies: ${session.goaliesRegistered}/${session.goaliesMax}\nStatus: Act now!`,
-    SOLD_OUT: `🚫 SOLD OUT: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}\nSession is now full.`,
-    NEWLY_AVAILABLE: `✅ NEWLY AVAILABLE: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}\nSpots opened up! ${spotsRemaining} spot${spotsRemaining === 1 ? '' : 's'} available.`,
-    MORNING_PICKUP: `🌅 MORNING PICKUP: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}\nMorning pickup is back on the schedule!\nPlayers: ${session.playersRegistered}/${session.playersMax}\nGoalies: ${session.goaliesRegistered}/${session.goaliesMax}\nStatus: Grab a spot!`,
+    OPPORTUNITY: `🏒 OPPORTUNITY: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}${where}\nPlayers: ${session.playersRegistered}/${session.playersMax} (${spotsRemaining} spots left)\nGoalies: ${session.goaliesRegistered}/${session.goaliesMax}\nStatus: Worth signing up!`,
+    FILLING_FAST: `⚡ FILLING FAST: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}${where}\nPlayers: ${session.playersRegistered}/${session.playersMax} (${spotsRemaining} spots left)\nGoalies: ${session.goaliesRegistered}/${session.goaliesMax}\nStatus: Act now!`,
+    SOLD_OUT: `🚫 SOLD OUT: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}${where}\nSession is now full.`,
+    NEWLY_AVAILABLE: `✅ NEWLY AVAILABLE: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}${where}\nSpots opened up! ${spotsRemaining} spot${spotsRemaining === 1 ? '' : 's'} available.`,
+    MORNING_PICKUP: `🌅 MORNING PICKUP: ${session.dayOfWeek} ${formatDate(session.date)}, ${formatTime(session.time)}${where}\nMorning pickup is back on the schedule!\nPlayers: ${session.playersRegistered}/${session.playersMax}\nGoalies: ${session.goaliesRegistered}/${session.goaliesMax}\nStatus: Grab a spot!`,
   }
 
   return {
     type,
     session,
     message: messages[type],
-    registrationUrl: buildRegistrationUrl(session.date, company),
+    registrationUrl: buildRegistrationUrl(session.date, company, session.facilityId),
   }
 }
 
@@ -211,6 +235,10 @@ function formatTime(time: string): string {
   return `${displayHours}:${minutes.toString().padStart(2, '0')}${period}`
 }
 
-function buildRegistrationUrl(date: string, company: string = 'charlotteice'): string {
-  return `https://apps.daysmartrecreation.com/dash/x/#/online/${company}/event-registration?date=${date}&facility_ids=1`
+function buildRegistrationUrl(
+  date: string,
+  company: string = 'charlotteice',
+  facilityId?: number
+): string {
+  return `https://apps.daysmartrecreation.com/dash/x/#/online/${company}/event-registration?date=${date}&facility_ids=${facilityId || 1}`
 }

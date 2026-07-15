@@ -221,13 +221,13 @@ When implementing `src/scraper.ts`, follow these requirements:
 
 - **NO hardcoded event IDs or dates** anywhere in production code
 - Calculate forward window dynamically: `today + FORWARD_WINDOW_DAYS` (default 5 days)
-- Filter for Mon/Wed/Fri dates only within the window
+- Scrape every date in the window — post-merger PIH runs pickup on additional days beyond the old Mon/Wed/Fri XIC schedule; the evaluator's morning gate (`ALERT_MORNINGS_ONLY`) controls alert volume, not the scraper
 - Fetch events for discovered dates via the two-step pipeline
 
 ### Two-Step Fetch Pipeline
 
 1. **Call date-availabilities** with calculated date range
-2. **Parse response** to extract event IDs for Mon/Wed/Fri dates
+2. **Parse response** to extract event IDs for every date in the window
 3. **Call events endpoint** with `filter[id__in]=<discovered-ids>`
 4. **Pass response to parser** (already implemented in `src/parser.ts`)
 

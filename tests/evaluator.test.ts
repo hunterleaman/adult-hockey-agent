@@ -17,6 +17,8 @@ describe('evaluator', () => {
     minPlayersRegistered: 10,
     playerSpotsUrgent: 4,
     morningPickupMaxHour: 9,
+    alertMorningsOnly: false,
+    facilityLabels: { 1: 'XIC', 2: 'PIH' },
     port: 3000,
     slackWebhookUrl: undefined,
     remindIntervalHours: 2,
@@ -847,7 +849,7 @@ describe('evaluator', () => {
 
   describe('MORNING_PICKUP alerts', () => {
     // Notify when an early-morning pickup session (re)appears on the schedule.
-    // Gated to start times before config.morningPickupMaxHour (default 9am),
+    // Gated to start times before config.morningPickupMaxHour (default 8am),
     // which excludes the 11:30am "Open Hockey" sessions. Uses the shared
     // futureDate() helper defined at the top of the suite.
 
@@ -888,6 +890,191 @@ describe('evaluator', () => {
       })
 
       const alerts = evaluate([session], [], defaultConfig)
+
+      expect(alerts.some((a) => a.type === 'MORNING_PICKUP')).toBe(false)
+    })
+  })
+
+  describe('morning-only gate (alertMorningsOnly)', () => {
+    const gatedConfig: Config = {
+      ...defaultConfig,
+      alertMorningsOnly: true,
+      morningPickupMaxHour: 8,
+    }
+
+    it('suppresses ALL alert types for sessions starting at/after the cutoff', () => {
+      // 11:30 PIH session transitioning to full would normally fire SOLD_OUT
+      const session = createSession({ time: '11:30', isFull: true, facilityId: 2 })
+      const prev = createState(createSession({ time: '11:30', isFull: false, facilityId: 2 }))
+
+      const alerts = evaluate([session], [prev], gatedConfig)
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('fires for sessions starting before the cutoff (7:59 boundary)', () => {
+      const session = createSession({ time: '07:59', playersRegistered: 10, goaliesRegistered: 1 })
+      const alerts = evaluate([session], [createState(session)], gatedConfig)
+      expect(alerts).toHaveLength(1)
+    })
+
+    it('suppresses at exactly the cutoff hour (08:00)', () => {
+      const session = createSession({ time: '08:00', playersRegistered: 10, goaliesRegistered: 1 })
+      const alerts = evaluate([session], [createState(session)], gatedConfig)
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('gate off (alertMorningsOnly false) restores legacy behavior', () => {
+      const session = createSession({ time: '11:30', playersRegistered: 10, goaliesRegistered: 1 })
+      const alerts = evaluate([session], [createState(session)], defaultConfig)
+      expect(alerts).toHaveLength(1)
+    })
+
+    it('suppresses a non-morning player-count change that would fire OPPORTUNITY/FILLING_FAST ungated', () => {
+      const prevSession = createSession({
+        time: '11:30',
+        playersRegistered: 14,
+        goaliesRegistered: 2,
+      })
+      // 3 spots remaining (24 - 21): would trigger FILLING_FAST ungated.
+      const session = createSession({ time: '11:30', playersRegistered: 21, goaliesRegistered: 2 })
+      const prev = createState(prevSession, { lastPlayerCount: 14 })
+
+      // Sanity check: the same scenario fires ungated.
+      const ungated = evaluate([session], [prev], defaultConfig)
+      expect(ungated).toHaveLength(1)
+      expect(ungated[0].type).toBe('FILLING_FAST')
+
+      const alerts = evaluate([session], [prev], gatedConfig)
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('suppresses a non-morning full->open transition that would fire NEWLY_AVAILABLE ungated', () => {
+      const prevSession = createSession({ time: '11:30', isFull: true, facilityId: 2 })
+      const session = createSession({
+        time: '11:30',
+        isFull: false,
+        facilityId: 2,
+        playersRegistered: 14,
+      })
+      const prev = createState(prevSession)
+
+      // Sanity check: the same scenario fires ungated.
+      const ungated = evaluate([session], [prev], defaultConfig)
+      expect(ungated).toHaveLength(1)
+      expect(ungated[0].type).toBe('NEWLY_AVAILABLE')
+
+      const alerts = evaluate([session], [prev], gatedConfig)
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('still fires for a morning session under the same gatedConfig (sanity)', () => {
+      const session = createSession({ time: '06:10', playersRegistered: 0, goaliesRegistered: 0 })
+      const alerts = evaluate([session], [], gatedConfig)
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].type).toBe('MORNING_PICKUP')
+    })
+  })
+
+  describe('facility-aware alerts', () => {
+    it('uses the session facilityId in the registration URL', () => {
+      const session = createSession({
+        playersRegistered: 10,
+        goaliesRegistered: 1,
+        facilityId: 2,
+        location: 'PIH',
+      })
+      const alerts = evaluate([session], [createState(session)], defaultConfig)
+
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].registrationUrl).toContain('facility_ids=2')
+    })
+
+    it('falls back to facility_ids=1 when facilityId is missing', () => {
+      const session = createSession({ playersRegistered: 10, goaliesRegistered: 1 })
+      const alerts = evaluate([session], [createState(session)], defaultConfig)
+      expect(alerts[0].registrationUrl).toContain('facility_ids=1')
+    })
+
+    it('includes the location label in the alert message', () => {
+      const session = createSession({
+        playersRegistered: 10,
+        goaliesRegistered: 1,
+        facilityId: 2,
+        location: 'PIH',
+      })
+      const alerts = evaluate([session], [createState(session)], defaultConfig)
+      expect(alerts[0].message).toContain('@ PIH')
+    })
+
+    it('matches previous state facility-aware (same time, different rink = different session)', () => {
+      const xic = createSession({ time: '06:00', facilityId: 1, location: 'XIC' })
+      const pihPrev = createState(
+        createSession({ time: '06:00', facilityId: 2, location: 'PIH', isFull: true })
+      )
+
+      // XIC session is unseen (only PIH tracked at this slot) and it's a
+      // morning session -> MORNING_PICKUP, NOT a NEWLY_AVAILABLE downgrade
+      // from PIH's full->open transition.
+      const alerts = evaluate([xic], [pihPrev], defaultConfig)
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].type).toBe('MORNING_PICKUP')
+    })
+
+    it('falls back to facility_ids=1 when facilityId is 0 (unresolved resource)', () => {
+      const session = createSession({ playersRegistered: 10, goaliesRegistered: 1, facilityId: 0 })
+      const alerts = evaluate([session], [createState(session)], defaultConfig)
+      expect(alerts[0].registrationUrl).toContain('facility_ids=1')
+    })
+
+    it('does not let a legacy prev entry serve as prev-state for BOTH rinks at an ambiguous slot', () => {
+      // Legacy prev entry (no facilityId), previously full, at the 06:00 slot.
+      const legacyPrev = createState(
+        createSession({ time: '06:00', isFull: true, playersRegistered: 22, playersMax: 22 })
+      )
+      // Both rinks now run pickup at 06:00 (ambiguous slot) and are open.
+      const xic = createSession({
+        time: '06:00',
+        facilityId: 1,
+        location: 'XIC',
+        isFull: false,
+        playersRegistered: 3,
+      })
+      const pih = createSession({
+        time: '06:00',
+        facilityId: 2,
+        location: 'PIH',
+        isFull: false,
+        playersRegistered: 3,
+      })
+
+      const alerts = evaluate([xic, pih], [legacyPrev], defaultConfig)
+
+      // Neither inherits the legacy full->open history: both are unseen morning
+      // sessions -> two MORNING_PICKUP alerts (NOT NEWLY_AVAILABLE downgrades).
+      expect(alerts).toHaveLength(2)
+      expect(alerts.every((a) => a.type === 'MORNING_PICKUP')).toBe(true)
+    })
+
+    it('keeps wildcard matching for a legacy prev entry when only ONE session holds the slot', () => {
+      // Legacy prev entry (no facilityId) already alerted MORNING_PICKUP.
+      const legacyPrev = createState(
+        createSession({ time: '06:00', playersRegistered: 0, goaliesRegistered: 0 }),
+        {
+          lastAlertType: 'MORNING_PICKUP',
+          lastAlertAt: new Date(Date.now() - 60000).toISOString(),
+        }
+      )
+      // Only XIC holds the 06:00 slot -> unambiguous -> wildcard still applies,
+      // so the legacy entry matches and MORNING_PICKUP does not re-fire.
+      const xic = createSession({
+        time: '06:00',
+        facilityId: 1,
+        location: 'XIC',
+        playersRegistered: 0,
+        goaliesRegistered: 0,
+      })
+
+      const alerts = evaluate([xic], [legacyPrev], defaultConfig)
 
       expect(alerts.some((a) => a.type === 'MORNING_PICKUP')).toBe(false)
     })

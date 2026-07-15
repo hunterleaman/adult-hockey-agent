@@ -14,7 +14,7 @@ https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registratio
 
 ### What It Does
 
-1. Polls DASH event page for Mon/Wed/Fri sessions within a configurable forward window (default: 5 days)
+1. Polls DASH event page for sessions on every date within a configurable forward window (default: 5 days) — post-merger PIH runs pickup on additional days; the evaluator's morning gate controls alert volume
 2. Parses registration counts for both PLAYERS and GOALIES entries per session
 3. Evaluates alert rules against parsed data
 4. Sends notifications via pluggable notification modules
@@ -24,7 +24,7 @@ https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registratio
 ### Sessions of Interest
 
 - Event type: Any event whose name contains "ADULT Pick Up" (hockey only, not Broomball)
-- Days: Monday, Wednesday, Friday
+- Days: all days in the forward window (scraper covers every date; formerly Mon/Wed/Fri only, expanded post-merger since PIH runs pickup on additional days)
 - All time slots discovered on those days (do NOT hardcode specific times)
 - Player entries identified by: name contains "(PLAYERS)" AND "ADULT Pick Up"
 - Goalie entries identified by: name contains "(GOALIES)" AND "Adult Pick Up"
@@ -32,6 +32,8 @@ https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registratio
 - Handle edge cases: holidays, special events, or schedule changes may alter available sessions
 
 ### Alert Rules
+
+When `ALERT_MORNINGS_ONLY=true` (default), only sessions starting before `MORNING_PICKUP_MAX_HOUR` (default 8) can fire any alert type below; later sessions still appear in `/sessions` but stay silent.
 
 **OPPORTUNITY (primary)**
 
@@ -274,6 +276,11 @@ FORWARD_WINDOW_DAYS=5
 MIN_GOALIES=2
 PLAYER_SPOTS_ALERT=10
 PLAYER_SPOTS_URGENT=4
+
+# Morning-Only Alerts + Facility Location
+ALERT_MORNINGS_ONLY=true          # Gate: only morning sessions may alert
+MORNING_PICKUP_MAX_HOUR=8         # Morning cutoff hour (24h)
+FACILITY_LABELS=1:XIC,2:PIH       # Facility ID -> display label
 ```
 
 ### API Discovery: ✅ COMPLETED (2026-02-12)

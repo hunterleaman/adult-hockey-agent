@@ -1,0 +1,56 @@
+{
+  "data": [
+    {
+      "id": "900001",
+      "type": "events",
+      "attributes": { "start": "2026-08-05T06:00:00", "end": "2026-08-05T07:10:00" },
+      "relationships": {
+        "homeTeam": { "data": { "type": "teams", "id": "7001" } },
+        "summary": { "data": { "type": "event-summaries", "id": "900001" } },
+        "resource": { "data": { "type": "resources", "id": "1" } }
+      }
+    },
+    {
+      "id": "900002",
+      "type": "events",
+      "attributes": { "start": "2026-08-05T06:00:00", "end": "2026-08-05T07:10:00" },
+      "relationships": {
+        "homeTeam": { "data": { "type": "teams", "id": "7002" } },
+        "summary": { "data": { "type": "event-summaries", "id": "900002" } },
+        "resource": { "data": { "type": "resources", "id": "1" } }
+      }
+    },
+    {
+      "id": "900003",
+      "type": "events",
+      "attributes": { "start": "2026-08-05T06:00:00", "end": "2026-08-05T07:10:00" },
+      "relationships": {
+        "homeTeam": { "data": { "type": "teams", "id": "7003" } },
+        "summary": { "data": { "type": "event-summaries", "id": "900003" } },
+        "resource": { "data": { "type": "resources", "id": "4" } }
+      }
+    },
+    {
+      "id": "900004",
+      "type": "events",
+      "attributes": { "start": "2026-08-05T06:00:00", "end": "2026-08-05T07:10:00" },
+      "relationships": {
+        "homeTeam": { "data": { "type": "teams", "id": "7004" } },
+        "summary": { "data": { "type": "event-summaries", "id": "900004" } },
+        "resource": { "data": { "type": "resources", "id": "4" } }
+      }
+    }
+  ],
+  "included": [
+    { "type": "teams", "id": "7001", "attributes": { "name": "(PLAYERS) Adult Pick Up Hockey (Mornings)" } },
+    { "type": "teams", "id": "7002", "attributes": { "name": "(GOALIES) Adult Pick Up Hockey (Mornings)" } },
+    { "type": "teams", "id": "7003", "attributes": { "name": "PIH Adult Pickup Skater" } },
+    { "type": "teams", "id": "7004", "attributes": { "name": "PIH Adult Pickup Goalie" } },
+    { "type": "event-summaries", "id": "900001", "attributes": { "registered_count": 9, "composite_capacity": 22 } },
+    { "type": "event-summaries", "id": "900002", "attributes": { "registered_count": 1, "composite_capacity": 3 } },
+    { "type": "event-summaries", "id": "900003", "attributes": { "registered_count": 15, "composite_capacity": 22 } },
+    { "type": "event-summaries", "id": "900004", "attributes": { "registered_count": 2, "composite_capacity": 3 } },
+    { "type": "resources", "id": "1", "attributes": { "name": "MAIN RINK", "facility_id": 1 } },
+    { "type": "resources", "id": "4", "attributes": { "name": "Pineville Rink", "facility_id": 2 } }
+  ]
+}

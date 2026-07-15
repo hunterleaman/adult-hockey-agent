@@ -152,9 +152,9 @@ function formatSessionBlock(entry: SessionState, company: string): string {
   const status = session.isFull
     ? ':no_entry: *FULL*'
     : `:white_check_mark: *Open* (${spotsRemaining} spot${spotsRemaining === 1 ? '' : 's'} left)`
-  const regUrl = `https://apps.daysmartrecreation.com/dash/x/#/online/${company}/event-registration?date=${session.date}&facility_ids=1`
+  const regUrl = `https://apps.daysmartrecreation.com/dash/x/#/online/${company}/event-registration?date=${session.date}&facility_ids=${session.facilityId || 1}`
 
-  let text = `*${session.dayOfWeek}, ${formatDate(session.date)}* at *${formatTime(session.time)}*\n`
+  let text = `*${session.dayOfWeek}, ${formatDate(session.date)}* at *${formatTime(session.time)}*${session.location ? ` @ *${session.location}*` : ''}\n`
   text += `Players: *${session.playersRegistered}/${session.playersMax}* | Goalies: *${session.goaliesRegistered}/${session.goaliesMax}*\n`
   text += `Status: ${status}\n`
 
