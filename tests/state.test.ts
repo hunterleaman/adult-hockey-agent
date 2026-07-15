@@ -673,5 +673,48 @@ describe('state', () => {
       expect(merged.find((s) => s.session.facilityId === 2)!.userResponse).toBe('not_interested')
       expect(merged.find((s) => s.session.facilityId === 1)!.userResponse).toBeNull()
     })
+
+    it('updateUserResponse legacy (no facilityId) mutates NEITHER same-slot rink entry', () => {
+      const state = [makeEntry(xicSession), makeEntry(pihSession)]
+      const updated = updateUserResponse(state, '2026-08-05', '06:00', 'not_interested', 2)
+
+      expect(updated).toEqual(state)
+      expect(updated.find((s) => s.session.facilityId === 1)!.userResponse).toBeNull()
+      expect(updated.find((s) => s.session.facilityId === 2)!.userResponse).toBeNull()
+    })
+
+    it('updateRegistrationStatus legacy (no facilityId) mutates NEITHER same-slot rink entry', () => {
+      const state = [makeEntry(xicSession), makeEntry(pihSession)]
+      const updated = updateRegistrationStatus(state, '2026-08-05', '06:00', true)
+
+      expect(updated).toEqual(state)
+      expect(updated.find((s) => s.session.facilityId === 1)!.isRegistered).toBe(false)
+      expect(updated.find((s) => s.session.facilityId === 2)!.isRegistered).toBe(false)
+    })
+
+    it('mergeUserResponses legacy fresh entry does NOT copy to two same-slot poll entries', () => {
+      const pollState = [makeEntry(xicSession), makeEntry(pihSession)]
+      const legacyFresh = {
+        ...makeEntry({ ...baseSession } as typeof xicSession), // no facilityId
+        userResponse: 'not_interested' as const,
+        userRespondedAt: new Date().toISOString(),
+      }
+
+      const merged = mergeUserResponses(pollState, [legacyFresh])
+      expect(merged.find((s) => s.session.facilityId === 1)!.userResponse).toBeNull()
+      expect(merged.find((s) => s.session.facilityId === 2)!.userResponse).toBeNull()
+    })
+
+    it('mergeUserResponses legacy fresh entry still copies when the poll match is unique', () => {
+      const pollState = [makeEntry(xicSession)]
+      const legacyFresh = {
+        ...makeEntry({ ...baseSession } as typeof xicSession), // no facilityId
+        userResponse: 'not_interested' as const,
+        userRespondedAt: new Date().toISOString(),
+      }
+
+      const merged = mergeUserResponses(pollState, [legacyFresh])
+      expect(merged.find((s) => s.session.facilityId === 1)!.userResponse).toBe('not_interested')
+    })
   })
 })

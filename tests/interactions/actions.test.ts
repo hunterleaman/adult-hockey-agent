@@ -311,4 +311,30 @@ describe('processInteraction', () => {
     expect(pihState?.userResponse).toBe('not_interested')
     expect(xicState?.userResponse).toBeNull()
   })
+
+  it('refuses to write for a legacy (facility-unknown) value matching two same-slot rinks', () => {
+    const xic = createSession({ date: '2026-08-05', time: '06:00', facilityId: 1 })
+    const pih = createSession({ date: '2026-08-05', time: '06:00', facilityId: 2 })
+    saveState(testStatePath, [createState(xic), createState(pih)])
+
+    const payload = {
+      type: 'block_actions',
+      actions: [
+        {
+          action_id: 'session_not_interested',
+          value: '2026-08-05|06:00|Adult Pickup Skater', // legacy 3-part, no facilityId
+        },
+      ],
+      response_url: 'https://hooks.slack.com/test',
+    }
+
+    const result = processInteraction(testStatePath, payload, 2)
+
+    expect(result).not.toBeNull()
+    expect(result!.found).toBe(false)
+
+    const state = loadState(testStatePath)
+    expect(state.find((s) => s.session.facilityId === 1)!.userResponse).toBeNull()
+    expect(state.find((s) => s.session.facilityId === 2)!.userResponse).toBeNull()
+  })
 })

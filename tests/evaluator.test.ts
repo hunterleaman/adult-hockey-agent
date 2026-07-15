@@ -1025,5 +1025,58 @@ describe('evaluator', () => {
       const alerts = evaluate([session], [createState(session)], defaultConfig)
       expect(alerts[0].registrationUrl).toContain('facility_ids=1')
     })
+
+    it('does not let a legacy prev entry serve as prev-state for BOTH rinks at an ambiguous slot', () => {
+      // Legacy prev entry (no facilityId), previously full, at the 06:00 slot.
+      const legacyPrev = createState(
+        createSession({ time: '06:00', isFull: true, playersRegistered: 22, playersMax: 22 })
+      )
+      // Both rinks now run pickup at 06:00 (ambiguous slot) and are open.
+      const xic = createSession({
+        time: '06:00',
+        facilityId: 1,
+        location: 'XIC',
+        isFull: false,
+        playersRegistered: 3,
+      })
+      const pih = createSession({
+        time: '06:00',
+        facilityId: 2,
+        location: 'PIH',
+        isFull: false,
+        playersRegistered: 3,
+      })
+
+      const alerts = evaluate([xic, pih], [legacyPrev], defaultConfig)
+
+      // Neither inherits the legacy full->open history: both are unseen morning
+      // sessions -> two MORNING_PICKUP alerts (NOT NEWLY_AVAILABLE downgrades).
+      expect(alerts).toHaveLength(2)
+      expect(alerts.every((a) => a.type === 'MORNING_PICKUP')).toBe(true)
+    })
+
+    it('keeps wildcard matching for a legacy prev entry when only ONE session holds the slot', () => {
+      // Legacy prev entry (no facilityId) already alerted MORNING_PICKUP.
+      const legacyPrev = createState(
+        createSession({ time: '06:00', playersRegistered: 0, goaliesRegistered: 0 }),
+        {
+          lastAlertType: 'MORNING_PICKUP',
+          lastAlertAt: new Date(Date.now() - 60000).toISOString(),
+        }
+      )
+      // Only XIC holds the 06:00 slot -> unambiguous -> wildcard still applies,
+      // so the legacy entry matches and MORNING_PICKUP does not re-fire.
+      const xic = createSession({
+        time: '06:00',
+        facilityId: 1,
+        location: 'XIC',
+        playersRegistered: 0,
+        goaliesRegistered: 0,
+      })
+
+      const alerts = evaluate([xic], [legacyPrev], defaultConfig)
+
+      expect(alerts.some((a) => a.type === 'MORNING_PICKUP')).toBe(false)
+    })
   })
 })

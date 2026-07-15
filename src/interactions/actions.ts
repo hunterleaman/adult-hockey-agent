@@ -1,6 +1,6 @@
 import type { UserResponse } from '../evaluator.js'
 import { loadState, saveState, updateUserResponse } from '../state.js'
-import { sessionMatches } from '../session-identity.js'
+import { sessionMatches, countSlotMatches } from '../session-identity.js'
 
 export interface ParsedAction {
   actionId: string
@@ -96,7 +96,17 @@ export function processInteraction(
   if (!sessionId) return null
 
   const state = loadState(statePath)
-  const found = state.some((s) => sessionMatches(sessionId, s.session))
+
+  // Ambiguity guard: a legacy (facility-unknown) button value can match both
+  // rinks' same-slot entries. Refuse to write and report not-found so the
+  // existing not-found response path handles messaging.
+  const ambiguous =
+    !sessionId.facilityId &&
+    countSlotMatches(
+      state.map((s) => s.session),
+      sessionId
+    ) > 1
+  const found = !ambiguous && state.some((s) => sessionMatches(sessionId, s.session))
 
   if (found) {
     const updatedState = updateUserResponse(

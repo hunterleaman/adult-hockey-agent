@@ -1,11 +1,27 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { sessionMatches } from './session-identity.js'
+import { sessionMatches, countSlotMatches } from './session-identity.js'
+import type { SessionRef } from './session-identity'
 import type { SessionState, AlertType, UserResponse } from './evaluator'
 import type { Session } from './parser'
 
 // Re-export types for external use
 export type { SessionState }
+
+/**
+ * True when an incoming identity has an unknown facility (undefined or 0) AND
+ * more than one state entry shares its date+time slot. In that case a legacy
+ * facility-less write is ambiguous (which rink?) and must mutate nothing.
+ */
+function isAmbiguousUnknownFacilityWrite(ref: SessionRef, state: SessionState[]): boolean {
+  return (
+    !ref.facilityId &&
+    countSlotMatches(
+      state.map((s) => s.session),
+      ref
+    ) > 1
+  )
+}
 
 /**
  * Load session state from disk.
@@ -89,6 +105,7 @@ export function updateRegistrationStatus(
   isRegistered: boolean,
   facilityId?: number
 ): SessionState[] {
+  if (isAmbiguousUnknownFacilityWrite({ date, time, facilityId }, state)) return state
   return state.map((s) => {
     if (sessionMatches({ date, time, facilityId }, s.session)) {
       return {
@@ -149,6 +166,7 @@ export function updateUserResponse(
   remindIntervalHours: number,
   facilityId?: number
 ): SessionState[] {
+  if (isAmbiguousUnknownFacilityWrite({ date, time, facilityId }, state)) return state
   const now = new Date()
   return state.map((s) => {
     if (sessionMatches({ date, time, facilityId }, s.session)) {
@@ -179,6 +197,10 @@ export function mergeUserResponses(
   return pollState.map((entry) => {
     const fresh = freshState.find((s) => sessionMatches(entry.session, s.session))
     if (!fresh || fresh.userRespondedAt === null) return entry
+
+    // Ambiguity guard: a legacy (unknown-facility) fresh entry can match both
+    // rinks' same-slot poll entries. Only copy when the match is unique.
+    if (pollState.filter((p) => sessionMatches(fresh.session, p.session)).length > 1) return entry
 
     // Use fresh state's user-response fields if poll state has none,
     // or if fresh state has a more recent response

@@ -1,6 +1,6 @@
 import type { Session } from './parser'
 import type { Config } from './config'
-import { sessionMatches } from './session-identity.js'
+import { sessionMatches, countSlotMatches } from './session-identity.js'
 
 export type AlertType =
   | 'OPPORTUNITY'
@@ -51,7 +51,11 @@ export function evaluate(
       continue
     }
 
-    const prevState = findPreviousState(session, previousState)
+    // When more than one CURRENT session shares this date+time slot (both rinks
+    // running pickup at once), a legacy facility-less prev-state entry is
+    // ambiguous — match strictly so neither rink inherits the other's history.
+    const ambiguousSlot = countSlotMatches(sessions, session) > 1
+    const prevState = findPreviousState(session, previousState, ambiguousSlot)
 
     // Priority 0: MORNING_PICKUP - an early-morning pickup session has appeared
     // on the schedule for the first time. Fires once (only when never seen
@@ -129,8 +133,21 @@ export function evaluate(
 
 function findPreviousState(
   session: Session,
-  previousState: SessionState[]
+  previousState: SessionState[],
+  strict: boolean
 ): SessionState | undefined {
+  if (strict) {
+    // Ambiguous slot: require exact concrete-facility equality (no unknown
+    // wildcard) so a legacy facility-less entry can't serve as prev-state for
+    // both rinks at the same date+time.
+    return previousState.find(
+      (state) =>
+        !!session.facilityId &&
+        state.session.date === session.date &&
+        state.session.time === session.time &&
+        state.session.facilityId === session.facilityId
+    )
+  }
   return previousState.find((state) => sessionMatches(session, state.session))
 }
 
