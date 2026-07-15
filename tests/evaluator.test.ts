@@ -928,6 +928,51 @@ describe('evaluator', () => {
       const alerts = evaluate([session], [createState(session)], defaultConfig)
       expect(alerts).toHaveLength(1)
     })
+
+    it('suppresses a non-morning player-count change that would fire OPPORTUNITY/FILLING_FAST ungated', () => {
+      const prevSession = createSession({
+        time: '11:30',
+        playersRegistered: 14,
+        goaliesRegistered: 2,
+      })
+      // 3 spots remaining (24 - 21): would trigger FILLING_FAST ungated.
+      const session = createSession({ time: '11:30', playersRegistered: 21, goaliesRegistered: 2 })
+      const prev = createState(prevSession, { lastPlayerCount: 14 })
+
+      // Sanity check: the same scenario fires ungated.
+      const ungated = evaluate([session], [prev], defaultConfig)
+      expect(ungated).toHaveLength(1)
+      expect(ungated[0].type).toBe('FILLING_FAST')
+
+      const alerts = evaluate([session], [prev], gatedConfig)
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('suppresses a non-morning full->open transition that would fire NEWLY_AVAILABLE ungated', () => {
+      const prevSession = createSession({ time: '11:30', isFull: true, facilityId: 2 })
+      const session = createSession({
+        time: '11:30',
+        isFull: false,
+        facilityId: 2,
+        playersRegistered: 14,
+      })
+      const prev = createState(prevSession)
+
+      // Sanity check: the same scenario fires ungated.
+      const ungated = evaluate([session], [prev], defaultConfig)
+      expect(ungated).toHaveLength(1)
+      expect(ungated[0].type).toBe('NEWLY_AVAILABLE')
+
+      const alerts = evaluate([session], [prev], gatedConfig)
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('still fires for a morning session under the same gatedConfig (sanity)', () => {
+      const session = createSession({ time: '06:10', playersRegistered: 0, goaliesRegistered: 0 })
+      const alerts = evaluate([session], [], gatedConfig)
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].type).toBe('MORNING_PICKUP')
+    })
   })
 
   describe('facility-aware alerts', () => {

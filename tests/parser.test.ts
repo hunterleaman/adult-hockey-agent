@@ -262,4 +262,35 @@ describe('facility awareness (XIC/PIH merger)', () => {
     const unknown = sessions.find((s) => s.facilityId === 0)!
     expect(unknown.location).toBe('Facility 0')
   })
+
+  it('normalizes a string facility_id to a numeric facilityId', () => {
+    const cloned = JSON.parse(JSON.stringify(collision)) as typeof collision
+    const pihResource = cloned.included.find(
+      (item: { type: string; id: string }) => item.type === 'resources' && item.id === '4'
+    )
+    pihResource.attributes.facility_id = '2'
+
+    const sessions = parseEvents(cloned)
+    const pih = sessions.find((s) => s.facilityId === 2)
+    expect(pih).toBeDefined()
+    expect(pih!.facilityId).toBe(2)
+    expect(pih!.location).toBe('PIH')
+  })
+
+  it('normalizes a null facility_id to 0 (unresolvable)', () => {
+    const cloned = JSON.parse(JSON.stringify(collision)) as typeof collision
+    const xicResource = cloned.included.find(
+      (item: { type: string; id: string }) => item.type === 'resources' && item.id === '1'
+    )
+    xicResource.attributes.facility_id = null
+    // No rink name to fall back on either, so location degrades all the way
+    // to the generic "Facility 0" label (matches the missing-resource case).
+    xicResource.attributes.name = null
+
+    const sessions = parseEvents(cloned)
+    const unresolved = sessions.find((s) => s.facilityId === 0)
+    expect(unresolved).toBeDefined()
+    expect(unresolved!.facilityId).toBe(0)
+    expect(unresolved!.location).toBe('Facility 0')
+  })
 })

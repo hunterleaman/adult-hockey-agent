@@ -2,7 +2,7 @@ import { sessionKey } from './session-identity.js'
 
 export interface Session {
   date: string // YYYY-MM-DD
-  dayOfWeek: string // Monday | Wednesday | Friday
+  dayOfWeek: string // Weekday name, e.g. 'Tuesday' — all days scraped post-merger
   time: string // HH:MM (24h)
   timeLabel: string // "6:00am - 7:10am"
   eventName: string // Full event name from DASH
@@ -123,8 +123,19 @@ export function parseEvents(
     const resource = resourceData
       ? includedMap.get(`${resourceData.type}:${resourceData.id}`)
       : undefined
-    const facilityId: number = resource?.attributes?.facility_id ?? 0
-    const rinkName: string = resource?.attributes?.name ?? ''
+    // Normalize facility_id defensively: attributes is `any`-typed (external
+    // JSON:API payload), so a string "2" or other garbage could otherwise
+    // flow straight through and silently break facilityId-keyed logic
+    // (session grouping, location labels, registration URLs).
+    const rawFacilityId: unknown = resource?.attributes?.facility_id
+    const facilityId: number =
+      typeof rawFacilityId === 'number' && Number.isInteger(rawFacilityId) && rawFacilityId > 0
+        ? rawFacilityId
+        : typeof rawFacilityId === 'string' && /^\d+$/.test(rawFacilityId)
+          ? parseInt(rawFacilityId, 10)
+          : 0
+    const rinkName: string =
+      typeof resource?.attributes?.name === 'string' ? resource.attributes.name : ''
 
     parsedEvents.push({
       eventId: event.id,

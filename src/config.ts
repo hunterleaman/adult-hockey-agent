@@ -116,8 +116,12 @@ export function validateConfig(config: Config): void {
     throw new Error('playerSpotsUrgent must be > 0')
   }
 
-  if (config.morningPickupMaxHour < 0 || config.morningPickupMaxHour > 23) {
-    throw new Error('morningPickupMaxHour must be 0-23')
+  if (
+    !Number.isInteger(config.morningPickupMaxHour) ||
+    config.morningPickupMaxHour < 0 ||
+    config.morningPickupMaxHour > 23
+  ) {
+    throw new Error('MORNING_PICKUP_MAX_HOUR (morningPickupMaxHour) must be an integer 0-23')
   }
 
   if (config.canaryThresholdPolls <= 0) {
@@ -171,12 +175,23 @@ function parseFacilityLabels(value: string | undefined): Record<number, string> 
   const labels: Record<number, string> = {}
   for (const pair of value.split(',')) {
     const [idStr, ...labelParts] = pair.split(':')
-    const id = parseInt(idStr, 10)
+    const trimmedId = (idStr ?? '').trim()
     const label = labelParts.join(':').trim()
-    if (isNaN(id) || id <= 0 || !label) {
+    // Strict digit match: parseInt would silently accept "1abc" as 1, letting
+    // garbage ids through. Require the whole token to be digits.
+    if (!/^\d+$/.test(trimmedId) || !label) {
       throw new Error(
         `FACILITY_LABELS must be comma-separated "id:label" pairs (e.g. "1:XIC,2:PIH"), got: "${value}"`
       )
+    }
+    const id = parseInt(trimmedId, 10)
+    if (id <= 0) {
+      throw new Error(
+        `FACILITY_LABELS must be comma-separated "id:label" pairs (e.g. "1:XIC,2:PIH"), got: "${value}"`
+      )
+    }
+    if (id in labels) {
+      throw new Error(`FACILITY_LABELS contains duplicate facility id ${id}, got: "${value}"`)
     }
     labels[id] = label
   }
