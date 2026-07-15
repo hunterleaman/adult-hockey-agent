@@ -254,4 +254,91 @@ describe('SlackNotifier', () => {
       expect(body.blocks.length).toBeGreaterThan(0)
     })
   })
+
+  describe('location display (XIC/PIH merger)', () => {
+    it('includes location in the header', async () => {
+      ;(global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+      })
+
+      const notifier = new SlackNotifier('https://hooks.slack.com/test')
+      const alert = createAlert('OPPORTUNITY', {
+        facilityId: 2,
+        location: 'PIH',
+        rinkName: 'Pineville Rink',
+      })
+
+      await notifier.send(alert)
+
+      const call = (global.fetch as any).mock.calls[0]
+      const payload = JSON.parse(call[1].body)
+      const header = payload.blocks[0]
+      expect(header.text.text).toBe('🏒 OPPORTUNITY — PIH')
+    })
+
+    it('includes a Where line with rink name', async () => {
+      ;(global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+      })
+
+      const notifier = new SlackNotifier('https://hooks.slack.com/test')
+      const alert = createAlert('OPPORTUNITY', {
+        facilityId: 2,
+        location: 'PIH',
+        rinkName: 'Pineville Rink',
+      })
+
+      await notifier.send(alert)
+
+      const call = (global.fetch as any).mock.calls[0]
+      const payload = JSON.parse(call[1].body)
+      const section = payload.blocks[1]
+      expect(section.text.text).toContain('*Where:* PIH (Pineville Rink)')
+    })
+
+    it('omits location suffix when session has none (legacy)', async () => {
+      ;(global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+      })
+
+      const notifier = new SlackNotifier('https://hooks.slack.com/test')
+      const alert = createAlert('OPPORTUNITY')
+
+      await notifier.send(alert)
+
+      const call = (global.fetch as any).mock.calls[0]
+      const payload = JSON.parse(call[1].body)
+      const header = payload.blocks[0]
+      const section = payload.blocks[1]
+      expect(header.text.text).toBe('🏒 OPPORTUNITY')
+      expect(section.text.text).not.toContain('*Where:*')
+    })
+
+    it('embeds facilityId in button values', async () => {
+      ;(global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+      })
+
+      const notifier = new SlackNotifier('https://hooks.slack.com/test')
+      const alert = createAlert('OPPORTUNITY', {
+        date: '2026-08-05',
+        time: '06:00',
+        eventName: 'PIH Adult Pickup Skater',
+        facilityId: 2,
+        location: 'PIH',
+        rinkName: 'Pineville Rink',
+      })
+
+      await notifier.send(alert)
+
+      const call = (global.fetch as any).mock.calls[0]
+      const payload = JSON.parse(call[1].body)
+      const actions = payload.blocks.find((b: any) => b.type === 'actions')
+      expect(actions.elements[1].value).toBe('2026-08-05|06:00|2|PIH Adult Pickup Skater')
+    })
+  })
 })

@@ -246,6 +246,28 @@ describe('buildSessionsResponse', () => {
   })
 })
 
+describe('location display', () => {
+  it('shows the location label and per-facility register link', () => {
+    const session = createSession({ facilityId: 2, location: 'PIH' })
+    const state = [createState(session)]
+
+    const response = buildSessionsResponse(state, null, 'charlotteice')
+    const text = JSON.stringify(response.blocks)
+
+    expect(text).toContain('@ *PIH*')
+    expect(text).toContain('facility_ids=2')
+  })
+
+  it('falls back to facility_ids=1 for legacy entries without facilityId', () => {
+    const legacySession = createSession()
+    const legacyState = [createState(legacySession)]
+
+    const response = buildSessionsResponse(legacyState, null, 'charlotteice')
+
+    expect(JSON.stringify(response.blocks)).toContain('facility_ids=1')
+  })
+})
+
 // --- Integration tests: POST /slack/commands ---
 
 const SIGNING_SECRET = 'test-commands-secret'

@@ -143,7 +143,7 @@ describe('SlackNotifier - Block Kit Integration', () => {
       const alert = createAlert('OPPORTUNITY')
       const payload = getPayload(notifier, alert)
 
-      const expectedValue = '2026-02-20|06:00|(PLAYERS) ADULT Pick Up MORNINGS'
+      const expectedValue = '2026-02-20|06:00|0|(PLAYERS) ADULT Pick Up MORNINGS'
       const elements = payload.blocks[2].elements
 
       // All interactive buttons share the same session value
