@@ -108,5 +108,7 @@ export async function scrapeEvents(
   const eventsData = await eventsResponse.json()
 
   // Step 5: Parse events into sessions
-  return facilityLabels === undefined ? parseEvents(eventsData) : parseEvents(eventsData, facilityLabels)
+  return facilityLabels === undefined
+    ? parseEvents(eventsData)
+    : parseEvents(eventsData, facilityLabels)
 }
