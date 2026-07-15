@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { scrapeEvents, calculateTargetDates, isMonWedFri, extractEventIds } from '../src/scraper'
+import { scrapeEvents, calculateTargetDates, extractEventIds } from '../src/scraper'
 import type { Session } from '../src/parser'
 
 // Mock fetch globally
@@ -14,74 +14,57 @@ describe('scraper', () => {
     vi.restoreAllMocks()
   })
 
-  describe('isMonWedFri', () => {
-    it('returns true for Monday', () => {
-      expect(isMonWedFri('2026-02-16')).toBe(true) // Monday
-    })
-
-    it('returns true for Wednesday', () => {
-      expect(isMonWedFri('2026-02-18')).toBe(true) // Wednesday
-    })
-
-    it('returns true for Friday', () => {
-      expect(isMonWedFri('2026-02-20')).toBe(true) // Friday
-    })
-
-    it('returns false for Tuesday', () => {
-      expect(isMonWedFri('2026-02-17')).toBe(false) // Tuesday
-    })
-
-    it('returns false for Thursday', () => {
-      expect(isMonWedFri('2026-02-19')).toBe(false) // Thursday
-    })
-
-    it('returns false for Saturday', () => {
-      expect(isMonWedFri('2026-02-14')).toBe(false) // Saturday
-    })
-
-    it('returns false for Sunday', () => {
-      expect(isMonWedFri('2026-02-15')).toBe(false) // Sunday
-    })
-  })
-
   describe('calculateTargetDates', () => {
-    it('returns Mon/Wed/Fri dates within forward window', () => {
-      const today = new Date('2026-02-16T12:00:00Z') // Monday
-      const forwardDays = 5
-
-      const dates = calculateTargetDates(today, forwardDays)
-
-      // Should get: Feb 16 (Mon), Feb 18 (Wed), Feb 20 (Fri)
-      expect(dates).toEqual(['2026-02-16', '2026-02-18', '2026-02-20'])
+    it('returns every date in the forward window, all days of week', () => {
+      const monday = new Date('2026-07-13T12:00:00Z')
+      const dates = calculateTargetDates(monday, 5)
+      expect(dates).toEqual([
+        '2026-07-13',
+        '2026-07-14',
+        '2026-07-15',
+        '2026-07-16',
+        '2026-07-17',
+        '2026-07-18',
+      ])
     })
 
-    it('excludes Tuesday, Thursday, Saturday, Sunday', () => {
+    it('includes all days when forward window spans a week', () => {
       const today = new Date('2026-02-15T12:00:00Z') // Sunday
       const forwardDays = 7
 
       const dates = calculateTargetDates(today, forwardDays)
 
-      // Should get: Feb 16 (Mon), Feb 18 (Wed), Feb 20 (Fri)
-      // Should NOT include: Feb 15 (Sun), 17 (Tue), 19 (Thu), 21 (Sat), 22 (Sun)
-      expect(dates).toEqual(['2026-02-16', '2026-02-18', '2026-02-20'])
+      // Should include: Feb 15 (Sun) through Feb 22 (Sun), all 8 days
+      expect(dates).toEqual([
+        '2026-02-15',
+        '2026-02-16',
+        '2026-02-17',
+        '2026-02-18',
+        '2026-02-19',
+        '2026-02-20',
+        '2026-02-21',
+        '2026-02-22',
+      ])
     })
 
-    it('includes today if today is Mon/Wed/Fri', () => {
-      const today = new Date('2026-02-20T12:00:00Z') // Friday
-      const forwardDays = 3
-
-      const dates = calculateTargetDates(today, forwardDays)
-
-      expect(dates[0]).toBe('2026-02-20')
-    })
-
-    it('handles forward window with no Mon/Wed/Fri dates', () => {
+    it('includes today regardless of day of week', () => {
       const today = new Date('2026-02-14T12:00:00Z') // Saturday
-      const forwardDays = 1 // Only includes Sunday
+      const forwardDays = 1
 
       const dates = calculateTargetDates(today, forwardDays)
 
-      expect(dates).toEqual([])
+      expect(dates[0]).toBe('2026-02-14')
+      expect(dates).toEqual(['2026-02-14', '2026-02-15'])
+    })
+
+    it('returns correct count for forward window', () => {
+      const today = new Date('2026-02-16T12:00:00Z') // Monday
+      const forwardDays = 5
+
+      const dates = calculateTargetDates(today, forwardDays)
+
+      // Should return forwardDays + 1 dates (today inclusive)
+      expect(dates).toHaveLength(6)
     })
 
     it('returns dates in chronological order', () => {
@@ -101,7 +84,7 @@ describe('scraper', () => {
 
       const dates = calculateTargetDates(today)
 
-      expect(dates.length).toBeGreaterThan(0)
+      expect(dates.length).toBe(6)
       expect(dates[0]).toBe('2026-02-16')
     })
   })
@@ -272,14 +255,6 @@ describe('scraper', () => {
       expect(global.fetch).toHaveBeenCalledTimes(2)
       expect(sessions).toHaveLength(1)
       expect(sessions[0].date).toBe('2026-02-20')
-    })
-
-    it('returns empty array when no Mon/Wed/Fri dates in window', async () => {
-      const today = new Date('2026-02-14T12:00:00Z') // Saturday
-      const sessions = await scrapeEvents(today, 1) // Only includes Sunday
-
-      expect(global.fetch).not.toHaveBeenCalled()
-      expect(sessions).toEqual([])
     })
 
     it('returns empty array when no event IDs found', async () => {

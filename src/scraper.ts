@@ -14,16 +14,9 @@ interface DateAvailabilitiesResponse {
 }
 
 /**
- * Check if a date string (YYYY-MM-DD) falls on Monday, Wednesday, or Friday
- */
-export function isMonWedFri(dateStr: string): boolean {
-  const date = new Date(dateStr + 'T00:00:00')
-  const dayOfWeek = date.getDay()
-  return dayOfWeek === 1 || dayOfWeek === 3 || dayOfWeek === 5 // Mon = 1, Wed = 3, Fri = 5
-}
-
-/**
- * Calculate target dates (Mon/Wed/Fri only) within forward window from today
+ * Calculate target dates (every day) within forward window from today.
+ * Post-merger, PIH runs pickup on days XIC never did (e.g. Tuesdays), so the
+ * scraper covers all days; the evaluator's morning gate controls alert volume.
  */
 export function calculateTargetDates(today: Date = new Date(), forwardDays: number = 5): string[] {
   const dates: string[] = []
@@ -32,10 +25,7 @@ export function calculateTargetDates(today: Date = new Date(), forwardDays: numb
 
   const current = new Date(today)
   while (current <= endDate) {
-    const dateStr = current.toISOString().split('T')[0]
-    if (isMonWedFri(dateStr)) {
-      dates.push(dateStr)
-    }
+    dates.push(current.toISOString().split('T')[0])
     current.setDate(current.getDate() + 1)
   }
 
@@ -67,16 +57,18 @@ export function extractEventIds(
 }
 
 /**
- * Scrape events from DASH API for Mon/Wed/Fri dates within forward window.
+ * Scrape events from DASH API for all dates within forward window.
  * Returns parsed Session[] via two-step fetch: date-availabilities → events.
  * `company` is the DASH tenant slug (default `charlotteice`).
+ * `facilityLabels` is optional facility ID → label mapping (passed to parser).
  */
 export async function scrapeEvents(
   today: Date = new Date(),
   forwardDays: number = 5,
-  company: string = DEFAULT_COMPANY
+  company: string = DEFAULT_COMPANY,
+  facilityLabels?: Record<number, string>
 ): Promise<Session[]> {
-  // Step 1: Calculate target dates (Mon/Wed/Fri only)
+  // Step 1: Calculate target dates (all days in forward window)
   const targetDates = calculateTargetDates(today, forwardDays)
 
   if (targetDates.length === 0) {
@@ -116,5 +108,5 @@ export async function scrapeEvents(
   const eventsData = await eventsResponse.json()
 
   // Step 5: Parse events into sessions
-  return parseEvents(eventsData)
+  return facilityLabels === undefined ? parseEvents(eventsData) : parseEvents(eventsData, facilityLabels)
 }
