@@ -143,6 +143,20 @@ Monitoring agent that tracks adult pick-up hockey registration at Extreme Ice Ce
 
 3. **Added a canary (silent-outage watchdog)**: `src/health.ts` + `data/health.json` track consecutive "suspect" polls (0 sessions, or sessions with all-zero registrations). After `CANARY_THRESHOLD_POLLS` (env, default 3) it fires one Slack diagnostic via the new `Notifier.sendDiagnostic()`, suppresses until a healthy poll recovers. `poll()` was restructured so the canary runs even when a scrape throws. This is the durable fix for the "healthy but blind" failure mode that bit us in Sessions 9 and 10.
 
+### Session 11 (2026-07-15) - Morning-Only Alerts + /review-pr Pipeline
+
+1. **Plan snippets can contradict the spec they implement**: the plan's Task 5 specified `facility_ids=${facilityId ?? 1}`, but spec §5 requires falling back to 1 for UNRESOLVED facilities — and the degrade sentinel is `0`, which `??` passes through, producing dead `facility_ids=0` links. Spec governs; fixed with `|| 1`. Lesson: when a plan transcribes spec behavior into code snippets, verify sentinel/falsy semantics against the spec, not the snippet.
+
+2. **`0`-vs-`undefined` sentinel inconsistency class**: `sessionKey` collapsed both to `0` while `sessionMatches` treated `0` as a concrete facility — three different meanings of zero (unknown identity, key sentinel, URL fallback). External adversarial review caught cross-rink mutation/inheritance edges the per-task reviews rated acceptable. Fixed: `0` is "unknown" in matching, and ambiguous unknown-facility matches (multiple same-slot entries) mutate nothing.
+
+3. **Codex CLI silently outdated for server default model**: `/review-pr` Stages 2/3 failed with `The 'gpt-5.6-sol' model requires a newer version of Codex`. The protocol's API-direct fallback (auto-detected `gpt-5.6-luna`) worked and produced high-value findings. Lesson: keep the `codex` CLI upgraded; the fallback path is proven and mandatory, not optional. One transient 401 from the OpenAI API succeeded on immediate retry.
+
+4. **Worktree can't check out a branch already checked out in the main clone**: `git checkout <branch>` in a review worktree fails with "already used by worktree". Detach at `origin/<branch>` instead and push results via `git push origin HEAD:<branch>` (fast-forward).
+
+5. **AskUserQuestion can swallow long preceding content** (carried from Session 10 wind-down): present long content as committed files or PR comments, then ask the short question referencing them. Applied for the /review-pr consolidated findings (PR comment) — worked well.
+
+6. **DASH team names reverted AGAIN upstream** (carried from Session 10 wind-down): Wed 6:10 is back to `(PLAYERS) Adult Pick Up Hockey (Mornings)` while PIH uses `PIH Adult Pickup Skater/Goalie`. The parser's dual-spelling filter already handles both; `facility_id` (never names) drives all location logic.
+
 ## API Architecture
 
 DASH exposes a JSON:API at `/dash/jsonapi/api/v1/`. Polling requires a **two-step fetch flow**:
