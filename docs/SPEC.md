@@ -33,6 +33,8 @@ https://apps.daysmartrecreation.com/dash/x/#/online/extremeice/event-registratio
 
 ### Alert Rules
 
+When `ALERT_MORNINGS_ONLY=true` (default), only sessions starting before `MORNING_PICKUP_MAX_HOUR` (default 8) can fire any alert type below; later sessions still appear in `/sessions` but stay silent.
+
 **OPPORTUNITY (primary)**
 
 - `goalies_registered >= MIN_GOALIES AND players_registered >= MIN_PLAYERS_REGISTERED`
@@ -274,6 +276,11 @@ FORWARD_WINDOW_DAYS=5
 MIN_GOALIES=2
 PLAYER_SPOTS_ALERT=10
 PLAYER_SPOTS_URGENT=4
+
+# Morning-Only Alerts + Facility Location
+ALERT_MORNINGS_ONLY=true          # Gate: only morning sessions may alert
+MORNING_PICKUP_MAX_HOUR=8         # Morning cutoff hour (24h)
+FACILITY_LABELS=1:XIC,2:PIH       # Facility ID -> display label
 ```
 
 ### API Discovery: ✅ COMPLETED (2026-02-12)
