@@ -1,3 +1,5 @@
+import { sessionKey } from './session-identity.js'
+
 export interface Session {
   date: string // YYYY-MM-DD
   dayOfWeek: string // Monday | Wednesday | Friday
@@ -10,6 +12,9 @@ export interface Session {
   goaliesMax: number
   isFull: boolean // Derived: playersRegistered >= playersMax
   price: number
+  facilityId?: number // DASH facility: 1 = XIC, 2 = PIH; 0 if unresolvable
+  location?: string // Display label ('XIC' | 'PIH'), from facilityLabels config
+  rinkName?: string // Rink surface from resource: 'MAIN RINK', 'Pineville Rink', ...
 }
 
 interface JsonApiEvent {
@@ -25,6 +30,9 @@ interface JsonApiEvent {
       data: { type: string; id: string } | null
     }
     summary?: {
+      data: { type: string; id: string } | null
+    }
+    resource?: {
       data: { type: string; id: string } | null
     }
     [key: string]: any
@@ -50,9 +58,19 @@ interface ParsedEvent {
   registered: number
   capacity: number
   price: number
+  facilityId: number
+  rinkName: string
 }
 
-export function parseEvents(apiResponse: JsonApiResponse): Session[] {
+// Facility labels are display-only; facility IDs drive all logic. IDs are
+// stable across DASH renames (Session 9/10 lesson: never key logic on
+// human-facing strings).
+export const DEFAULT_FACILITY_LABELS: Record<number, string> = { 1: 'XIC', 2: 'PIH' }
+
+export function parseEvents(
+  apiResponse: JsonApiResponse,
+  facilityLabels: Record<number, string> = DEFAULT_FACILITY_LABELS
+): Session[] {
   const { data, included = [] } = apiResponse
 
   // Create lookup maps for relationships
@@ -99,6 +117,15 @@ export function parseEvents(apiResponse: JsonApiResponse): Session[] {
     // TODO: Find actual price field in API response
     const price = 0
 
+    // Resolve resource -> facility. Post-merger, facility_id distinguishes
+    // XIC (1) from PIH (2). Missing resource degrades to facilityId 0.
+    const resourceData = event.relationships.resource?.data
+    const resource = resourceData
+      ? includedMap.get(`${resourceData.type}:${resourceData.id}`)
+      : undefined
+    const facilityId: number = resource?.attributes?.facility_id ?? 0
+    const rinkName: string = resource?.attributes?.name ?? ''
+
     parsedEvents.push({
       eventId: event.id,
       teamName,
@@ -107,6 +134,8 @@ export function parseEvents(apiResponse: JsonApiResponse): Session[] {
       registered,
       capacity,
       price,
+      facilityId,
+      rinkName,
     })
   }
 
@@ -123,10 +152,10 @@ export function parseEvents(apiResponse: JsonApiResponse): Session[] {
     const timeLabel = formatTimeLabel(startDate, endDate)
     const dayOfWeek = getDayOfWeek(startDate)
 
-    const sessionKey = `${date}:${time}`
+    const key = sessionKey({ date, time, facilityId: event.facilityId })
 
-    if (!sessionMap.has(sessionKey)) {
-      sessionMap.set(sessionKey, {
+    if (!sessionMap.has(key)) {
+      sessionMap.set(key, {
         date,
         dayOfWeek,
         time,
@@ -138,10 +167,14 @@ export function parseEvents(apiResponse: JsonApiResponse): Session[] {
         goaliesMax: 0,
         isFull: false,
         price: event.price,
+        facilityId: event.facilityId,
+        location:
+          facilityLabels[event.facilityId] ?? (event.rinkName || `Facility ${event.facilityId}`),
+        rinkName: event.rinkName,
       })
     }
 
-    const session = sessionMap.get(sessionKey)!
+    const session = sessionMap.get(key)!
 
     // Classify as player or goalie entry. Old DASH naming used "(PLAYERS)" /
     // "(GOALIES)" tags; the mid-2026 rename uses "Skater" / "Goalie".
