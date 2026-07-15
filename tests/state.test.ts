@@ -589,4 +589,89 @@ describe('state', () => {
       expect(finalState[0].lastPlayerCount).toBe(16)
     })
   })
+
+  describe('facility-aware matching (XIC/PIH merger)', () => {
+    const baseSession = {
+      date: '2026-08-05',
+      dayOfWeek: 'Wednesday',
+      time: '06:00',
+      timeLabel: '6am - 7:10am',
+      eventName: '(PLAYERS) Adult Pick Up Hockey (Mornings)',
+      playersRegistered: 9,
+      playersMax: 22,
+      goaliesRegistered: 1,
+      goaliesMax: 3,
+      isFull: false,
+      price: 0,
+    }
+    const xicSession = { ...baseSession, facilityId: 1, location: 'XIC' }
+    const pihSession = {
+      ...baseSession,
+      eventName: 'PIH Adult Pickup Skater',
+      facilityId: 2,
+      location: 'PIH',
+    }
+    const makeEntry = (session: typeof xicSession) => ({
+      session,
+      lastAlertType: null,
+      lastAlertAt: null,
+      lastPlayerCount: null,
+      isRegistered: false,
+      userResponse: null,
+      userRespondedAt: null,
+      remindAfter: null,
+    })
+
+    it('updateUserResponse with facilityId only touches the matching rink', () => {
+      const state = [makeEntry(xicSession), makeEntry(pihSession)]
+      const updated = updateUserResponse(state, '2026-08-05', '06:00', 'not_interested', 2, 2)
+
+      expect(updated.find((s) => s.session.facilityId === 2)!.userResponse).toBe('not_interested')
+      expect(updated.find((s) => s.session.facilityId === 1)!.userResponse).toBeNull()
+    })
+
+    it('updateUserResponse without facilityId matches legacy-style (date+time)', () => {
+      const state = [makeEntry(xicSession)]
+      const updated = updateUserResponse(state, '2026-08-05', '06:00', 'registered', 2)
+
+      expect(updated[0].userResponse).toBe('registered')
+      expect(updated[0].isRegistered).toBe(true)
+    })
+
+    it('updateSessionState keeps same-time sessions at different rinks as separate entries', () => {
+      let state = updateSessionState([], xicSession, null, null)
+      state = updateSessionState(state, pihSession, null, null)
+
+      expect(state).toHaveLength(2)
+
+      // updating XIC counts must not clobber PIH
+      state = updateSessionState(state, { ...xicSession, playersRegistered: 12 }, null, null)
+      expect(state).toHaveLength(2)
+      expect(state.find((s) => s.session.facilityId === 1)!.session.playersRegistered).toBe(12)
+      expect(state.find((s) => s.session.facilityId === 2)!.session.playersRegistered).toBe(9)
+    })
+
+    it('updateSessionState matches a legacy entry lacking facilityId (no duplicate, no re-alert)', () => {
+      const legacyEntry = makeEntry({ ...baseSession } as typeof xicSession)
+      const state = updateSessionState([legacyEntry], xicSession, null, null)
+
+      expect(state).toHaveLength(1)
+      expect(state[0].session.facilityId).toBe(1)
+    })
+
+    it('mergeUserResponses matches facility-aware', () => {
+      const pollState = [makeEntry(xicSession), makeEntry(pihSession)]
+      const freshState = [
+        {
+          ...makeEntry(pihSession),
+          userResponse: 'not_interested' as const,
+          userRespondedAt: new Date().toISOString(),
+        },
+      ]
+
+      const merged = mergeUserResponses(pollState, freshState)
+      expect(merged.find((s) => s.session.facilityId === 2)!.userResponse).toBe('not_interested')
+      expect(merged.find((s) => s.session.facilityId === 1)!.userResponse).toBeNull()
+    })
+  })
 })

@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import { sessionMatches } from './session-identity.js'
 import type { SessionState, AlertType, UserResponse } from './evaluator'
 import type { Session } from './parser'
 
@@ -85,10 +86,11 @@ export function updateRegistrationStatus(
   state: SessionState[],
   date: string,
   time: string,
-  isRegistered: boolean
+  isRegistered: boolean,
+  facilityId?: number
 ): SessionState[] {
   return state.map((s) => {
-    if (s.session.date === date && s.session.time === time) {
+    if (sessionMatches({ date, time, facilityId }, s.session)) {
       return {
         ...s,
         isRegistered,
@@ -110,9 +112,7 @@ export function updateSessionState(
   alertType: AlertType | null,
   alertAt: string | null
 ): SessionState[] {
-  const existingIndex = state.findIndex(
-    (s) => s.session.date === session.date && s.session.time === session.time
-  )
+  const existingIndex = state.findIndex((s) => sessionMatches(session, s.session))
 
   const existingState = existingIndex >= 0 ? state[existingIndex] : null
 
@@ -146,11 +146,12 @@ export function updateUserResponse(
   date: string,
   time: string,
   userResponse: UserResponse,
-  remindIntervalHours: number
+  remindIntervalHours: number,
+  facilityId?: number
 ): SessionState[] {
   const now = new Date()
   return state.map((s) => {
-    if (s.session.date === date && s.session.time === time) {
+    if (sessionMatches({ date, time, facilityId }, s.session)) {
       return {
         ...s,
         isRegistered: userResponse === 'registered' ? true : s.isRegistered,
@@ -176,9 +177,7 @@ export function mergeUserResponses(
   freshState: SessionState[]
 ): SessionState[] {
   return pollState.map((entry) => {
-    const fresh = freshState.find(
-      (s) => s.session.date === entry.session.date && s.session.time === entry.session.time
-    )
+    const fresh = freshState.find((s) => sessionMatches(entry.session, s.session))
     if (!fresh || fresh.userRespondedAt === null) return entry
 
     // Use fresh state's user-response fields if poll state has none,
