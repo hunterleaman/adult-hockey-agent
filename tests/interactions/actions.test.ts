@@ -130,6 +130,36 @@ describe('parseActionValue', () => {
   })
 })
 
+describe('facility-aware action values', () => {
+  it('parses the new 4-part value {date}|{time}|{facilityId}|{eventName}', () => {
+    const result = parseActionValue('2026-08-05|06:00|2|PIH Adult Pickup Skater')
+    expect(result).toEqual({
+      date: '2026-08-05',
+      time: '06:00',
+      facilityId: 2,
+      eventName: 'PIH Adult Pickup Skater',
+    })
+  })
+
+  it('still parses legacy 3-part values (no facilityId)', () => {
+    const result = parseActionValue('2026-08-05|06:00|(PLAYERS) Adult Pick Up')
+    expect(result).toEqual({
+      date: '2026-08-05',
+      time: '06:00',
+      eventName: '(PLAYERS) Adult Pick Up',
+    })
+  })
+
+  it('treats a non-numeric 3rd part of a 4-part value as legacy eventName containing a pipe', () => {
+    const result = parseActionValue('2026-08-05|06:00|Team|Name')
+    expect(result).toEqual({
+      date: '2026-08-05',
+      time: '06:00',
+      eventName: 'Team|Name',
+    })
+  })
+})
+
 describe('processInteraction', () => {
   beforeEach(() => {
     if (!fs.existsSync(testDataDir)) {
@@ -252,5 +282,33 @@ describe('processInteraction', () => {
     const remindAfter = new Date(state[0].remindAfter!).getTime()
     expect(remindAfter).toBeGreaterThanOrEqual(before + 4 * 60 * 60 * 1000)
     expect(remindAfter).toBeLessThanOrEqual(after + 4 * 60 * 60 * 1000)
+  })
+
+  it('routes to the matching facility when two sessions share date+time', () => {
+    const xic = createSession({ date: '2026-08-05', time: '06:00', facilityId: 1 })
+    const pih = createSession({ date: '2026-08-05', time: '06:00', facilityId: 2 })
+    saveState(testStatePath, [createState(xic), createState(pih)])
+
+    const payload = {
+      type: 'block_actions',
+      actions: [
+        {
+          action_id: 'session_not_interested',
+          value: '2026-08-05|06:00|2|PIH Adult Pickup Skater',
+        },
+      ],
+      response_url: 'https://hooks.slack.com/test',
+    }
+
+    const result = processInteraction(testStatePath, payload, 2)
+
+    expect(result).not.toBeNull()
+    expect(result!.found).toBe(true)
+
+    const state = loadState(testStatePath)
+    const xicState = state.find((s) => s.session.facilityId === 1)
+    const pihState = state.find((s) => s.session.facilityId === 2)
+    expect(pihState?.userResponse).toBe('not_interested')
+    expect(xicState?.userResponse).toBeNull()
   })
 })
