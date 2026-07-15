@@ -17,6 +17,8 @@ describe('evaluator', () => {
     minPlayersRegistered: 10,
     playerSpotsUrgent: 4,
     morningPickupMaxHour: 9,
+    alertMorningsOnly: false,
+    facilityLabels: { 1: 'XIC', 2: 'PIH' },
     port: 3000,
     slackWebhookUrl: undefined,
     remindIntervalHours: 2,
@@ -847,7 +849,7 @@ describe('evaluator', () => {
 
   describe('MORNING_PICKUP alerts', () => {
     // Notify when an early-morning pickup session (re)appears on the schedule.
-    // Gated to start times before config.morningPickupMaxHour (default 9am),
+    // Gated to start times before config.morningPickupMaxHour (default 8am),
     // which excludes the 11:30am "Open Hockey" sessions. Uses the shared
     // futureDate() helper defined at the top of the suite.
 
@@ -890,6 +892,87 @@ describe('evaluator', () => {
       const alerts = evaluate([session], [], defaultConfig)
 
       expect(alerts.some((a) => a.type === 'MORNING_PICKUP')).toBe(false)
+    })
+  })
+
+  describe('morning-only gate (alertMorningsOnly)', () => {
+    const gatedConfig: Config = {
+      ...defaultConfig,
+      alertMorningsOnly: true,
+      morningPickupMaxHour: 8,
+    }
+
+    it('suppresses ALL alert types for sessions starting at/after the cutoff', () => {
+      // 11:30 PIH session transitioning to full would normally fire SOLD_OUT
+      const session = createSession({ time: '11:30', isFull: true, facilityId: 2 })
+      const prev = createState(createSession({ time: '11:30', isFull: false, facilityId: 2 }))
+
+      const alerts = evaluate([session], [prev], gatedConfig)
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('fires for sessions starting before the cutoff (7:59 boundary)', () => {
+      const session = createSession({ time: '07:59', playersRegistered: 10, goaliesRegistered: 1 })
+      const alerts = evaluate([session], [createState(session)], gatedConfig)
+      expect(alerts).toHaveLength(1)
+    })
+
+    it('suppresses at exactly the cutoff hour (08:00)', () => {
+      const session = createSession({ time: '08:00', playersRegistered: 10, goaliesRegistered: 1 })
+      const alerts = evaluate([session], [createState(session)], gatedConfig)
+      expect(alerts).toHaveLength(0)
+    })
+
+    it('gate off (alertMorningsOnly false) restores legacy behavior', () => {
+      const session = createSession({ time: '11:30', playersRegistered: 10, goaliesRegistered: 1 })
+      const alerts = evaluate([session], [createState(session)], defaultConfig)
+      expect(alerts).toHaveLength(1)
+    })
+  })
+
+  describe('facility-aware alerts', () => {
+    it('uses the session facilityId in the registration URL', () => {
+      const session = createSession({
+        playersRegistered: 10,
+        goaliesRegistered: 1,
+        facilityId: 2,
+        location: 'PIH',
+      })
+      const alerts = evaluate([session], [createState(session)], defaultConfig)
+
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].registrationUrl).toContain('facility_ids=2')
+    })
+
+    it('falls back to facility_ids=1 when facilityId is missing', () => {
+      const session = createSession({ playersRegistered: 10, goaliesRegistered: 1 })
+      const alerts = evaluate([session], [createState(session)], defaultConfig)
+      expect(alerts[0].registrationUrl).toContain('facility_ids=1')
+    })
+
+    it('includes the location label in the alert message', () => {
+      const session = createSession({
+        playersRegistered: 10,
+        goaliesRegistered: 1,
+        facilityId: 2,
+        location: 'PIH',
+      })
+      const alerts = evaluate([session], [createState(session)], defaultConfig)
+      expect(alerts[0].message).toContain('@ PIH')
+    })
+
+    it('matches previous state facility-aware (same time, different rink = different session)', () => {
+      const xic = createSession({ time: '06:00', facilityId: 1, location: 'XIC' })
+      const pihPrev = createState(
+        createSession({ time: '06:00', facilityId: 2, location: 'PIH', isFull: true })
+      )
+
+      // XIC session is unseen (only PIH tracked at this slot) and it's a
+      // morning session -> MORNING_PICKUP, NOT a NEWLY_AVAILABLE downgrade
+      // from PIH's full->open transition.
+      const alerts = evaluate([xic], [pihPrev], defaultConfig)
+      expect(alerts).toHaveLength(1)
+      expect(alerts[0].type).toBe('MORNING_PICKUP')
     })
   })
 })
