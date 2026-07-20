@@ -1,0 +1,76 @@
+{
+  "$comment": "Spec/manifest declaring the kit's placeholder set. Consumed by bootstrap.sh to write the .claude/.config skeleton (probe-seeded values + defaults applied + null for unfilled). Also describes per-key metadata (type, required, default, description) used by /fill-config (deferred) and /audit-kit kit-version delta detection. NOT a draft-07 JSON Schema validating .claude/.config — that file is a flat KEY → scalar map; this file is the manifest describing which KEYs the kit defines. Repo-root references are NOT a placeholder — canonical files use $CLAUDE_PROJECT_DIR directly (the harness env var, evaluated at runtime). See docs/DECISIONS.md → 2026-04-30 Substitute subsystem (Q2.5).",
+  "$version": "1",
+  "placeholders": {
+    "PROJECT_NAME": {
+      "type": "string",
+      "required": true,
+      "description": "Human-readable project name. Appears in CLAUDE.md, docs/DECISIONS.md, docs/CHANGELOG.md, docs/PITFALLS.md, ship.md."
+    },
+    "TEST_COMMAND": {
+      "type": "string",
+      "required": true,
+      "description": "Test runner command (e.g. 'npm run test', 'pytest', 'cargo test'). Use 'n/a' if the project has no tests yet."
+    },
+    "BUILD_COMMAND": {
+      "type": "string",
+      "required": true,
+      "description": "Standard build command (e.g. 'npm run build', 'cargo build'). Use 'n/a' if the project has no build step."
+    },
+    "LONG_BUILD_COMMAND": {
+      "type": "string",
+      "required": true,
+      "description": "The slow build command that must NOT be chained with `&&` (HARD RULE). Often equal to BUILD_COMMAND; sometimes a heavier variant."
+    },
+    "LONG_BUILD_TIMEOUT_MS": {
+      "type": "integer",
+      "required": true,
+      "default": 600000,
+      "description": "Timeout in milliseconds for the long build, used by /verify and other long-build invocations. 60000 ms = 1 min, 600000 ms = 10 min."
+    },
+    "QUALITY_GATE_FAST_STEPS": {
+      "type": "string",
+      "required": true,
+      "description": "Fast tests + lint + validate steps chained with `&&` (e.g. 'npm run test && npm run lint'). Used by /verify, /ship, /review-pr."
+    },
+    "QUALITY_GATE_ONE_LINER": {
+      "type": "string",
+      "required": true,
+      "description": "Single-line full quality gate for the stop-checklist warning banner. Typically test + build."
+    },
+    "QUALITY_GATE_SCRIPT": {
+      "type": "string",
+      "required": false,
+      "default": "",
+      "description": "Optional project-specific full quality-gate script invoked by /review-pr (e.g. 'npm run quality-gate', 'bash scripts/qa.sh'). Empty string disables the step."
+    },
+    "POST_BUILD_CHECKS": {
+      "type": "string",
+      "required": true,
+      "description": "Post-build verification + regression greps (e.g. 'npm run validate'). Used by /verify, /ship, /review-pr."
+    },
+    "PIPELINE_SENTINEL_FILE": {
+      "type": "string",
+      "required": true,
+      "description": "Path (relative to repo root) of a file whose absence means the build hasn't run. Inspected by hooks/session-start-orient.sh."
+    },
+    "APPEND_ONLY_FILES": {
+      "type": "string",
+      "required": true,
+      "default": "docs/CHANGELOG.md, docs/DECISIONS.md",
+      "description": "Comma-separated list of files where rebase conflicts must keep BOTH sides (no deletions). Surfaced by /review-pr."
+    },
+    "MAX_DEFERRED_CONSIDERS": {
+      "type": "integer",
+      "required": false,
+      "default": 5,
+      "description": "Issue #41 debt cap. CI fails when open issues with label `consider-deferred` exceed this count. Pair with /review-pr Stage 5 DEFER:<reason> friction."
+    },
+    "CTX_BUDGET_TOKENS": {
+      "type": "integer",
+      "required": false,
+      "default": 125000,
+      "description": "Issue #99 (cpt-kit-harvest W2). Per-session context budget in tokens for the ctx-tracker hooks (context-tracker-init.sh, context-tracker-check.sh). The kit default; a runtime CTX_BUDGET_TOKENS env var overrides it per session. buy.vodka-v3 harvest bumped the default from 100000 to 125000."
+    }
+  }
+}

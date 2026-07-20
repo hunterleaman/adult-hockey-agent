@@ -34,3 +34,6 @@ Thumbs.db
 .claude/*
 !.claude/commands/
 .claude-context/
+.claude/settings.local.json
+.remember/
+.claude/worktrees/

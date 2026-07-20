@@ -1,0 +1,153 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/hunterleaman/claude-project-template/templates/PLACEHOLDER-PROBES.schema.json",
+  "title": "Placeholder Probe Spec",
+  "description": "Declarative spec consumed by lib/probe.sh. Maps placeholder names to ordered rule lists; first matching rule wins. Disambiguation: rules within a placeholder are evaluated in array order; on the first rule whose predicate fires (file present, regex matches, jq path resolves, glob count > 0, command exits 0 with non-empty stdout), the rule's value is emitted and remaining rules are skipped. Trust gate: 'command' rules require TRUSTED=1 at the probe_extract call site; lib/probe.sh refuses 'command' rules from project-local (untrusted) specs to prevent arbitrary execution under audit. All file paths are relative to PROJECT_DIR.",
+  "type": "object",
+  "required": ["placeholders"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Optional reference to this schema for editor tooling."
+    },
+    "$schema_version": {
+      "type": "integer",
+      "description": "Spec format version. Bump on breaking changes to rule semantics."
+    },
+    "$comment": {
+      "type": "string"
+    },
+    "placeholders": {
+      "type": "object",
+      "description": "Map of {{PLACEHOLDER_NAME}} (without braces) to its ordered rule list.",
+      "patternProperties": {
+        "^[A-Z][A-Z0-9_]*$": {
+          "type": "object",
+          "required": ["rules"],
+          "properties": {
+            "rules": {
+              "type": "array",
+              "minItems": 1,
+              "description": "Ordered rule list. First matching rule wins.",
+              "items": { "$ref": "#/definitions/rule" }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "rule": {
+      "oneOf": [
+        { "$ref": "#/definitions/rule_file_regex" },
+        { "$ref": "#/definitions/rule_json_path" },
+        { "$ref": "#/definitions/rule_file_present" },
+        { "$ref": "#/definitions/rule_file_glob_count" },
+        { "$ref": "#/definitions/rule_command" }
+      ]
+    },
+    "rule_file_regex": {
+      "type": "object",
+      "description": "Bash ERE match against a file's content, evaluated per line. ${1} in `value` expands to capture group 1. Pattern is consumed by bash [[ =~ ]] / BASH_REMATCH — no sed metachar concerns. Bash ERE is similar to POSIX ERE but the dialect is Bash's; portability to non-Bash regex engines is not guaranteed.",
+      "required": ["type", "file", "pattern", "value"],
+      "properties": {
+        "type": { "const": "file_regex" },
+        "file": {
+          "type": "string",
+          "description": "File path relative to PROJECT_DIR."
+        },
+        "pattern": {
+          "type": "string",
+          "description": "Bash extended regex (consumed by [[ =~ ]] / BASH_REMATCH). Capture group 1 is available as ${1} in `value`."
+        },
+        "value": {
+          "type": "string",
+          "description": "Emitted value template. May contain ${1} (group 1) or be a static string."
+        }
+      },
+      "additionalProperties": false
+    },
+    "rule_json_path": {
+      "type": "object",
+      "description": "jq selector against a JSON file. Rule fires when the selector yields a non-null, non-empty string. ${value} in `value` substitutes the resolved JSON string.",
+      "required": ["type", "file", "path", "value"],
+      "properties": {
+        "type": { "const": "json_path" },
+        "file": {
+          "type": "string",
+          "description": "JSON file path relative to PROJECT_DIR."
+        },
+        "path": {
+          "type": "string",
+          "description": "jq selector expression (e.g. '.name', '.scripts[\"quality-gate\"]')."
+        },
+        "value": {
+          "type": "string",
+          "description": "Emitted value template. May contain ${value} (resolved selector result) or be a static string."
+        }
+      },
+      "additionalProperties": false
+    },
+    "rule_file_present": {
+      "type": "object",
+      "description": "Fires if the named file exists; emits the static value.",
+      "required": ["type", "file", "value"],
+      "properties": {
+        "type": { "const": "file_present" },
+        "file": {
+          "type": "string",
+          "description": "File path relative to PROJECT_DIR."
+        },
+        "value": {
+          "type": "string",
+          "description": "Static value to emit on file presence."
+        }
+      },
+      "additionalProperties": false
+    },
+    "rule_file_glob_count": {
+      "type": "object",
+      "description": "Counts files matching each candidate glob (via `find -name`); emits the candidate value with the highest count (strictly > 0). On tie, earliest-declared wins. Leading '**/' is stripped — matching is by basename, recursive into PROJECT_DIR.",
+      "required": ["type", "candidates"],
+      "properties": {
+        "type": { "const": "file_glob_count" },
+        "candidates": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["glob", "value"],
+            "properties": {
+              "glob": {
+                "type": "string",
+                "description": "Glob pattern (e.g. '**/*.ts'). '**/' prefix accepted; matching is by basename via `find -name`."
+              },
+              "value": {
+                "type": "string",
+                "description": "Value emitted when this candidate has the highest match count."
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "rule_command": {
+      "type": "object",
+      "description": "Run a shell command (cwd = PROJECT_DIR), capture trimmed stdout. TRUSTED-only: lib/probe.sh refuses this rule type when probe_extract is called with TRUSTED=0 (project-local spec). Curate command rules in the template-cache copy of the spec only.",
+      "required": ["type", "command"],
+      "properties": {
+        "type": { "const": "command" },
+        "command": {
+          "type": "string",
+          "description": "Shell command, executed via `bash -c` in PROJECT_DIR. Stdout (trimmed) is the emitted value."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
