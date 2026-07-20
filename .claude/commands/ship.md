@@ -1,22 +1,14 @@
-# CANONICAL-ONLY-START
-<!-- TEMPLATE PLACEHOLDERS:
-  {{PROJECT_NAME}}:            human-readable project name.
-  {{QUALITY_GATE_FAST_STEPS}}: fast test/validate commands.
-  {{LONG_BUILD_COMMAND}}:      slow build command (run as dedicated Bash call).
-  {{POST_BUILD_CHECKS}}:       post-build verification + regression greps.
--->
-# CANONICAL-ONLY-END
-Run the {{PROJECT_NAME}} shipping sequence for the current feature branch. Execute ALL steps in order. Do not skip any. If any step fails, stop and report.
+Run the adult-hockey-agent shipping sequence for the current feature branch. Execute ALL steps in order. Do not skip any. If any step fails, stop and report.
 
 ## 1. Full Quality Gate
 ```bash
-{{QUALITY_GATE_FAST_STEPS}}
+npm run check
 ```
 ```bash
-{{LONG_BUILD_COMMAND}}
+npm run build
 ```
 ```bash
-{{POST_BUILD_CHECKS}}
+test -f dist/index.js && test -f dist/scraper.js && test -f dist/session-identity.js && node -e "import('./dist/scraper.js').then((m) => { if (typeof m.scrapeEvents !== 'function') { console.error('scrapeEvents export missing'); process.exit(1) } })" && ! grep -rn "company=extremeice" src/scraper.ts src/evaluator.ts src/config.ts src/index.ts src/commands/
 ```
 
 ## 2. Docs Update

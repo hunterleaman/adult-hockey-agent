@@ -442,7 +442,7 @@ UNFILLED_COUNT=0
 if [ -n "$UNFILLED_RAW" ]; then
   while IFS= read -r hit; do
     [ -n "$hit" ] || continue
-    # Extract the \{{TOKEN}} name(s) on this line.
+    # Extract the {{TOKEN}} name(s) on this line.
     while IFS= read -r token; do
       [ -n "$token" ] || continue
       key="${token#\{\{}"; key="${key%\}\}}"
