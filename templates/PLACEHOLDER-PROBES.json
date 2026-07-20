@@ -1,0 +1,88 @@
+{
+  "$schema": "./PLACEHOLDER-PROBES.schema.json",
+  "$schema_version": 1,
+  "$comment": "Declarative probe spec consumed by lib/probe.sh. Each placeholder has an ordered list of rules; first match wins. Rule types: file_regex (Bash ERE on a file's content, per line; ${1} capture supported in value), json_path (jq selector against a JSON file; ${value} substitutes the resolved JSON string), file_glob_count (most-frequent matching glob → value), file_present (file exists → value), command (run command, capture stdout — TRUSTED specs only). All file paths are relative to PROJECT_DIR. Unmatched placeholders are omitted from the emitted map; consumers leave the {{TOKEN}} in place. See PLACEHOLDER-PROBES.schema.json for the full rule grammar.",
+  "placeholders": {
+    "PROJECT_NAME": {
+      "rules": [
+        {
+          "type": "json_path",
+          "file": "package.json",
+          "path": ".name",
+          "value": "${value}"
+        },
+        {
+          "type": "file_regex",
+          "file": "pyproject.toml",
+          "pattern": "^name[[:space:]]*=[[:space:]]*\"([^\"]+)\"",
+          "value": "${1}"
+        },
+        {
+          "type": "file_regex",
+          "file": "Cargo.toml",
+          "pattern": "^name[[:space:]]*=[[:space:]]*\"([^\"]+)\"",
+          "value": "${1}"
+        }
+      ]
+    },
+    "PRIMARY_LANGUAGE": {
+      "rules": [
+        {
+          "type": "file_glob_count",
+          "candidates": [
+            { "glob": "**/*.ts",   "value": "typescript" },
+            { "glob": "**/*.tsx",  "value": "typescript" },
+            { "glob": "**/*.js",   "value": "javascript" },
+            { "glob": "**/*.jsx",  "value": "javascript" },
+            { "glob": "**/*.py",   "value": "python" },
+            { "glob": "**/*.rs",   "value": "rust" },
+            { "glob": "**/*.go",   "value": "go" },
+            { "glob": "**/*.rb",   "value": "ruby" },
+            { "glob": "**/*.java", "value": "java" }
+          ]
+        }
+      ]
+    },
+    "TEST_COMMAND": {
+      "rules": [
+        {
+          "type": "json_path",
+          "file": "package.json",
+          "path": ".scripts.test",
+          "value": "npm run test"
+        },
+        {
+          "type": "file_present",
+          "file": "pyproject.toml",
+          "value": "pytest"
+        },
+        {
+          "type": "file_present",
+          "file": "Cargo.toml",
+          "value": "cargo test"
+        },
+        {
+          "type": "file_present",
+          "file": "go.mod",
+          "value": "go test ./..."
+        }
+      ]
+    },
+    "QUALITY_GATE_SCRIPT": {
+      "rules": [
+        {
+          "type": "json_path",
+          "file": "package.json",
+          "path": ".scripts[\"quality-gate\"]",
+          "value": "npm run quality-gate"
+        },
+        {
+          "type": "file_regex",
+          "file": "Makefile",
+          "pattern": "^quality-gate:",
+          "value": "make quality-gate"
+        }
+      ]
+    }
+  }
+}

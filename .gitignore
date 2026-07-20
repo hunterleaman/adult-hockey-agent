@@ -31,6 +31,11 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
-.claude/*
-!.claude/commands/
+# Claude Code kit: kit files (.claude/commands/, hooks/, settings.json, .config,
+# .verify-allowlist, .template-version, .template-meta) are TRACKED (CPT consumer
+# pattern; see CPT .gitignore + PLAYBOOK 6.5). Ignore only per-user + runtime state.
+.claude/settings.local.json
+.claude/worktrees/
+.claude/*.lock
 .claude-context/
+.remember/

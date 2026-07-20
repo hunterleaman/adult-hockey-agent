@@ -1,0 +1,7 @@
+# .claude/.verify-allowlist: consumer-local commands with no canonical counterpart.
+# One exact entry path per line (copy-paste from the orphan diagnostic).
+.claude/commands/check.md
+.claude/commands/deploy-check.md
+.claude/commands/implement-issue.md
+.claude/commands/known-mistakes.md
+.claude/commands/session-end.md
